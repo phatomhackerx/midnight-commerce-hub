@@ -9,7 +9,7 @@ import {
   Filter, 
   Download,
   DollarSign,
-  Bank,
+  Building,
   CreditCard,
   Search
 } from "lucide-react";
@@ -285,11 +285,13 @@ export default function FinanceiroPage() {
         <TabsContent value="extrato" className="space-y-4">
           <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
             <div className="flex items-center gap-2">
-              <Input 
-                placeholder="Buscar transação..." 
-                className="max-w-[300px]"
-                icon={Search}
-              />
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input 
+                  placeholder="Buscar transação..." 
+                  className="max-w-[300px] pl-9"
+                />
+              </div>
               <Button variant="outline" size="icon">
                 <Filter size={16} />
               </Button>
@@ -457,7 +459,7 @@ export default function FinanceiroPage() {
                     {forma.nome === "Cartão de Crédito" ? (
                       <CreditCard className="text-primary" size={24} />
                     ) : forma.nome === "Boleto Bancário" ? (
-                      <Bank className="text-primary" size={24} />
+                      <Building className="text-primary" size={24} />
                     ) : forma.nome === "Pix" ? (
                       <Wallet className="text-primary" size={24} />
                     ) : (
