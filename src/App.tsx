@@ -8,6 +8,7 @@ import MainLayout from "@/layouts/MainLayout";
 import Index from "@/pages/Index";
 import MarketplacePage from "@/pages/MarketplacePage";
 import ProdutosPage from "@/pages/ProdutosPage";
+import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/produtos" element={<ProdutosPage />} />
+            <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
             {/* Outras rotas podem ser adicionadas aqui */}
           </Route>
           <Route path="*" element={<NotFound />} />
@@ -33,4 +35,3 @@ const App = () => (
 );
 
 export default App;
-
