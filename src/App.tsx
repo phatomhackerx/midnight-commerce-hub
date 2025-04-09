@@ -11,6 +11,15 @@ import ProdutosPage from "@/pages/ProdutosPage";
 import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
 import CuponsDescontoPage from "@/pages/CuponsDescontoPage";
 import FinanceiroPage from "@/pages/FinanceiroPage";
+import RelatoriosPage from "@/pages/RelatoriosPage";
+import AssinaturasPage from "@/pages/AssinaturasPage";
+import AfiliadosPage from "@/pages/AfiliadosPage";
+import IntegracoesPage from "@/pages/IntegracoesPage";
+import QuizPage from "@/pages/QuizPage";
+import PerfilPage from "@/pages/PerfilPage";
+import ChatPage from "@/pages/ChatPage";
+import AjudaPage from "@/pages/AjudaPage";
+import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +38,15 @@ const App = () => (
             <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
             <Route path="/financeiro" element={<FinanceiroPage />} />
             <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
-            {/* Outras rotas podem ser adicionadas aqui */}
+            <Route path="/relatorios" element={<RelatoriosPage />} />
+            <Route path="/assinaturas" element={<AssinaturasPage />} />
+            <Route path="/afiliados" element={<AfiliadosPage />} />
+            <Route path="/integracoes" element={<IntegracoesPage />} />
+            <Route path="/quiz" element={<QuizPage />} />
+            <Route path="/perfil" element={<PerfilPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/ajuda" element={<AjudaPage />} />
+            <Route path="/notificacoes" element={<NotificacoesPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

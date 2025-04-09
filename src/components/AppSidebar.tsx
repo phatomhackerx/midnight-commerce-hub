@@ -16,12 +16,15 @@ import {
   HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Globe
+  Globe,
+  UserCircle,
+  MessageSquare,
+  Bell
 } from "lucide-react";
 
 const menuItems = [
   { path: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { path: "/marketplace", icon: Globe, label: "MarketingPlace" },
+  { path: "/marketplace", icon: Globe, label: "Marketplace" },
   { path: "/produtos", icon: Package, label: "Produtos" },
   { path: "/minhas-vendas", icon: ShoppingCart, label: "Minhas Vendas" },
   { path: "/assinaturas", icon: CalendarClock, label: "Assinaturas" },
@@ -30,7 +33,11 @@ const menuItems = [
   { path: "/financeiro", icon: Wallet, label: "Financeiro" },
   { path: "/integracoes", icon: Plug, label: "Integrações" },
   { path: "/cupons-desconto", icon: Tag, label: "Cupons de Desconto" },
-  { path: "/quiz", icon: HelpCircle, label: "Quiz" }
+  { path: "/quiz", icon: HelpCircle, label: "Quiz" },
+  { path: "/perfil", icon: UserCircle, label: "Meu Perfil" },
+  { path: "/chat", icon: MessageSquare, label: "Chat Suporte" },
+  { path: "/ajuda", icon: HelpCircle, label: "Ajuda" },
+  { path: "/notificacoes", icon: Bell, label: "Notificações" }
 ];
 
 export default function AppSidebar() {
@@ -70,15 +77,21 @@ export default function AppSidebar() {
               <Link
                 to={item.path}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md transition-colors",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200",
                   location.pathname === item.path
                     ? "bg-primary/10 text-primary font-medium"
-                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-muted",
+                    : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-muted hover:translate-x-1",
                   collapsed && "justify-center"
                 )}
               >
-                <item.icon size={20} className="shrink-0" />
-                {!collapsed && <span>{item.label}</span>}
+                <item.icon size={20} className={cn("shrink-0", location.pathname === item.path && "animate-pulse")} />
+                {!collapsed && (
+                  <span className={cn(
+                    location.pathname === item.path && "animate-fade-in"
+                  )}>
+                    {item.label}
+                  </span>
+                )}
               </Link>
             </li>
           ))}
