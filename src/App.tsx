@@ -10,6 +10,7 @@ import MarketplacePage from "@/pages/MarketplacePage";
 import ProdutosPage from "@/pages/ProdutosPage";
 import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
 import CuponsDescontoPage from "@/pages/CuponsDescontoPage";
+import FinanceiroPage from "@/pages/FinanceiroPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/produtos" element={<ProdutosPage />} />
             <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
+            <Route path="/financeiro" element={<FinanceiroPage />} />
             <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
             {/* Outras rotas podem ser adicionadas aqui */}
           </Route>
