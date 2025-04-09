@@ -85,9 +85,9 @@ const mockCoupons = [
 // Estatísticas dos cupons
 const estatisticas = [
   { label: "Cupons Ativos", valor: 4, icone: Tag, cor: "default" },
-  { label: "Uso Médio", valor: "112 resgates", icone: Percent, cor: "success" },
-  { label: "Impacto na Receita", valor: "-R$ 8.953,00", icone: ArrowDownToLine, cor: "warning" },
-  { label: "Conversão Via Cupom", valor: "24%", icone: Calendar, cor: "info" },
+  { label: "Uso Médio", valor: "112 resgates", icone: Percent, cor: "default" },
+  { label: "Impacto na Receita", valor: "-R$ 8.953,00", icone: ArrowDownToLine, cor: "outline" },
+  { label: "Conversão Via Cupom", valor: "24%", icone: Calendar, cor: "secondary" },
 ];
 
 export default function CuponsDescontoPage() {
@@ -143,8 +143,8 @@ export default function CuponsDescontoPage() {
                   <CardTitle className="text-2xl">{item.valor}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Badge variant={item.cor as any} className="text-xs">
-                    {item.cor === "warning" ? "-12% na receita" : "+18% vs. mês anterior"}
+                  <Badge variant={item.cor as "default" | "secondary" | "outline" | "destructive"} className="text-xs">
+                    {item.cor === "outline" ? "-12% na receita" : "+18% vs. mês anterior"}
                   </Badge>
                 </CardContent>
               </Card>
@@ -212,7 +212,7 @@ export default function CuponsDescontoPage() {
                               {cupom.tipo === "percentual" ? `${cupom.valor}%` : `R$ ${cupom.valor},00`}
                             </TableCell>
                             <TableCell>
-                              <Badge variant={cupom.ativo ? "success" : "destructive"} className="text-xs">
+                              <Badge variant={cupom.ativo ? "default" : "destructive"} className="text-xs">
                                 {cupom.ativo ? "Ativo" : "Inativo"}
                               </Badge>
                             </TableCell>
