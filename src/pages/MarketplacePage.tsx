@@ -1,156 +1,34 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ShoppingCart, Search, Filter, Users, Package, Wallet, Check, ArrowRight } from "lucide-react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { 
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle
+  NavigationMenuLink,
+  NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { 
-  ShoppingCart, 
-  Search, 
-  Filter, 
-  Tag, 
-  DollarSign, 
-  Star, 
-  TrendingUp, 
-  Users, 
-  Package, 
-  Wallet,
-  BarChart2,
-  ChevronDown,
-  Heart,
-  Share2,
-  ArrowRight,
-  Percent,
-  Bookmark,
-  Check
-} from "lucide-react";
-
-// Mock de dados para produtos
-const produtosMock = [
-  {
-    id: 1,
-    titulo: "Curso Completo de Marketing Digital",
-    vendedor: "Marketing Experts",
-    preco: 197.00,
-    comissao: 30,
-    categoria: "Marketing",
-    avaliacao: 4.8,
-    vendas: 1245,
-    imagem: "https://placehold.co/300x200/3b82f6/FFFFFF/png?text=Marketing+Digital",
-    destaque: true,
-    tags: ["bestseller", "hot"]
-  },
-  {
-    id: 2,
-    titulo: "Ebook: Copywriting para Iniciantes",
-    vendedor: "Escrita Persuasiva",
-    preco: 47.00,
-    comissao: 50,
-    categoria: "Copywriting",
-    avaliacao: 4.5,
-    vendas: 873,
-    imagem: "https://placehold.co/300x200/6366f1/FFFFFF/png?text=Copywriting",
-    destaque: false,
-    tags: ["ebook"]
-  },
-  {
-    id: 3,
-    titulo: "Mentoria em Tráfego Pago",
-    vendedor: "Ads Masters",
-    preco: 997.00,
-    comissao: 20,
-    categoria: "Tráfego",
-    avaliacao: 4.9,
-    vendas: 312,
-    imagem: "https://placehold.co/300x200/8b5cf6/FFFFFF/png?text=Tráfego+Pago",
-    destaque: true,
-    tags: ["mentoria", "premium"]
-  },
-  {
-    id: 4,
-    titulo: "Pacote de Templates para Instagram",
-    vendedor: "Design Social",
-    preco: 67.00,
-    comissao: 40,
-    categoria: "Design",
-    avaliacao: 4.3,
-    vendas: 1590,
-    imagem: "https://placehold.co/300x200/ec4899/FFFFFF/png?text=Templates",
-    destaque: false,
-    tags: ["templates"]
-  },
-  {
-    id: 5,
-    titulo: "Curso de Vendas por WhatsApp",
-    vendedor: "Vendas Digitais",
-    preco: 127.00,
-    comissao: 35,
-    categoria: "Vendas",
-    avaliacao: 4.6,
-    vendas: 867,
-    imagem: "https://placehold.co/300x200/10b981/FFFFFF/png?text=WhatsApp",
-    destaque: false,
-    tags: ["curso"]
-  },
-  {
-    id: 6,
-    titulo: "Consultoria em Lançamentos Digitais",
-    vendedor: "Launch Pro",
-    preco: 1997.00,
-    comissao: 15,
-    categoria: "Lançamentos",
-    avaliacao: 5.0,
-    vendas: 124,
-    imagem: "https://placehold.co/300x200/f59e0b/FFFFFF/png?text=Lançamentos",
-    destaque: true,
-    tags: ["consultoria", "premium"]
-  }
-];
-
-// Categorias de produtos
-const categorias = [
-  "Marketing",
-  "Copywriting",
-  "Tráfego",
-  "Design",
-  "Vendas",
-  "Lançamentos",
-  "Mentorias",
-  "E-books",
-  "Cursos",
-  "Ferramentas"
-];
-
-// Faixas de preço
-const faixasPreco = [
-  "Até R$ 50",
-  "R$ 51 - R$ 100",
-  "R$ 101 - R$ 200",
-  "R$ 201 - R$ 500",
-  "R$ 501 - R$ 1000",
-  "Acima de R$ 1000"
-];
+import { produtosMock, categorias, faixasPreco } from "@/data/marketplaceData";
+import FilterSidebar from "@/components/marketplace/FilterSidebar";
+import FeaturedProducts from "@/components/marketplace/FeaturedProducts";
+import ProductList from "@/components/marketplace/ProductList";
 
 export default function MarketplacePage() {
   const [pesquisa, setPesquisa] = useState("");
   const [filtroCategorias, setFiltroCategorias] = useState<string[]>([]);
   const [filtroPreco, setFiltroPreco] = useState<string[]>([]);
-  const [ordenacao, setOrdenacao] = useState("recentes");
+  const [filtroAvaliacao, setFiltroAvaliacao] = useState<number[]>([]);
   const [exibindoFiltros, setExibindoFiltros] = useState(false);
   const [carrinhoAberto, setCarrinhoAberto] = useState(false);
   const [carrinho, setCarrinho] = useState<any[]>([]);
   const [visualizacao, setVisualizacao] = useState<"grid" | "lista">("grid");
+  const [ordenacao, setOrdenacao] = useState("recentes");
   
   // Função para adicionar produto ao carrinho
   const adicionarAoCarrinho = (produto: any) => {
@@ -196,7 +74,7 @@ export default function MarketplacePage() {
     const matchCategoria = filtroCategorias.length === 0 || 
       filtroCategorias.includes(produto.categoria);
     
-    // Filtro por preço (simplificado)
+    // Filtro por preço
     let matchPreco = true;
     if (filtroPreco.length > 0) {
       matchPreco = filtroPreco.some(faixa => {
@@ -209,8 +87,12 @@ export default function MarketplacePage() {
         return true;
       });
     }
+
+    // Filtro por avaliação
+    const matchAvaliacao = filtroAvaliacao.length === 0 ||
+      filtroAvaliacao.some(rating => produto.avaliacao >= rating);
     
-    return matchPesquisa && matchCategoria && matchPreco;
+    return matchPesquisa && matchCategoria && matchPreco && matchAvaliacao;
   });
   
   // Ordenação de produtos
@@ -265,7 +147,7 @@ export default function MarketplacePage() {
               <Filter size={16} />
               Filtros
               <span className="inline-flex items-center justify-center bg-primary/10 text-primary text-xs font-medium rounded-full h-5 px-2 ml-1">
-                {filtroCategorias.length + filtroPreco.length}
+                {filtroCategorias.length + filtroPreco.length + filtroAvaliacao.length}
               </span>
             </Button>
             
@@ -345,113 +227,27 @@ export default function MarketplacePage() {
           
           {/* Painel de filtros expansível */}
           {exibindoFiltros && (
-            <div className="bg-card border rounded-lg p-4 space-y-6 animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Filtro por categoria */}
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium flex items-center gap-2">
-                    <Tag size={14} /> Categorias
-                  </h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {categorias.slice(0, 6).map((categoria) => (
-                      <div key={categoria} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`cat-${categoria}`}
-                          checked={filtroCategorias.includes(categoria)}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setFiltroCategorias([...filtroCategorias, categoria]);
-                            } else {
-                              setFiltroCategorias(filtroCategorias.filter(cat => cat !== categoria));
-                            }
-                          }}
-                        />
-                        <label htmlFor={`cat-${categoria}`} className="text-sm cursor-pointer">
-                          {categoria}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                  {categorias.length > 6 && (
-                    <Button variant="link" size="sm" className="px-0 h-auto">
-                      Ver mais categorias
-                    </Button>
-                  )}
-                </div>
-                
-                {/* Filtro por preço */}
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium flex items-center gap-2">
-                    <DollarSign size={14} /> Faixa de Preço
-                  </h3>
-                  <div className="space-y-2">
-                    {faixasPreco.map((faixa) => (
-                      <div key={faixa} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`preco-${faixa}`}
-                          checked={filtroPreco.includes(faixa)}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setFiltroPreco([...filtroPreco, faixa]);
-                            } else {
-                              setFiltroPreco(filtroPreco.filter(p => p !== faixa));
-                            }
-                          }}
-                        />
-                        <label htmlFor={`preco-${faixa}`} className="text-sm cursor-pointer">
-                          {faixa}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Filtro por avaliação/outros */}
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium flex items-center gap-2">
-                    <Star size={14} /> Avaliação
-                  </h3>
-                  <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((rating) => (
-                      <div key={rating} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`rating-${rating}`}
-                        />
-                        <label htmlFor={`rating-${rating}`} className="text-sm flex items-center cursor-pointer">
-                          <span className="flex">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <Star
-                                key={i}
-                                size={14}
-                                className={i < rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}
-                              />
-                            ))}
-                          </span>
-                          <span className="ml-1">{rating === 5 ? "e acima" : `e acima`}</span>
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-between pt-2 border-t">
-                <Button variant="ghost" size="sm" onClick={() => {
-                  setFiltroCategorias([]);
-                  setFiltroPreco([]);
-                }}>
-                  Limpar Filtros
-                </Button>
-                <Button size="sm" onClick={() => setExibindoFiltros(false)}>
-                  Aplicar Filtros
-                </Button>
-              </div>
-            </div>
+            <FilterSidebar
+              categorias={categorias}
+              faixasPreco={faixasPreco}
+              filtroCategorias={filtroCategorias}
+              filtroPreco={filtroPreco}
+              filtroAvaliacao={filtroAvaliacao}
+              setFiltroCategorias={setFiltroCategorias}
+              setFiltroPreco={setFiltroPreco}
+              setFiltroAvaliacao={setFiltroAvaliacao}
+              onClose={() => setExibindoFiltros(false)}
+            />
           )}
           
           {/* Navegação por tabs/categorias populares */}
           <div className="flex flex-wrap items-center gap-2 py-2 animate-fade-in delay-200">
-            <Button variant="outline" size="sm" className={!filtroCategorias.length ? "bg-primary/10" : ""}>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={!filtroCategorias.length ? "bg-primary/10" : ""}
+              onClick={() => setFiltroCategorias([])}
+            >
               Todos
             </Button>
             {categorias.slice(0, 5).map((categoria) => (
@@ -559,268 +355,17 @@ export default function MarketplacePage() {
           </div>
           
           {/* Listagem de produtos em Grid/Lista */}
-          {visualizacao === "grid" ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in delay-300">
-              {produtosOrdenados.map((produto) => (
-                <div 
-                  key={produto.id} 
-                  className="group bg-card border rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                >
-                  <div className="relative">
-                    <img 
-                      src={produto.imagem} 
-                      alt={produto.titulo}
-                      className="w-full aspect-[4/3] object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent p-4 flex flex-col justify-end">
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-wrap gap-1">
-                          {produto.tags.map((tag, idx) => (
-                            <span 
-                              key={idx} 
-                              className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                                tag === "bestseller" ? "bg-yellow-500 text-black" :
-                                tag === "hot" ? "bg-red-500 text-white" :
-                                tag === "ebook" ? "bg-blue-500 text-white" :
-                                tag === "mentoria" ? "bg-purple-500 text-white" :
-                                tag === "curso" ? "bg-green-500 text-white" :
-                                tag === "consultoria" ? "bg-orange-500 text-white" :
-                                tag === "premium" ? "bg-indigo-500 text-white" :
-                                "bg-gray-500 text-white"
-                              }`}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex gap-1">
-                          <button className="h-7 w-7 bg-white/90 rounded-full flex items-center justify-center text-foreground hover:bg-white transition-colors">
-                            <Heart size={14} />
-                          </button>
-                          <button className="h-7 w-7 bg-white/90 rounded-full flex items-center justify-center text-foreground hover:bg-white transition-colors">
-                            <Share2 size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 p-4 space-y-4">
-                    <div>
-                      <Link to={`/marketplace/produto/${produto.id}`} className="block">
-                        <h3 className="font-semibold hover:text-primary hover:underline line-clamp-2">{produto.titulo}</h3>
-                      </Link>
-                      <div className="text-sm text-muted-foreground mt-1">por {produto.vendedor}</div>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 text-sm">
-                      <span className="flex items-center gap-0.5">
-                        <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium">{produto.avaliacao.toFixed(1)}</span>
-                      </span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className="text-muted-foreground">{produto.vendas} vendas</span>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-lg font-bold">R$ {produto.preco.toFixed(2)}</div>
-                          <div className="flex items-center text-sm text-green-600 font-medium">
-                            <Percent size={14} className="mr-1" />
-                            {produto.comissao}% de comissão
-                          </div>
-                        </div>
-                        
-                        <button 
-                          className="rounded-full h-8 w-8 bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                          onClick={() => adicionarAoCarrinho(produto)}
-                        >
-                          <ShoppingCart size={16} />
-                        </button>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-2 mt-1">
-                        <Button size="sm" onClick={() => adicionarAoCarrinho(produto)}>
-                          Comprar
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={() => tornarAfiliado(produto.id)}>
-                          <Bookmark size={14} className="mr-1" />
-                          Afiliar-se
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-4 animate-fade-in delay-300">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Produto</TableHead>
-                    <TableHead>Categoria</TableHead>
-                    <TableHead>Avaliação</TableHead>
-                    <TableHead>Vendas</TableHead>
-                    <TableHead>Preço</TableHead>
-                    <TableHead>Comissão</TableHead>
-                    <TableHead className="w-[120px]">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {produtosOrdenados.map((produto) => (
-                    <TableRow key={produto.id}>
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <img 
-                            src={produto.imagem} 
-                            alt={produto.titulo}
-                            className="h-12 w-12 rounded-md object-cover"
-                          />
-                          <div>
-                            <div className="font-medium line-clamp-1">{produto.titulo}</div>
-                            <div className="text-xs text-muted-foreground">{produto.vendedor}</div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{produto.categoria}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                          <span>{produto.avaliacao.toFixed(1)}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>{produto.vendas}</TableCell>
-                      <TableCell className="font-medium">R$ {produto.preco.toFixed(2)}</TableCell>
-                      <TableCell>
-                        <span className="text-green-600 font-medium">{produto.comissao}%</span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="ghost" onClick={() => adicionarAoCarrinho(produto)}>
-                            <ShoppingCart size={14} />
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={() => tornarAfiliado(produto.id)}>
-                            <Bookmark size={14} />
-                          </Button>
-                          <Button size="sm" variant="ghost" asChild>
-                            <Link to={`/marketplace/produto/${produto.id}`}>
-                              <ArrowRight size={14} />
-                            </Link>
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+          <ProductList 
+            produtos={produtosOrdenados}
+            visualizacao={visualizacao}
+            onAddToCart={adicionarAoCarrinho}
+            onAffiliate={tornarAfiliado}
+          />
           
           {/* Seção de estatísticas/rankings em cards */}
           <div className="mt-12 space-y-8 animate-fade-in delay-400">
             <h2 className="text-xl font-bold">Rankings e Destaques</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Produtos mais vendidos */}
-              <div className="bg-card border rounded-xl overflow-hidden">
-                <div className="bg-yellow-500/10 p-4 border-b">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <TrendingUp size={18} className="text-yellow-500" />
-                    <span>Mais Vendidos</span>
-                  </h3>
-                </div>
-                <div className="divide-y">
-                  {produtosMock
-                    .sort((a, b) => b.vendas - a.vendas)
-                    .slice(0, 5)
-                    .map((produto, idx) => (
-                      <div key={produto.id} className="p-3 flex items-center gap-3 hover:bg-muted/50">
-                        <div className="bg-muted font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-                          {idx + 1}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm line-clamp-1">{produto.titulo}</div>
-                          <div className="text-xs text-muted-foreground">{produto.vendas} vendas</div>
-                        </div>
-                        <div className="text-sm font-semibold">
-                          R$ {produto.preco.toFixed(2)}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-              
-              {/* Melhor avaliados */}
-              <div className="bg-card border rounded-xl overflow-hidden">
-                <div className="bg-blue-500/10 p-4 border-b">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <Star size={18} className="text-blue-500" />
-                    <span>Melhor Avaliados</span>
-                  </h3>
-                </div>
-                <div className="divide-y">
-                  {produtosMock
-                    .sort((a, b) => b.avaliacao - a.avaliacao)
-                    .slice(0, 5)
-                    .map((produto, idx) => (
-                      <div key={produto.id} className="p-3 flex items-center gap-3 hover:bg-muted/50">
-                        <div className="bg-muted font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-                          {idx + 1}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm line-clamp-1">{produto.titulo}</div>
-                          <div className="text-xs flex items-center">
-                            <div className="flex">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <Star
-                                  key={i}
-                                  size={10}
-                                  className={i < Math.floor(produto.avaliacao) ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}
-                                />
-                              ))}
-                            </div>
-                            <span className="ml-1 text-muted-foreground">{produto.avaliacao.toFixed(1)}</span>
-                          </div>
-                        </div>
-                        <div className="text-sm font-semibold">
-                          R$ {produto.preco.toFixed(2)}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-              
-              {/* Maior comissão */}
-              <div className="bg-card border rounded-xl overflow-hidden">
-                <div className="bg-green-500/10 p-4 border-b">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <Percent size={18} className="text-green-500" />
-                    <span>Maior Comissão</span>
-                  </h3>
-                </div>
-                <div className="divide-y">
-                  {produtosMock
-                    .sort((a, b) => b.comissao - a.comissao)
-                    .slice(0, 5)
-                    .map((produto, idx) => (
-                      <div key={produto.id} className="p-3 flex items-center gap-3 hover:bg-muted/50">
-                        <div className="bg-muted font-bold w-6 h-6 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-                          {idx + 1}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm line-clamp-1">{produto.titulo}</div>
-                          <div className="text-xs text-muted-foreground">R$ {produto.preco.toFixed(2)}</div>
-                        </div>
-                        <div className="text-sm font-semibold text-green-600">
-                          {produto.comissao}%
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
+            <FeaturedProducts produtos={produtosMock} />
           </div>
           
           {/* Seção de informações para afiliados */}
