@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   NavigationMenu,
   NavigationMenuContent,
@@ -180,9 +181,7 @@ export default function MarketplacePage() {
   
   // Função para tornar-se afiliado de um produto
   const tornarAfiliado = (produtoId: number) => {
-    // Implementação futura - API para cadastro de afiliado
     console.log(`Tornar-se afiliado do produto ${produtoId}`);
-    // Aqui seria integrado com a API para registrar o usuário como afiliado
   };
   
   // Filtragem de produtos
@@ -356,13 +355,11 @@ export default function MarketplacePage() {
                   <div className="grid grid-cols-2 gap-2">
                     {categorias.slice(0, 6).map((categoria) => (
                       <div key={categoria} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           id={`cat-${categoria}`}
-                          className="form-checkbox h-4 w-4 text-primary rounded"
                           checked={filtroCategorias.includes(categoria)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
+                          onCheckedChange={(checked) => {
+                            if (checked) {
                               setFiltroCategorias([...filtroCategorias, categoria]);
                             } else {
                               setFiltroCategorias(filtroCategorias.filter(cat => cat !== categoria));
@@ -390,13 +387,11 @@ export default function MarketplacePage() {
                   <div className="space-y-2">
                     {faixasPreco.map((faixa) => (
                       <div key={faixa} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           id={`preco-${faixa}`}
-                          className="form-checkbox h-4 w-4 text-primary rounded"
                           checked={filtroPreco.includes(faixa)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
+                          onCheckedChange={(checked) => {
+                            if (checked) {
                               setFiltroPreco([...filtroPreco, faixa]);
                             } else {
                               setFiltroPreco(filtroPreco.filter(p => p !== faixa));
@@ -419,10 +414,8 @@ export default function MarketplacePage() {
                   <div className="space-y-2">
                     {[5, 4, 3, 2, 1].map((rating) => (
                       <div key={rating} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           id={`rating-${rating}`}
-                          className="form-checkbox h-4 w-4 text-primary rounded"
                         />
                         <label htmlFor={`rating-${rating}`} className="text-sm flex items-center cursor-pointer">
                           <span className="flex">
