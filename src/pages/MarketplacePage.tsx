@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ShoppingCart, Search, Filter, Users, Package, Wallet, Check, ArrowRight } from "lucide-react";
+import { ShoppingCart, Search, Filter, Users, Package, Wallet, Check, ArrowRight, BarChart2 } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { 
   NavigationMenu,
@@ -30,7 +29,6 @@ export default function MarketplacePage() {
   const [visualizacao, setVisualizacao] = useState<"grid" | "lista">("grid");
   const [ordenacao, setOrdenacao] = useState("recentes");
   
-  // Função para adicionar produto ao carrinho
   const adicionarAoCarrinho = (produto: any) => {
     const itemExistente = carrinho.find(item => item.id === produto.id);
     
@@ -46,35 +44,28 @@ export default function MarketplacePage() {
     setCarrinhoAberto(true);
   };
   
-  // Função para remover produto do carrinho
   const removerDoCarrinho = (produtoId: number) => {
     const novoCarrinho = carrinho.filter(item => item.id !== produtoId);
     setCarrinho(novoCarrinho);
   };
   
-  // Função para calcular total do carrinho
   const calcularTotalCarrinho = () => {
     return carrinho.reduce((total, item) => total + (item.preco * item.quantidade), 0);
   };
   
-  // Função para tornar-se afiliado de um produto
   const tornarAfiliado = (produtoId: number) => {
     console.log(`Tornar-se afiliado do produto ${produtoId}`);
   };
   
-  // Filtragem de produtos
   const produtosFiltrados = produtosMock.filter(produto => {
-    // Filtro por pesquisa
     const matchPesquisa = pesquisa === "" || 
       produto.titulo.toLowerCase().includes(pesquisa.toLowerCase()) ||
       produto.vendedor.toLowerCase().includes(pesquisa.toLowerCase()) ||
       produto.categoria.toLowerCase().includes(pesquisa.toLowerCase());
     
-    // Filtro por categorias
     const matchCategoria = filtroCategorias.length === 0 || 
       filtroCategorias.includes(produto.categoria);
     
-    // Filtro por preço
     let matchPreco = true;
     if (filtroPreco.length > 0) {
       matchPreco = filtroPreco.some(faixa => {
@@ -88,17 +79,15 @@ export default function MarketplacePage() {
       });
     }
 
-    // Filtro por avaliação
     const matchAvaliacao = filtroAvaliacao.length === 0 ||
       filtroAvaliacao.some(rating => produto.avaliacao >= rating);
     
     return matchPesquisa && matchCategoria && matchPreco && matchAvaliacao;
   });
   
-  // Ordenação de produtos
   const produtosOrdenados = [...produtosFiltrados].sort((a, b) => {
     if (ordenacao === "recentes") {
-      return b.id - a.id; // Mock de ordenação por recentes usando ID
+      return b.id - a.id;
     } else if (ordenacao === "populares") {
       return b.vendas - a.vendas;
     } else if (ordenacao === "avaliacao") {
@@ -119,7 +108,6 @@ export default function MarketplacePage() {
       
       <main className="flex-1 px-4 py-6 md:px-6">
         <div className="max-w-[1600px] mx-auto space-y-6">
-          {/* Cabeçalho da página */}
           <div className="space-y-2">
             <h1 className="text-2xl md:text-3xl font-bold animate-fade-in">Marketplace</h1>
             <p className="text-muted-foreground animate-fade-in delay-100">
@@ -127,7 +115,6 @@ export default function MarketplacePage() {
             </p>
           </div>
           
-          {/* Barra de pesquisa e filtros */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 animate-fade-in delay-150">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -225,7 +212,6 @@ export default function MarketplacePage() {
             </Sheet>
           </div>
           
-          {/* Painel de filtros expansível */}
           {exibindoFiltros && (
             <FilterSidebar
               categorias={categorias}
@@ -240,7 +226,6 @@ export default function MarketplacePage() {
             />
           )}
           
-          {/* Navegação por tabs/categorias populares */}
           <div className="flex flex-wrap items-center gap-2 py-2 animate-fade-in delay-200">
             <Button 
               variant="outline" 
@@ -324,7 +309,6 @@ export default function MarketplacePage() {
             </NavigationMenu>
           </div>
           
-          {/* Resultados e resumo de filtros */}
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-4 animate-fade-in delay-250">
             <span>
               Exibindo <span className="font-medium text-foreground">{produtosOrdenados.length}</span> de <span className="font-medium text-foreground">{produtosMock.length}</span> produtos
@@ -354,7 +338,6 @@ export default function MarketplacePage() {
             </div>
           </div>
           
-          {/* Listagem de produtos em Grid/Lista */}
           <ProductList 
             produtos={produtosOrdenados}
             visualizacao={visualizacao}
@@ -362,13 +345,11 @@ export default function MarketplacePage() {
             onAffiliate={tornarAfiliado}
           />
           
-          {/* Seção de estatísticas/rankings em cards */}
           <div className="mt-12 space-y-8 animate-fade-in delay-400">
             <h2 className="text-xl font-bold">Rankings e Destaques</h2>
             <FeaturedProducts produtos={produtosMock} />
           </div>
           
-          {/* Seção de informações para afiliados */}
           <div className="mt-12 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-xl p-6 md:p-8 animate-fade-in delay-500">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="space-y-4">
@@ -446,7 +427,6 @@ export default function MarketplacePage() {
             </div>
           </div>
           
-          {/* Seção para vendedores */}
           <div className="mt-12 mb-8 border rounded-xl overflow-hidden animate-fade-in delay-600">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-6 md:p-8 space-y-4">
