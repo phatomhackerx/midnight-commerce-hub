@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import Index from "@/pages/Index";
 import MarketplacePage from "@/pages/MarketplacePage";
+import ProdutoDetalhe from "@/pages/ProdutoDetalhe";
 import ProdutosPage from "@/pages/ProdutosPage";
 import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
 import CuponsDescontoPage from "@/pages/CuponsDescontoPage";
@@ -37,6 +38,7 @@ const App = () => (
             <Route element={<MainLayout />}>
               <Route path="/" element={<Index />} />
               <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/marketplace/produto/:id" element={<ProdutoDetalhe />} />
               <Route path="/produtos" element={<ProdutosPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
