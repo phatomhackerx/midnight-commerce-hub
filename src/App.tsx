@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,37 +23,40 @@ import AjudaPage from "@/pages/AjudaPage";
 import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
 
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/produtos" element={<ProdutosPage />} />
-            <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
-            <Route path="/financeiro" element={<FinanceiroPage />} />
-            <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
-            <Route path="/relatorios" element={<RelatoriosPage />} />
-            <Route path="/assinaturas" element={<AssinaturasPage />} />
-            <Route path="/afiliados" element={<AfiliadosPage />} />
-            <Route path="/integracoes" element={<IntegracoesPage />} />
-            <Route path="/quiz" element={<QuizPage />} />
-            <Route path="/perfil" element={<PerfilPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/ajuda" element={<AjudaPage />} />
-            <Route path="/notificacoes" element={<NotificacoesPage />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/produtos" element={<ProdutosPage />} />
+              <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
+              <Route path="/financeiro" element={<FinanceiroPage />} />
+              <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
+              <Route path="/relatorios" element={<RelatoriosPage />} />
+              <Route path="/assinaturas" element={<AssinaturasPage />} />
+              <Route path="/afiliados" element={<AfiliadosPage />} />
+              <Route path="/integracoes" element={<IntegracoesPage />} />
+              <Route path="/quiz" element={<QuizPage />} />
+              <Route path="/perfil" element={<PerfilPage />} />
+              <Route path="/chat" element={<ChatPage />} />
+              <Route path="/ajuda" element={<AjudaPage />} />
+              <Route path="/notificacoes" element={<NotificacoesPage />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
