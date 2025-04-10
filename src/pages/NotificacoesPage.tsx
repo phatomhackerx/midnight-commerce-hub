@@ -9,7 +9,7 @@ import {
   Check, 
   ChevronDown, 
   Clock, 
-  Dollar, 
+  DollarSign, 
   Filter, 
   MoreHorizontal, 
   Settings, 
@@ -264,7 +264,7 @@ function NotificacaoItem({ notificacao, arquivada = false }) {
       )}>
         {notificacao.tipo === "venda" && <ShoppingCart size={18} />}
         {notificacao.tipo === "sistema" && <Bell size={18} />}
-        {notificacao.tipo === "financeiro" && <Dollar size={18} />}
+        {notificacao.tipo === "financeiro" && <DollarSign size={18} />}
         {notificacao.tipo === "alerta" && <AlertTriangle size={18} />}
         {notificacao.tipo === "usuario" && <User size={18} />}
       </div>
