@@ -27,7 +27,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 
-interface Coupon {
+export interface Coupon {
   id: number;
   codigo: string;
   tipo: "percentual" | "fixo";

@@ -1,21 +1,9 @@
-
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertTriangle, Calendar, User, Tag, Percent, Clock } from "lucide-react";
-
-interface Coupon {
-  id: number;
-  codigo: string;
-  tipo: "percentual" | "fixo";
-  valor: number;
-  ativo: boolean;
-  usos: number;
-  validade: string;
-  produtos: string;
-  limitePorUsuario: number;
-}
+import { Coupon } from "./CouponList";
 
 interface CouponDetailsProps {
   coupon: Coupon | null;

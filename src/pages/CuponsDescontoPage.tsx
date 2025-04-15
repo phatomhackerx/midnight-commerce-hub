@@ -13,13 +13,14 @@ import CouponList from "@/components/cupons/CouponList";
 import CouponHelp from "@/components/cupons/CouponHelp";
 import CouponDrawer from "@/components/cupons/CouponDrawer";
 import CouponDetails from "@/components/cupons/CouponDetails";
+import { StatItem } from "@/components/cupons/StatsCards";
 
 // Mock data for coupons
 const mockCoupons = [
   { 
     id: 1, 
     codigo: "BLACK30", 
-    tipo: "percentual", 
+    tipo: "percentual" as const, 
     valor: 30, 
     ativo: true, 
     usos: 157, 
@@ -30,7 +31,7 @@ const mockCoupons = [
   { 
     id: 2, 
     codigo: "WELCOME20", 
-    tipo: "percentual", 
+    tipo: "percentual" as const, 
     valor: 20, 
     ativo: true, 
     usos: 89, 
@@ -41,7 +42,7 @@ const mockCoupons = [
   { 
     id: 3, 
     codigo: "FRETE0", 
-    tipo: "fixo", 
+    tipo: "fixo" as const, 
     valor: 15, 
     ativo: true, 
     usos: 43, 
@@ -52,7 +53,7 @@ const mockCoupons = [
   { 
     id: 4, 
     codigo: "ANIVERSARIO40", 
-    tipo: "percentual", 
+    tipo: "percentual" as const, 
     valor: 40, 
     ativo: false, 
     usos: 203, 
@@ -63,7 +64,7 @@ const mockCoupons = [
   { 
     id: 5, 
     codigo: "INFLUENCER50", 
-    tipo: "percentual", 
+    tipo: "percentual" as const, 
     valor: 50, 
     ativo: true, 
     usos: 76, 
@@ -74,7 +75,7 @@ const mockCoupons = [
 ];
 
 // Estatísticas dos cupons
-const estatisticas = [
+const estatisticas: StatItem[] = [
   { label: "Cupons Ativos", valor: 4, icone: Tag, cor: "default" },
   { label: "Uso Médio", valor: "112 resgates", icone: Percent, cor: "default" },
   { label: "Impacto na Receita", valor: "-R$ 8.953,00", icone: ArrowDownToLine, cor: "outline" },
@@ -108,7 +109,7 @@ export default function CuponsDescontoPage() {
     const novoCupom = {
       id: cupons.length + 1,
       codigo: values.codigo.toUpperCase(),
-      tipo: values.tipo,
+      tipo: values.tipo as "percentual" | "fixo",
       valor: values.valor,
       ativo: true,
       usos: 0,

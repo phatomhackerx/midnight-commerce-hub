@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface StatItem {
+export interface StatItem {
   label: string;
   valor: string | number;
   icone: LucideIcon;
-  cor: "default" | "secondary" | "outline" | "destructive";
+  cor: "default" | "secondary" | "outline" | "destructive" | "success" | "purple" | "warning";
 }
 
 interface StatsCardsProps {

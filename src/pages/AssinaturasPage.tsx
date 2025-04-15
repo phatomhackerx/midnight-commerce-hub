@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -40,12 +39,10 @@ export default function AssinaturasPage() {
   const [showComposeEmail, setShowComposeEmail] = useState(false);
   const { toast } = useToast();
   
-  // Simula carregamento para animação
   setTimeout(() => {
     if (!loaded) setLoaded(true);
   }, 100);
 
-  // Filtrar assinaturas
   const filteredAssinaturas = assinaturas.filter(assinatura => {
     const matchSearchTerm = searchTerm === "" || 
       assinatura.cliente.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -266,7 +263,7 @@ export default function AssinaturasPage() {
                               <Badge variant={
                                 assinatura.status === "Ativa" ? "success" : 
                                 assinatura.status === "Atrasada" ? "destructive" : 
-                                assinatura.status === "Suspensa" ? "warning" : 
+                                assinatura.status === "Suspensa" ? "purple" : 
                                 "outline"
                               }>
                                 {assinatura.status}
@@ -418,7 +415,6 @@ export default function AssinaturasPage() {
   );
 }
 
-// Dados fictícios para a lista de assinaturas
 const assinaturas = [
   { cliente: "Bruno Silva", plano: "Premium Anual", valor: "R$ 97,00/mês", status: "Ativa", proximaCobranca: "15/06/2024" },
   { cliente: "Maria Santos", plano: "Pro Mensal", valor: "R$ 49,90/mês", status: "Ativa", proximaCobranca: "03/06/2024" },
@@ -432,7 +428,6 @@ const assinaturas = [
   { cliente: "Patrícia Santos", plano: "Basic Mensal", valor: "R$ 29,90/mês", status: "Ativa", proximaCobranca: "17/06/2024" }
 ];
 
-// Dados fictícios para os planos de assinatura
 const planos = [
   {
     nome: "Basic",
