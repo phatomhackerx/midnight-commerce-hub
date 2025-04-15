@@ -2,7 +2,20 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { CalendarClock, Filter, Plus, RefreshCw, Settings, Tag, Download, CreditCard, Mail, Users, AlertTriangle } from "lucide-react";
+import { 
+  CalendarClock, 
+  Filter, 
+  Plus, 
+  RefreshCw, 
+  Settings, 
+  Tag, 
+  Download, 
+  CreditCard, 
+  Mail, 
+  Users, 
+  AlertTriangle,
+  Search
+} from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
