@@ -8,7 +8,12 @@ export default function MainLayout() {
   const [loaded, setLoaded] = useState(false);
   
   useEffect(() => {
-    setLoaded(true);
+    // Set loaded to true after a short delay for smoother animation
+    const timeout = setTimeout(() => {
+      setLoaded(true);
+    }, 100);
+    
+    return () => clearTimeout(timeout);
   }, []);
   
   return (
@@ -18,7 +23,7 @@ export default function MainLayout() {
     )}>
       <AppSidebar />
       <div className={cn(
-        "flex-1 flex flex-col transition-all duration-500",
+        "flex-1 flex flex-col transition-all duration-500 w-full",
         loaded && "animate-fade-in"
       )}>
         <Outlet />

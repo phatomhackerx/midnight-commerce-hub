@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProductCard from "./ProductCard";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 interface RelatedProductsProps {
   produtos: any[];
@@ -32,7 +33,12 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     <Card className="border-none shadow-none">
       <CardContent className="p-0 space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold">Produtos Relacionados</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-bold">Produtos Relacionados</h3>
+            <Badge variant="purple" size="sm" className="ml-2">
+              {relatedProducts.length} produtos
+            </Badge>
+          </div>
           <Button variant="link" asChild className="text-primary">
             <Link to="/marketplace" className="flex items-center gap-1">
               Ver todos
