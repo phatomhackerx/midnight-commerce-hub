@@ -19,7 +19,9 @@ import {
   Globe,
   UserCircle,
   MessageSquare,
-  Bell
+  Bell,
+  // Add the Bot icon
+  Bot
 } from "lucide-react";
 
 const menuItems = [
@@ -37,7 +39,9 @@ const menuItems = [
   { path: "/perfil", icon: UserCircle, label: "Meu Perfil" },
   { path: "/chat", icon: MessageSquare, label: "Chat Suporte" },
   { path: "/ajuda", icon: HelpCircle, label: "Ajuda" },
-  { path: "/notificacoes", icon: Bell, label: "Notificações" }
+  { path: "/notificacoes", icon: Bell, label: "Notificações" },
+  // Add the new Bots menu item
+  { path: "/chat-platform", icon: Bot, label: "Bots" }
 ];
 
 export default function AppSidebar() {
