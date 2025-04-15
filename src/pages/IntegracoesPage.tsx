@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,6 @@ export default function IntegracoesPage() {
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate();
   
-  // Simula carregamento para animação
   setTimeout(() => {
     if (!loaded) setLoaded(true);
   }, 100);
@@ -149,8 +147,8 @@ export default function IntegracoesPage() {
                   </CardContent>
                   <CardFooter>
                     <Button 
-                      variant="default"  // Changed from "primary" to "default"
-                      className="w-full gap-1 bg-primary/90 hover:bg-primary"
+                      variant="default" 
+                      className="w-full gap-1"
                       onClick={() => navigate('/chat-platform')}
                     >
                       <Link size={16} />
@@ -269,7 +267,6 @@ export default function IntegracoesPage() {
   );
 }
 
-// Dados fictícios para as integrações ativas
 const integracoesAtivas = [
   {
     nome: "Mercado Pago",
@@ -303,7 +300,6 @@ const integracoesAtivas = [
   }
 ];
 
-// Dados fictícios para as integrações disponíveis
 const integracoesDisponiveis = [
   {
     nome: "Tiktok Ads",
@@ -337,7 +333,6 @@ const integracoesDisponiveis = [
   }
 ];
 
-// Dados fictícios para as API Keys
 const apiKeys = [
   {
     nome: "API Principal",
@@ -353,7 +348,6 @@ const apiKeys = [
   }
 ];
 
-// Dados fictícios para os webhooks
 const webhooks = [
   {
     evento: "Nova Venda",
