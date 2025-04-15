@@ -149,6 +149,7 @@ export default function IntegracoesPage() {
                   </CardContent>
                   <CardFooter>
                     <Button 
+                      variant="default"  // Changed from "primary" to "default"
                       className="w-full gap-1 bg-primary/90 hover:bg-primary"
                       onClick={() => navigate('/chat-platform')}
                     >
