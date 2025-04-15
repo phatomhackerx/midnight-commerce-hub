@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
@@ -21,7 +20,7 @@ import {
   Info, 
   MessageSquare, 
   Plus, 
-  RobotIcon, 
+  BotIcon, 
   Settings, 
   Share2, 
   BarChart2, 
@@ -97,7 +96,7 @@ export default function ChatPlatformPage() {
                   <div className="flex-shrink-0 bg-secondary/50 p-5 rounded-xl">
                     <div className="w-64 h-32 bg-background rounded-lg flex items-center justify-center shadow-md border border-border">
                       <div className="flex flex-col items-center gap-2">
-                        <RobotIcon size={32} className="text-primary"/>
+                        <BotIcon size={32} className="text-primary"/>
                         <p className="text-sm font-medium">AI Conversational Manager</p>
                       </div>
                     </div>
@@ -146,7 +145,7 @@ export default function ChatPlatformPage() {
                 <div className="grid grid-cols-1 gap-2 mb-4">
                   <div className="bg-muted rounded-md p-2 flex items-center gap-2">
                     <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <RobotIcon size={16} className="text-primary" />
+                      <BotIcon size={16} className="text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">Bot de Suporte</p>
@@ -155,7 +154,7 @@ export default function ChatPlatformPage() {
                   </div>
                   <div className="bg-muted rounded-md p-2 flex items-center gap-2">
                     <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-                      <RobotIcon size={16} className="text-primary" />
+                      <BotIcon size={16} className="text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">Bot de Vendas</p>
@@ -293,7 +292,7 @@ export default function ChatPlatformPage() {
                     </CardContent>
                     <CardFooter>
                       <Button className="w-full gap-2">
-                        <RobotIcon className="h-4 w-4" />
+                        <BotIcon className="h-4 w-4" />
                         <span>Criar Novo Agente</span>
                       </Button>
                     </CardFooter>
@@ -495,7 +494,7 @@ export default function ChatPlatformPage() {
               <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-background shadow-sm rounded-lg p-4 flex gap-4 items-start">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <RobotIcon size={20} className="text-primary" />
+                    <BotIcon size={20} className="text-primary" />
                   </div>
                   <div>
                     <h3 className="font-medium text-sm">Configure seu primeiro bot</h3>
