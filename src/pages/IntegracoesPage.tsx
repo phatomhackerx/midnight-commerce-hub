@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Link, Plus, RefreshCw, Settings, ShieldCheck, XCircle } from "lucide-react";
@@ -11,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 export default function IntegracoesPage() {
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
   
   // Simula carregamento para animação
   setTimeout(() => {
@@ -25,7 +27,10 @@ export default function IntegracoesPage() {
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Integrações</h1>
+              <div>
+                <h1 className="text-2xl font-bold">Integrações</h1>
+                <p className="text-muted-foreground">Gerencie as integrações da sua loja com outros sistemas e plataformas.</p>
+              </div>
               
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">
@@ -38,7 +43,6 @@ export default function IntegracoesPage() {
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Gerencie as integrações da sua loja com outros sistemas e plataformas.</p>
           </div>
           
           <Tabs defaultValue="ativas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
@@ -58,10 +62,20 @@ export default function IntegracoesPage() {
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   </svg>
                 </div>
-                <Button variant="outline" size="sm" className="gap-1">
-                  <RefreshCw size={16} />
-                  <span>Atualizar</span>
-                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="gap-1">
+                    <RefreshCw size={16} />
+                    <span>Atualizar</span>
+                  </Button>
+                  <Button 
+                    variant="primary" 
+                    size="sm" 
+                    className="gap-1" 
+                    onClick={() => navigate('/chat-platform')}
+                  >
+                    <span>Nova Plataforma de Chat</span>
+                  </Button>
+                </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -121,6 +135,28 @@ export default function IntegracoesPage() {
                     </CardFooter>
                   </Card>
                 ))}
+                
+                <Card className="transition-all hover:shadow-md bg-gradient-to-br from-primary/20 to-purple-500/10 border-primary/20">
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-lg">Plataforma de Chat</CardTitle>
+                      <Badge className="bg-purple-500 hover:bg-purple-600">Novo</Badge>
+                    </div>
+                    <CardDescription>Chat avançado com IA e automações</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">Plataforma completa de atendimento automatizado, bots inteligentes e marketing conversacional.</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button 
+                      className="w-full gap-1 bg-primary/90 hover:bg-primary"
+                      onClick={() => navigate('/chat-platform')}
+                    >
+                      <Link size={16} />
+                      <span>Explorar Plataforma</span>
+                    </Button>
+                  </CardFooter>
+                </Card>
               </div>
             </TabsContent>
             
@@ -296,12 +332,6 @@ const integracoesDisponiveis = [
     nome: "Pipedrive",
     descricao: "Gestão de vendas e pipeline",
     detalhes: "Organize seu funil de vendas e acompanhe oportunidades",
-    premium: false
-  },
-  {
-    nome: "Calendly",
-    descricao: "Agendamento de reuniões",
-    detalhes: "Permita que clientes agendem reuniões diretamente",
     premium: false
   }
 ];

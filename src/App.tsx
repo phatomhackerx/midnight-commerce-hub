@@ -20,6 +20,7 @@ import IntegracoesPage from "@/pages/IntegracoesPage";
 import QuizPage from "@/pages/QuizPage";
 import PerfilPage from "@/pages/PerfilPage";
 import ChatPage from "@/pages/ChatPage";
+import ChatPlatformPage from "@/pages/ChatPlatformPage";
 import AjudaPage from "@/pages/AjudaPage";
 import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/quiz" element={<QuizPage />} />
               <Route path="/perfil" element={<PerfilPage />} />
               <Route path="/chat" element={<ChatPage />} />
+              <Route path="/chat-platform" element={<ChatPlatformPage />} />
               <Route path="/ajuda" element={<AjudaPage />} />
               <Route path="/notificacoes" element={<NotificacoesPage />} />
             </Route>
