@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -170,7 +169,13 @@ export default function CuponsDescontoPage() {
     // Filtro por status
     if (activeTab === "ativos" && !cupom.ativo) return false;
     if (activeTab === "inativos" && cupom.ativo) return false;
-    if (activeTab === "expirados" && new Date(cupom.validade) > new Date()) return false;
+    
+    // Modify the expiration check to use Date objects consistently
+    if (activeTab === "expirados") {
+      const couponExpirationDate = new Date(cupom.validade);
+      const currentDate = new Date();
+      if (couponExpirationDate > currentDate) return false;
+    }
     
     // Filtro por pesquisa
     if (searchTerm && !cupom.codigo.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -791,196 +796,4 @@ export default function CuponsDescontoPage() {
                           <FormDescription>
                             {form.watch("tipo") === "percentual" 
                               ? "Valor em porcentagem (ex: 10 para 10%)" 
-                              : "Valor em reais (ex: 50 para R$50,00)"}
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="validade"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Data de Validade</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="date" 
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Data limite para uso do cupom
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="produtos"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Produtos Aplicáveis</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="Todos" />
-                          </FormControl>
-                          <FormDescription>
-                            Produtos ou categorias onde o cupom é válido
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="limitePorUsuario"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Limite por Usuário</FormLabel>
-                          <FormControl>
-                            <Input 
-                              type="number" 
-                              {...field} 
-                              min={1} 
-                              placeholder="1"
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Quantas vezes cada usuário pode usar este cupom
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  
-                  <Alert className="mt-6 bg-muted">
-                    <AlertDescription>
-                      O cupom será criado como <strong>ativo</strong> e poderá ser usado imediatamente pelos seus clientes.
-                    </AlertDescription>
-                  </Alert>
-                  
-                  <DrawerFooter className="px-0">
-                    <Button type="submit" className="w-full">Criar Cupom</Button>
-                    <DrawerClose asChild>
-                      <Button variant="outline">Cancelar</Button>
-                    </DrawerClose>
-                  </DrawerFooter>
-                </form>
-              </Form>
-            </div>
-          </div>
-        </DrawerContent>
-      </Drawer>
-      
-      {/* Drawer para visualizar detalhes do cupom */}
-      <Drawer open={!!selectedCoupon} onOpenChange={() => setSelectedCoupon(null)}>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-lg">
-            <DrawerHeader>
-              <DrawerTitle>Detalhes do Cupom</DrawerTitle>
-              <DrawerDescription>
-                Informações completas sobre o cupom selecionado.
-              </DrawerDescription>
-            </DrawerHeader>
-            
-            {selectedCoupon && (
-              <div className="p-6 space-y-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-2xl font-bold">{selectedCoupon.codigo}</h3>
-                    <p className="text-muted-foreground">
-                      {selectedCoupon.tipo === "percentual" 
-                        ? `${selectedCoupon.valor}% de desconto` 
-                        : `R$ ${selectedCoupon.valor},00 de desconto`}
-                    </p>
-                  </div>
-                  <Badge variant={selectedCoupon.ativo ? "success" : "destructive"}>
-                    {selectedCoupon.ativo ? "Ativo" : "Inativo"}
-                  </Badge>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 border-t border-border pt-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Tipo de Desconto</p>
-                    <p className="font-medium">{selectedCoupon.tipo === "percentual" ? "Percentual" : "Valor Fixo"}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Total de Usos</p>
-                    <p className="font-medium">{selectedCoupon.usos} resgates</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Data de Validade</p>
-                    <p className="font-medium">{new Date(selectedCoupon.validade).toLocaleDateString('pt-BR')}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Limite por Usuário</p>
-                    <p className="font-medium">{selectedCoupon.limitePorUsuario} {selectedCoupon.limitePorUsuario === 1 ? "uso" : "usos"}</p>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-sm text-muted-foreground">Produtos Aplicáveis</p>
-                    <p className="font-medium">{selectedCoupon.produtos}</p>
-                  </div>
-                </div>
-                
-                {/* Estatísticas de uso */}
-                <div className="bg-muted rounded-lg p-4 space-y-2">
-                  <h4 className="font-medium">Estatísticas de Uso</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Taxa de conversão</p>
-                      <p className="font-medium">23%</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Valor economizado</p>
-                      <p className="font-medium">R$ 1.342,50</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Vendas geradas</p>
-                      <p className="font-medium">32</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Valor médio de pedido</p>
-                      <p className="font-medium">R$ 147,80</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <DrawerFooter className="px-0 pt-2">
-                  <div className="flex gap-2">
-                    <Button 
-                      className="flex-1"
-                      onClick={() => {
-                        toggleCouponStatus(selectedCoupon.id);
-                        setSelectedCoupon(null);
-                      }}
-                    >
-                      {selectedCoupon.ativo ? "Desativar Cupom" : "Ativar Cupom"}
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="flex-1"
-                      onClick={() => copiarCupom(selectedCoupon.codigo)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copiar Código
-                    </Button>
-                  </div>
-                  <DrawerClose asChild>
-                    <Button variant="ghost">Fechar</Button>
-                  </DrawerClose>
-                </DrawerFooter>
-              </div>
-            )}
-          </div>
-        </DrawerContent>
-      </Drawer>
-    </div>
-  );
-}
+                              : "Valor em reais (ex: 50 para R$
