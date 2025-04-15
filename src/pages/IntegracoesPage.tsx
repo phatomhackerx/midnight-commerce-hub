@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
@@ -66,7 +67,7 @@ export default function IntegracoesPage() {
                     <span>Atualizar</span>
                   </Button>
                   <Button 
-                    variant="primary" 
+                    variant="default" 
                     size="sm" 
                     className="gap-1" 
                     onClick={() => navigate('/chat-platform')}
