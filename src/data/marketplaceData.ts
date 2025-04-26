@@ -12,7 +12,7 @@ export const produtosMock = [
     vendas: 1245,
     imagem: "https://placehold.co/300x200/3b82f6/FFFFFF/png?text=Marketing+Digital",
     destaque: true,
-    tags: ["bestseller", "hot"]
+    tags: ["bestseller", "hot", "curso"]
   },
   {
     id: 2,
@@ -38,7 +38,7 @@ export const produtosMock = [
     vendas: 312,
     imagem: "https://placehold.co/300x200/8b5cf6/FFFFFF/png?text=Tráfego+Pago",
     destaque: true,
-    tags: ["mentoria", "premium"]
+    tags: ["mentoria", "premium", "grupo"]
   },
   {
     id: 4,
@@ -51,7 +51,7 @@ export const produtosMock = [
     vendas: 1590,
     imagem: "https://placehold.co/300x200/ec4899/FFFFFF/png?text=Templates",
     destaque: false,
-    tags: ["templates"]
+    tags: ["templates", "digital"]
   },
   {
     id: 5,
@@ -77,7 +77,7 @@ export const produtosMock = [
     vendas: 124,
     imagem: "https://placehold.co/300x200/f59e0b/FFFFFF/png?text=Lançamentos",
     destaque: true,
-    tags: ["consultoria", "premium"]
+    tags: ["consultoria", "premium", "grupo"]
   },
   {
     id: 7,
@@ -90,7 +90,7 @@ export const produtosMock = [
     vendas: 453,
     imagem: "https://placehold.co/300x200/06b6d4/FFFFFF/png?text=Automação",
     destaque: false,
-    tags: ["automação", "ferramenta"]
+    tags: ["automação", "ferramenta", "digital"]
   },
   {
     id: 8,

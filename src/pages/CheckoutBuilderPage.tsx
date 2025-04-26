@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Palette, Image, FileText, LayoutGrid, CreditCard, Check, Package, Settings } from "lucide-react";
@@ -119,38 +118,30 @@ export default function CheckoutBuilderPage() {
       const produtoEncontrado = produtosMock.find(p => p.id === Number(id));
       if (produtoEncontrado) {
         setProduto(produtoEncontrado);
+        
+        // Determine the product type based on tags or category if tipo is not available
+        let productType: "digital" | "fisico" | "grupo" | "curso" | "ebook" = "digital";
+        
+        if (produtoEncontrado.tags.includes("ebook")) {
+          productType = "ebook";
+        } else if (produtoEncontrado.tags.includes("curso")) {
+          productType = "curso";
+        } else if (produtoEncontrado.tags.includes("mentoria") || produtoEncontrado.tags.includes("consultoria")) {
+          productType = "grupo";
+        } else if (produtoEncontrado.categoria === "Ferramentas" || produtoEncontrado.categoria === "Digital" || 
+                  produtoEncontrado.categoria === "Infoprodutos") {
+          productType = "digital";
+        }
+        
         setCheckoutConfig(prev => ({
           ...prev,
           titulo: produtoEncontrado.titulo,
           descricao: `Adquira agora o produto ${produtoEncontrado.titulo} e comece a transformar sua vida!`,
-          tipoProduto: produtoEncontrado.tipo || "digital",
+          tipoProduto: productType,
         }));
       }
     }
   }, [id]);
-
-  if (!produto) {
-    return (
-      <div className="flex-1 flex flex-col min-h-screen bg-background">
-        <div className="border-b px-6 py-3">
-          <Link to="/produtos" className="text-xl font-bold flex items-center">
-            <ArrowLeft size={18} className="mr-2" /> Checkout Builder
-          </Link>
-        </div>
-        <main className="flex-1 px-4 py-8 md:px-6">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
-            <Button asChild>
-              <Link to="/produtos">
-                <ArrowLeft size={16} className="mr-2" />
-                Voltar para Produtos
-              </Link>
-            </Button>
-          </div>
-        </main>
-      </div>
-    );
-  }
 
   const handleSave = () => {
     setIsSaving(true);
@@ -216,7 +207,7 @@ export default function CheckoutBuilderPage() {
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold">Personalizar Checkout: {produto.titulo}</h1>
+              <h1 className="text-2xl font-bold">Personalizar Checkout: {produto?.titulo}</h1>
               <p className="text-muted-foreground">Personalize a experiência de checkout para este produto</p>
             </div>
             
