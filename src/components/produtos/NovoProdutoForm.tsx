@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -139,8 +138,17 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
   const onSubmit = (data: ProdutoFormValues) => {
     // Garantir que todas as propriedades estão preenchidas
     const produtoFinal: Produto = {
-      ...data,
       id: produtoAtual?.id || "",
+      titulo: data.titulo,
+      descricao: data.descricao,
+      preco: data.preco,
+      tipo: data.tipo,
+      categoria: data.categoria,
+      comissao: data.comissao,
+      disponivel: data.disponivel,
+      destaque: data.destaque,
+      publicado: data.publicado,
+      mercado: data.mercado,
       vendas: produtoAtual?.vendas || 0,
       avaliacao: produtoAtual?.avaliacao || 0,
       dataCriacao: produtoAtual?.dataCriacao || new Date().toISOString().split('T')[0],
