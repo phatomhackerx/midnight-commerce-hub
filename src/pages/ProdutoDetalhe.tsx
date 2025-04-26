@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark } from "lucide-react";
+import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark, Settings } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -381,6 +380,17 @@ export default function ProdutoDetalhe() {
                   </Button>
                 </div>
               </div>
+              
+              <Button 
+                variant="outline" 
+                className="w-full"
+                asChild
+              >
+                <Link to={`/produtos/checkout-builder/${id}`}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Personalizar Checkout
+                </Link>
+              </Button>
             </div>
           </div>
           

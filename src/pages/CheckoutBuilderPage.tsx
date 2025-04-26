@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Palette, Image, FileText, LayoutGrid, CreditCard, Check, Package, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { produtosMock } from "@/data/marketplaceData";
-import Header from "@/components/Header";
 import { useToast } from "@/hooks/use-toast";
 import CheckoutPreview from "@/components/checkout/CheckoutPreview";
 import DesignSettings from "@/components/checkout/DesignSettings";
@@ -60,10 +59,12 @@ export interface CheckoutConfig {
   pixelTikTok: string;
   scriptsPersonalizados: string;
   dominio: string;
+  tipoProduto: "digital" | "fisico" | "grupo" | "curso" | "ebook";
 }
 
 export default function CheckoutBuilderPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("design");
   const [produto, setProduto] = useState<any>(null);
@@ -110,6 +111,7 @@ export default function CheckoutBuilderPage() {
     pixelTikTok: "",
     scriptsPersonalizados: "",
     dominio: "",
+    tipoProduto: "digital",
   });
 
   useEffect(() => {
@@ -121,6 +123,7 @@ export default function CheckoutBuilderPage() {
           ...prev,
           titulo: produtoEncontrado.titulo,
           descricao: `Adquira agora o produto ${produtoEncontrado.titulo} e comece a transformar sua vida!`,
+          tipoProduto: produtoEncontrado.tipo || "digital",
         }));
       }
     }
@@ -129,14 +132,18 @@ export default function CheckoutBuilderPage() {
   if (!produto) {
     return (
       <div className="flex-1 flex flex-col min-h-screen bg-background">
-        <Header />
+        <div className="border-b px-6 py-3">
+          <Link to="/produtos" className="text-xl font-bold flex items-center">
+            <ArrowLeft size={18} className="mr-2" /> Checkout Builder
+          </Link>
+        </div>
         <main className="flex-1 px-4 py-8 md:px-6">
           <div className="max-w-7xl mx-auto text-center">
             <h1 className="text-2xl font-bold mb-4">Produto não encontrado</h1>
             <Button asChild>
-              <Link to="/marketplace">
+              <Link to="/produtos">
                 <ArrowLeft size={16} className="mr-2" />
-                Voltar para o Marketplace
+                Voltar para Produtos
               </Link>
             </Button>
           </div>
@@ -155,12 +162,14 @@ export default function CheckoutBuilderPage() {
         title: "Checkout personalizado salvo",
         description: "As configurações do seu checkout foram salvas com sucesso.",
       });
+      
+      // Redirecionar para a página de produtos após salvar
+      navigate("/produtos");
     }, 1500);
     
     console.log("Checkout Configuration:", checkoutConfig);
   };
 
-  // FIX: This is the problematic function causing the spread type error
   const handleUpdateConfig = (section: string, data: any) => {
     setCheckoutConfig(prev => {
       const sectionData = prev[section as keyof CheckoutConfig];
@@ -188,20 +197,25 @@ export default function CheckoutBuilderPage() {
     }));
   };
 
+  const handleUpdateTipoProduto = (tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook") => {
+    setCheckoutConfig(prev => ({
+      ...prev,
+      tipoProduto: tipo,
+    }));
+  };
+
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-background">
-      <Header />
+      <div className="border-b px-6 py-3">
+        <Link to="/produtos" className="text-xl font-bold flex items-center">
+          <ArrowLeft size={18} className="mr-2" /> Checkout Builder
+        </Link>
+      </div>
       
       <main className="flex-1 px-4 py-6 md:px-6">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <Button variant="ghost" size="sm" asChild className="mb-2">
-                <Link to={`/marketplace/produto/${id}`}>
-                  <ArrowLeft size={16} className="mr-1" />
-                  Voltar para o produto
-                </Link>
-              </Button>
               <h1 className="text-2xl font-bold">Personalizar Checkout: {produto.titulo}</h1>
               <p className="text-muted-foreground">Personalize a experiência de checkout para este produto</p>
             </div>
@@ -216,16 +230,62 @@ export default function CheckoutBuilderPage() {
               ) : (
                 <>
                   <Check size={16} className="mr-2" />
-                  Salvar Personalização
+                  Salvar Checkout
                 </>
               )}
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5 xl:col-span-4 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="md:col-span-5 xl:col-span-4 space-y-6">
               <Card>
                 <CardContent className="p-6">
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium mb-2">Tipo de produto</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                      <Button 
+                        variant={checkoutConfig.tipoProduto === "digital" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateTipoProduto("digital")}
+                        className="w-full"
+                      >
+                        Digital
+                      </Button>
+                      <Button 
+                        variant={checkoutConfig.tipoProduto === "fisico" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateTipoProduto("fisico")}
+                        className="w-full"
+                      >
+                        Físico
+                      </Button>
+                      <Button 
+                        variant={checkoutConfig.tipoProduto === "grupo" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateTipoProduto("grupo")}
+                        className="w-full"
+                      >
+                        Grupo
+                      </Button>
+                      <Button 
+                        variant={checkoutConfig.tipoProduto === "curso" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateTipoProduto("curso")}
+                        className="w-full"
+                      >
+                        Curso
+                      </Button>
+                      <Button 
+                        variant={checkoutConfig.tipoProduto === "ebook" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleUpdateTipoProduto("ebook")}
+                        className="w-full"
+                      >
+                        E-book
+                      </Button>
+                    </div>
+                  </div>
+                  
                   <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
                     <TabsList className="grid grid-cols-3 mb-6">
                       <TabsTrigger value="design" className="flex items-center gap-2">
@@ -307,7 +367,7 @@ export default function CheckoutBuilderPage() {
               </Card>
             </div>
             
-            <div className="lg:col-span-7 xl:col-span-8">
+            <div className="md:col-span-7 xl:col-span-8">
               <div className="sticky top-20">
                 <Card className="border shadow-sm">
                   <CardContent className="p-6">

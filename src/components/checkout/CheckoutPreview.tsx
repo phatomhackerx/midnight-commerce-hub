@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckoutConfig } from "@/pages/CheckoutBuilderPage";
-import { Star, Clock, Shield, Check } from "lucide-react";
+import { Star, Clock, Shield, Check, MessageSquare, BookOpen, Package, FileText } from "lucide-react";
 
 interface CheckoutPreviewProps {
   config: CheckoutConfig;
@@ -31,6 +31,14 @@ const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) =>
             <p className="text-gray-600 mt-2">
               {config.descricao || `Adquira agora o produto ${produto.titulo} e comece a transformar sua vida!`}
             </p>
+          </div>
+          
+          {/* Tipo de produto */}
+          <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+            {getProdutoTypeIcon(config.tipoProduto)}
+            <span className="text-sm font-medium text-gray-700">
+              {getProdutoTypeName(config.tipoProduto)}
+            </span>
           </div>
           
           {config.mostrarAvaliacao && (
@@ -133,6 +141,9 @@ const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) =>
             </div>
           </div>
           
+          {/* Entrega baseada no tipo do produto */}
+          {renderEntregaInfo(config.tipoProduto, config.cor)}
+          
           <button 
             className="w-full py-3 px-4 rounded-lg font-medium text-white"
             style={{ backgroundColor: config.cor }}
@@ -185,6 +196,80 @@ const getLayoutStyles = (layout: "padrao" | "minimalista" | "destaque") => {
     case "padrao":
     default:
       return "max-w-xl mx-auto bg-white";
+  }
+};
+
+const getProdutoTypeIcon = (tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook") => {
+  switch (tipo) {
+    case "digital":
+      return <FileText size={16} className="text-blue-500" />;
+    case "fisico":
+      return <Package size={16} className="text-orange-500" />;
+    case "grupo":
+      return <MessageSquare size={16} className="text-green-500" />;
+    case "curso":
+      return <BookOpen size={16} className="text-purple-500" />;
+    case "ebook":
+      return <FileText size={16} className="text-pink-500" />;
+    default:
+      return <FileText size={16} className="text-blue-500" />;
+  }
+};
+
+const getProdutoTypeName = (tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook") => {
+  switch (tipo) {
+    case "digital":
+      return "Produto Digital";
+    case "fisico":
+      return "Produto Físico";
+    case "grupo":
+      return "Grupo Exclusivo";
+    case "curso":
+      return "Curso Online";
+    case "ebook":
+      return "E-book";
+    default:
+      return "Produto Digital";
+  }
+};
+
+const renderEntregaInfo = (tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook", cor: string) => {
+  switch (tipo) {
+    case "digital":
+      return (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-center">
+          <span className="font-medium">Entrega:</span> Acesso imediato após a confirmação do pagamento
+        </div>
+      );
+    case "fisico":
+      return (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-center">
+          <span className="font-medium">Entrega:</span> Envio em até 7 dias úteis após a confirmação do pagamento
+        </div>
+      );
+    case "grupo":
+      return (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-center flex items-center justify-center gap-2">
+          <MessageSquare size={16} style={{ color: cor }} />
+          <span>Acesso ao grupo exclusivo após confirmação do pagamento</span>
+        </div>
+      );
+    case "curso":
+      return (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-center flex items-center justify-center gap-2">
+          <BookOpen size={16} style={{ color: cor }} />
+          <span>Acesso imediato à plataforma do curso após confirmação</span>
+        </div>
+      );
+    case "ebook":
+      return (
+        <div className="bg-gray-50 p-3 rounded-lg text-sm text-center flex items-center justify-center gap-2">
+          <FileText size={16} style={{ color: cor }} />
+          <span>Download disponível imediatamente após a confirmação</span>
+        </div>
+      );
+    default:
+      return null;
   }
 };
 

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -55,7 +54,7 @@ const App = () => (
               <Route path="/chat-platform" element={<ChatPlatformPage />} />
               <Route path="/ajuda" element={<AjudaPage />} />
               <Route path="/notificacoes" element={<NotificacoesPage />} />
-              <Route path="/checkout-builder/:id" element={<CheckoutBuilderPage />} />
+              <Route path="/produtos/checkout-builder/:id" element={<CheckoutBuilderPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
