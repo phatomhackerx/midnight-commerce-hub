@@ -119,7 +119,6 @@ export default function CheckoutBuilderPage() {
       if (produtoEncontrado) {
         setProduto(produtoEncontrado);
         
-        // Determine the product type based on tags or category if tipo is not available
         let productType: "digital" | "fisico" | "grupo" | "curso" | "ebook" = "digital";
         
         if (produtoEncontrado.tags.includes("ebook")) {
@@ -139,14 +138,23 @@ export default function CheckoutBuilderPage() {
           descricao: `Adquira agora o produto ${produtoEncontrado.titulo} e comece a transformar sua vida!`,
           tipoProduto: productType,
         }));
+      } else {
+        toast({
+          title: "Produto não encontrado",
+          description: "O produto que você está tentando acessar não existe.",
+          variant: "destructive"
+        });
+        
+        setTimeout(() => {
+          navigate('/produtos');
+        }, 2000);
       }
     }
-  }, [id]);
+  }, [id, navigate, toast]);
 
   const handleSave = () => {
     setIsSaving(true);
     
-    // Simular um salvamento
     setTimeout(() => {
       setIsSaving(false);
       toast({
@@ -154,7 +162,6 @@ export default function CheckoutBuilderPage() {
         description: "As configurações do seu checkout foram salvas com sucesso.",
       });
       
-      // Redirecionar para a página de produtos após salvar
       navigate("/produtos");
     }, 1500);
     
@@ -165,7 +172,6 @@ export default function CheckoutBuilderPage() {
     setCheckoutConfig(prev => {
       const sectionData = prev[section as keyof CheckoutConfig];
       
-      // Check if the section exists and is an object before spreading
       if (sectionData && typeof sectionData === 'object') {
         return {
           ...prev,
@@ -173,7 +179,6 @@ export default function CheckoutBuilderPage() {
         };
       }
       
-      // If it's not an object, just replace the value
       return {
         ...prev,
         [section]: data
@@ -194,6 +199,27 @@ export default function CheckoutBuilderPage() {
       tipoProduto: tipo,
     }));
   };
+
+  if (!produto && id) {
+    return (
+      <div className="flex-1 flex flex-col min-h-screen bg-background">
+        <div className="border-b px-6 py-3">
+          <Link to="/produtos" className="text-xl font-bold flex items-center">
+            <ArrowLeft size={18} className="mr-2" /> Checkout Builder
+          </Link>
+        </div>
+        <main className="flex-1 px-4 py-8 md:px-6">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="animate-pulse space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-1/3 mx-auto"></div>
+              <div className="h-40 bg-gray-200 rounded w-full max-w-md mx-auto"></div>
+            </div>
+            <p className="mt-6 text-muted-foreground">Carregando informações do produto...</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-background">

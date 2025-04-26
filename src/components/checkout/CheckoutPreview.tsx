@@ -6,10 +6,24 @@ import { Star, Clock, Shield, Check, MessageSquare, BookOpen, Package, FileText 
 
 interface CheckoutPreviewProps {
   config: CheckoutConfig;
-  produto: any;
+  produto: any | null;
 }
 
 const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) => {
+  // Early return with a loading state if produto is null
+  if (!produto) {
+    return (
+      <div className="w-full p-6 text-center">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+          <div className="h-32 bg-gray-200 rounded w-full mx-auto mt-6"></div>
+        </div>
+        <div className="mt-4 text-muted-foreground">Carregando informações do produto...</div>
+      </div>
+    );
+  }
+
   return (
     <div className={`w-full ${getLayoutStyles(config.layout)}`}>
       <div className="p-6">
