@@ -1,12 +1,14 @@
+
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark, Settings } from "lucide-react";
+import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark, Share2, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { produtosMock } from "@/data/marketplaceData";
 import ProductDetailCard from "@/components/marketplace/ProductDetailCard";
 import RelatedProducts from "@/components/marketplace/RelatedProducts";
+import { toast } from "sonner";
 
 export default function ProdutoDetalhe() {
   const { id } = useParams<{ id: string }>();
@@ -52,7 +54,13 @@ export default function ProdutoDetalhe() {
   };
   
   const tornarAfiliado = (produtoId: number) => {
-    console.log(`Tornar-se afiliado do produto ${produtoId}`);
+    toast.success(`Solicitação de afiliação para o produto ${produtoId} enviada!`);
+  };
+  
+  const copiarLinkAfiliado = () => {
+    const affiliateLink = `https://seusite.com.br/p/${produto.id}?ref=SEU_ID`;
+    navigator.clipboard.writeText(affiliateLink);
+    toast.success("Link de afiliado copiado para a área de transferência!");
   };
 
   return (
@@ -370,14 +378,36 @@ export default function ProdutoDetalhe() {
                     </div>
                   </div>
                   
-                  <Button 
-                    className="w-full" 
-                    variant="outline"
-                    onClick={() => tornarAfiliado(produto.id)}
-                  >
-                    <Bookmark size={16} className="mr-2" />
-                    Tornar-se afiliado
-                  </Button>
+                  <div className="space-y-2">
+                    <Button 
+                      className="w-full"
+                      variant="outline"
+                      onClick={() => tornarAfiliado(produto.id)}
+                    >
+                      <Bookmark size={16} className="mr-2" />
+                      Tornar-se afiliado
+                    </Button>
+                    
+                    <Button 
+                      className="w-full" 
+                      variant="outline"
+                      onClick={copiarLinkAfiliado}
+                    >
+                      <Share2 size={16} className="mr-2" />
+                      Copiar link de afiliado
+                    </Button>
+                    
+                    <Button 
+                      className="w-full"
+                      variant="outline"
+                      asChild
+                    >
+                      <a href={`/produtos/materials/${produto.id}`} target="_blank" rel="noopener noreferrer">
+                        <Download size={16} className="mr-2" />
+                        Materiais de divulgação
+                      </a>
+                    </Button>
+                  </div>
                 </div>
               </div>
               
@@ -386,8 +416,8 @@ export default function ProdutoDetalhe() {
                 className="w-full"
                 asChild
               >
-                <Link to={`/produtos/checkout-builder/${id}`}>
-                  <Settings className="mr-2 h-4 w-4" />
+                <Link to={`/produtos/checkout-builder/${produto.id}`}>
+                  <Edit className="mr-2 h-4 w-4" />
                   Personalizar Checkout
                 </Link>
               </Button>

@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Bookmark, Share2, Star, Percent } from "lucide-react";
+import { Heart, Share2, Star, Percent, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ProductProps {
@@ -31,9 +31,7 @@ const ProductCard: React.FC<ProductProps> = ({
   vendas, 
   imagem, 
   destaque, 
-  tags,
-  onAddToCart,
-  onAffiliate
+  tags
 }) => {
   return (
     <div className="group bg-card border rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -102,31 +100,17 @@ const ProductCard: React.FC<ProductProps> = ({
                 {comissao}% de comissão
               </div>
             </div>
-            
-            <button 
-              className="rounded-full h-8 w-8 bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-              onClick={() => onAddToCart({ id, titulo, preco, imagem, vendedor, categoria, comissao, avaliacao, vendas, destaque, tags })}
-            >
-              <ShoppingCart size={16} />
-            </button>
           </div>
           
-          <div className="grid grid-cols-2 gap-2 mt-1">
+          <Link to={`/marketplace/produto/${id}`}>
             <Button 
               size="sm" 
-              onClick={() => onAddToCart({ id, titulo, preco, imagem, vendedor, categoria, comissao, avaliacao, vendas, destaque, tags })}
+              className="w-full"
             >
-              Comprar
+              Ver Detalhes
+              <ArrowRight size={14} className="ml-1" />
             </Button>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              onClick={() => onAffiliate(id)}
-            >
-              <Bookmark size={14} className="mr-1" />
-              Afiliar-se
-            </Button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

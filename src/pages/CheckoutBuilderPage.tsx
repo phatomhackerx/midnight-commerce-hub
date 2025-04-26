@@ -1,27 +1,25 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Palette, Image, FileText, LayoutGrid, CreditCard, Check, Package, Settings, Save } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft, Save, ExternalLink, Eye, EyeOff, Check } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { produtosMock } from "@/data/marketplaceData";
-import { useToast } from "@/hooks/use-toast";
-import CheckoutPreview from "@/components/checkout/CheckoutPreview";
+import { toast } from "sonner";
 import DesignSettings from "@/components/checkout/DesignSettings";
 import ContentSettings from "@/components/checkout/ContentSettings";
 import PaymentSettings from "@/components/checkout/PaymentSettings";
 import UpsellSettings from "@/components/checkout/UpsellSettings";
 import AdvancedSettings from "@/components/checkout/AdvancedSettings";
+import CheckoutPreviewEnhanced from "@/components/checkout/CheckoutPreviewEnhanced";
 
 export interface CheckoutConfig {
-  id: string;
-  produtoId: number;
-  layout: "padrao" | "minimalista" | "destaque";
-  cor: string;
-  logo: string | null;
   titulo: string;
   descricao: string;
+  layout: "padrao" | "minimalista" | "destaque";
+  cor: string;
+  tipoProduto: "digital" | "fisico" | "grupo" | "curso" | "ebook";
+  logo: string | null;
   mostrarAvaliacao: boolean;
   mostrarContador: boolean;
   tempoContador: number;
@@ -56,474 +54,374 @@ export interface CheckoutConfig {
   };
   pixelFacebook: string;
   pixelGoogle: string;
-  pixelTikTok: string;
-  scriptsPersonalizados: string;
-  dominio: string;
-  tipoProduto: "digital" | "fisico" | "grupo" | "curso" | "ebook";
+  codigoAnalytics: string;
 }
+
+const defaultConfig: CheckoutConfig = {
+  titulo: "",
+  descricao: "",
+  layout: "padrao",
+  cor: "#7E69AB",
+  tipoProduto: "digital",
+  logo: null,
+  mostrarAvaliacao: true,
+  mostrarContador: true,
+  tempoContador: 15,
+  mostrarGarantia: true,
+  diasGarantia: 7,
+  meiosPagamento: {
+    cartao: true,
+    pix: true,
+    boleto: true,
+  },
+  parcelamento: {
+    ativo: true,
+    parcelas: 12,
+    semJuros: 3,
+  },
+  camposAdicionais: {
+    telefone: true,
+    endereco: false,
+    dataNascimento: false,
+    cpf: true,
+    personalizado: [],
+  },
+  upsell: {
+    ativo: false,
+    titulo: "Adicione este bônus exclusivo!",
+    descricao: "Complemente sua compra com este material adicional.",
+    preco: 47.00,
+    imagem: null,
+  },
+  pixelFacebook: "",
+  pixelGoogle: "",
+  codigoAnalytics: "",
+};
 
 export default function CheckoutBuilderPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("design");
-  const [produto, setProduto] = useState<any>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [previewMode, setPreviewMode] = useState(false);
-  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
   
-  const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
-    id: `checkout-${Date.now()}`,
-    produtoId: Number(id),
-    layout: "padrao",
-    cor: "#9b87f5",
-    logo: null,
-    titulo: "",
-    descricao: "",
-    mostrarAvaliacao: true,
-    mostrarContador: false,
-    tempoContador: 15,
-    mostrarGarantia: true,
-    diasGarantia: 7,
-    meiosPagamento: {
-      cartao: true,
-      pix: true,
-      boleto: true,
-    },
-    parcelamento: {
-      ativo: true,
-      parcelas: 12,
-      semJuros: 3,
-    },
-    camposAdicionais: {
-      telefone: true,
-      endereco: false,
-      dataNascimento: false,
-      cpf: true,
-      personalizado: [],
-    },
-    upsell: {
-      ativo: false,
-      titulo: "",
-      descricao: "",
-      preco: 0,
-      imagem: null,
-    },
-    pixelFacebook: "",
-    pixelGoogle: "",
-    pixelTikTok: "",
-    scriptsPersonalizados: "",
-    dominio: "",
-    tipoProduto: "digital",
-  });
-
-  useEffect(() => {
-    if (id) {
-      const produtoEncontrado = produtosMock.find(p => p.id === Number(id));
-      if (produtoEncontrado) {
-        setProduto(produtoEncontrado);
-        
-        let productType: "digital" | "fisico" | "grupo" | "curso" | "ebook" = "digital";
-        
-        if (produtoEncontrado.tags.includes("ebook")) {
-          productType = "ebook";
-        } else if (produtoEncontrado.tags.includes("curso")) {
-          productType = "curso";
-        } else if (produtoEncontrado.tags.includes("mentoria") || produtoEncontrado.tags.includes("consultoria")) {
-          productType = "grupo";
-        } else if (produtoEncontrado.categoria === "Ferramentas" || produtoEncontrado.categoria === "Digital" || 
-                  produtoEncontrado.categoria === "Infoprodutos") {
-          productType = "digital";
-        }
-        
-        setCheckoutConfig(prev => ({
-          ...prev,
-          titulo: produtoEncontrado.titulo,
-          descricao: `Adquira agora o produto ${produtoEncontrado.titulo} e comece a transformar sua vida!`,
-          tipoProduto: productType,
-        }));
-      } else {
-        toast({
-          title: "Produto não encontrado",
-          description: "O produto que você está tentando acessar não existe.",
-          variant: "destructive"
-        });
-        
-        setTimeout(() => {
-          navigate('/produtos');
-        }, 2000);
-      }
+  const [config, setConfig] = useState<CheckoutConfig>(defaultConfig);
+  const [activeTab, setActiveTab] = useState("design");
+  const [produto, setProduto] = useState<any | null>(null);
+  const [previewMode, setPreviewMode] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // Determine the product type based on tags and category
+  const determineProductType = (product: any): "digital" | "fisico" | "grupo" | "curso" | "ebook" => {
+    if (!product) return "digital";
+    
+    // Check tags first
+    if (product.tags.includes("ebook")) return "ebook";
+    if (product.tags.includes("curso")) return "curso";
+    if (product.tags.includes("mentoria")) return "grupo";
+    
+    // Check category as fallback
+    switch (product.categoria.toLowerCase()) {
+      case "e-books":
+        return "ebook";
+      case "cursos":
+        return "curso";
+      case "mentorias":
+      case "grupos":
+        return "grupo";
+      case "produtos físicos":
+        return "fisico";
+      default:
+        return "digital";
     }
-  }, [id, navigate, toast]);
+  };
+  
+  useEffect(() => {
+    // Find the product by ID
+    const foundProducto = produtosMock.find(p => p.id === Number(id));
+    
+    if (foundProducto) {
+      setProduto(foundProducto);
+      
+      // Set initial product type based on the found product
+      const productType = determineProductType(foundProducto);
+      
+      // Set initial config values based on the product
+      setConfig(prevConfig => ({
+        ...prevConfig,
+        titulo: `Adquira agora: ${foundProducto.titulo}`,
+        descricao: `Garanta seu acesso a ${foundProducto.titulo} agora mesmo!`,
+        tipoProduto: productType
+      }));
+    } else {
+      toast.error("Produto não encontrado");
+      navigate("/produtos");
+    }
+  }, [id, navigate]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!produto) return;
+    
     setIsSaving(true);
     
-    // Calculamos uma URL de checkout com base no domínio personalizado ou padrão
-    const baseUrl = checkoutConfig.dominio ? 
-      `https://${checkoutConfig.dominio}` : 
-      `https://checkout.seudominio.com.br/${checkoutConfig.id}`;
-    
+    // Simulate API request with a delay
     setTimeout(() => {
+      // In a real app, this would be an API call to save the configuration
+      toast.success("Configurações de checkout salvas com sucesso!");
       setIsSaving(false);
-      setCheckoutUrl(baseUrl);
-      toast({
-        title: "Checkout personalizado salvo",
-        description: "As configurações do seu checkout foram salvas com sucesso.",
-      });
-    }, 1500);
-    
-    console.log("Checkout Configuration:", checkoutConfig);
+    }, 800);
   };
   
-  const handlePublish = () => {
-    setIsPublishing(true);
-    
-    setTimeout(() => {
-      setIsPublishing(false);
-      const baseUrl = checkoutConfig.dominio ? 
-        `https://${checkoutConfig.dominio}` : 
-        `https://checkout.seudominio.com.br/${checkoutConfig.id}`;
-      
-      setCheckoutUrl(baseUrl);
-      
-      toast({
-        title: "Checkout publicado com sucesso!",
-        description: `Seu checkout está disponível em ${baseUrl}`,
-      });
-    }, 2000);
-  };
-
-  const handleTogglePreview = () => {
-    setPreviewMode(prev => !prev);
-  };
-
-  const handleUpdateConfig = (section: string, data: any) => {
-    setCheckoutConfig(prev => {
-      const sectionData = prev[section as keyof CheckoutConfig];
-      
-      if (sectionData && typeof sectionData === 'object') {
-        return {
-          ...prev,
-          [section]: { ...sectionData, ...data }
-        };
-      }
-      
-      return {
-        ...prev,
-        [section]: data
-      };
-    });
-  };
-
-  const handleUpdateSimpleConfig = (key: keyof CheckoutConfig, value: any) => {
-    setCheckoutConfig(prev => ({
-      ...prev,
-      [key]: value,
+  const handleUpdateConfig = (data: Partial<CheckoutConfig>) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      ...data
     }));
   };
 
-  const handleUpdateTipoProduto = (tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook") => {
-    setCheckoutConfig(prev => ({
-      ...prev,
-      tipoProduto: tipo,
+  const handleUpdateUpsell = (upsellData: CheckoutConfig["upsell"]) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      upsell: upsellData
     }));
   };
 
-  const calculateTotalValue = () => {
-    if (!produto) return "0.00";
-    
-    const basePrice = produto.preco;
-    const upsellPrice = checkoutConfig.upsell.ativo ? checkoutConfig.upsell.preco : 0;
-    return (basePrice + upsellPrice).toFixed(2);
+  const handleUpdatePaymentMethods = (methods: CheckoutConfig["meiosPagamento"]) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      meiosPagamento: methods
+    }));
   };
 
-  if (!produto && id) {
-    return (
-      <div className="flex-1 flex flex-col min-h-screen bg-background">
-        <div className="border-b px-6 py-3">
-          <Link to="/produtos" className="text-xl font-bold flex items-center">
-            <ArrowLeft size={18} className="mr-2" /> Checkout Builder
-          </Link>
-        </div>
-        <main className="flex-1 px-4 py-8 md:px-6">
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="animate-pulse space-y-4">
-              <div className="h-8 bg-gray-200 rounded w-1/3 mx-auto"></div>
-              <div className="h-40 bg-gray-200 rounded w-full max-w-md mx-auto"></div>
-            </div>
-            <p className="mt-6 text-muted-foreground">Carregando informações do produto...</p>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  const handleUpdateInstallments = (installments: CheckoutConfig["parcelamento"]) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      parcelamento: installments
+    }));
+  };
+
+  const handleUpdateFields = (fields: CheckoutConfig["camposAdicionais"]) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      camposAdicionais: fields
+    }));
+  };
+
+  const handleUpdateTrackingCodes = (data: {
+    pixelFacebook?: string;
+    pixelGoogle?: string;
+    codigoAnalytics?: string;
+  }) => {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      ...data
+    }));
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b bg-white px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/produtos" className="flex items-center text-gray-600 hover:text-gray-900">
-            <ArrowLeft size={18} className="mr-2" /> 
-            <span className="font-medium">Voltar para Produtos</span>
-          </Link>
-          <h1 className="text-xl font-bold hidden md:block">Checkout Builder</h1>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleTogglePreview}
-          >
-            {previewMode ? "Modo Edição" : "Modo Preview"}
-          </Button>
+      <header className="bg-white border-b sticky top-0 z-10">
+        <div className="container py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/produtos">
+                <ArrowLeft size={16} className="mr-2" />
+                Voltar para Produtos
+              </Link>
+            </Button>
+            <h1 className="text-xl font-bold hidden sm:block">Construtor de Checkout</h1>
+          </div>
           
-          <Button 
-            variant="outline"
-            size="sm"
-            onClick={handleSave} 
-            disabled={isSaving}
-          >
-            <Save size={16} className="mr-2" />
-            {isSaving ? "Salvando..." : "Salvar"}
-          </Button>
-          
-          <Button 
-            size="sm"
-            onClick={handlePublish}
-            disabled={isPublishing || isSaving}
-          >
-            <Check size={16} className="mr-2" />
-            {isPublishing ? "Publicando..." : "Publicar"}
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setPreviewMode(!previewMode)}
+            >
+              {previewMode ? (
+                <>
+                  <EyeOff size={16} className="mr-2" />
+                  Ocultar preview
+                </>
+              ) : (
+                <>
+                  <Eye size={16} className="mr-2" />
+                  Visualizar
+                </>
+              )}
+            </Button>
+            
+            <Button 
+              size="sm"
+              variant="outline"
+              asChild
+            >
+              <a href="/checkout-preview" target="_blank" rel="noopener noreferrer">
+                <ExternalLink size={16} className="mr-2" />
+                Abrir em nova aba
+              </a>
+            </Button>
+            
+            <Button 
+              size="sm"
+              disabled={isSaving}
+              onClick={handleSave}
+            >
+              {isSaving ? (
+                <div className="flex items-center">
+                  <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  Salvando...
+                </div>
+              ) : (
+                <>
+                  <Save size={16} className="mr-2" />
+                  Salvar
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </header>
       
-      {/* Main content */}
-      <main className="flex-1 px-4 py-6 md:px-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">Personalizar Checkout: {produto?.titulo}</h1>
-              <p className="text-muted-foreground">Personalize a experiência de checkout para este produto</p>
-            </div>
-            
-            {checkoutUrl && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                <p className="text-sm text-green-800">
-                  <span className="font-medium">URL do checkout:</span> {checkoutUrl}
-                </p>
+      <div className="container py-6 flex-1">
+        {previewMode ? (
+          <div className="max-w-5xl mx-auto py-4">
+            <div className="bg-white rounded-lg shadow-lg p-4 border relative mb-4">
+              <div className="absolute top-4 right-4">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setPreviewMode(false)}
+                >
+                  <EyeOff size={16} className="mr-2" />
+                  Voltar à edição
+                </Button>
               </div>
-            )}
-          </div>
-          
-          {previewMode ? (
-            <div className="max-w-2xl mx-auto border rounded-lg overflow-hidden shadow-lg bg-white">
-              <CheckoutPreview 
-                config={checkoutConfig}
-                produto={produto}
-              />
+              <div className="pt-6">
+                <CheckoutPreviewEnhanced config={config} produto={produto} />
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-              <div className="md:col-span-5 xl:col-span-4 space-y-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium mb-2">Tipo de produto</label>
-                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                        <Button 
-                          variant={checkoutConfig.tipoProduto === "digital" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => handleUpdateTipoProduto("digital")}
-                          className="w-full"
-                        >
-                          Digital
-                        </Button>
-                        <Button 
-                          variant={checkoutConfig.tipoProduto === "fisico" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => handleUpdateTipoProduto("fisico")}
-                          className="w-full"
-                        >
-                          Físico
-                        </Button>
-                        <Button 
-                          variant={checkoutConfig.tipoProduto === "grupo" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => handleUpdateTipoProduto("grupo")}
-                          className="w-full"
-                        >
-                          Grupo
-                        </Button>
-                        <Button 
-                          variant={checkoutConfig.tipoProduto === "curso" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => handleUpdateTipoProduto("curso")}
-                          className="w-full"
-                        >
-                          Curso
-                        </Button>
-                        <Button 
-                          variant={checkoutConfig.tipoProduto === "ebook" ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => handleUpdateTipoProduto("ebook")}
-                          className="w-full"
-                        >
-                          E-book
-                        </Button>
-                      </div>
-                    </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Settings panel */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-lg shadow-sm border">
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                  <div className="px-1 pt-2">
+                    <TabsList className="grid grid-cols-5 bg-muted/50">
+                      <TabsTrigger value="design">Design</TabsTrigger>
+                      <TabsTrigger value="conteudo">Conteúdo</TabsTrigger>
+                      <TabsTrigger value="pagamento">Pagamento</TabsTrigger>
+                      <TabsTrigger value="upsell">Upsell</TabsTrigger>
+                      <TabsTrigger value="avançado">Avançado</TabsTrigger>
+                    </TabsList>
+                  </div>
+                  
+                  <div className="p-6">
+                    <TabsContent value="design" className="mt-0">
+                      <DesignSettings 
+                        config={config}
+                        onUpdateConfig={handleUpdateConfig}
+                        onUpdateColor={(cor) => handleUpdateConfig({ cor })}
+                        onUpdateLogo={(logo) => handleUpdateConfig({ logo })}
+                      />
+                    </TabsContent>
                     
-                    <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
-                      <TabsList className="grid grid-cols-3 mb-6">
-                        <TabsTrigger value="design" className="flex items-center gap-2">
-                          <Palette size={16} />
-                          <span className="hidden sm:inline">Design</span>
-                        </TabsTrigger>
-                        <TabsTrigger value="conteudo" className="flex items-center gap-2">
-                          <FileText size={16} />
-                          <span className="hidden sm:inline">Conteúdo</span>
-                        </TabsTrigger>
-                        <TabsTrigger value="pagamento" className="flex items-center gap-2">
-                          <CreditCard size={16} />
-                          <span className="hidden sm:inline">Pagamento</span>
-                        </TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsList className="grid grid-cols-3 mb-6">
-                        <TabsTrigger value="upsell" className="flex items-center gap-2">
-                          <Package size={16} />
-                          <span className="hidden sm:inline">Upsell</span>
-                        </TabsTrigger>
-                        <TabsTrigger value="avancado" className="flex items-center gap-2">
-                          <Settings size={16} />
-                          <span className="hidden sm:inline">Avançado</span>
-                        </TabsTrigger>
-                        <div className="hidden sm:block"></div>
-                      </TabsList>
-                      
-                      <TabsContent value="design" className="space-y-4 mt-2">
-                        <DesignSettings 
-                          config={checkoutConfig} 
-                          onUpdateConfig={(data) => handleUpdateSimpleConfig("layout", data.layout)}
-                          onUpdateColor={(color) => handleUpdateSimpleConfig("cor", color)} 
-                          onUpdateLogo={(logo) => handleUpdateSimpleConfig("logo", logo)}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="conteudo" className="space-y-4 mt-2">
-                        <ContentSettings 
-                          config={checkoutConfig}
-                          onUpdateTitle={(title) => handleUpdateSimpleConfig("titulo", title)}
-                          onUpdateDescription={(desc) => handleUpdateSimpleConfig("descricao", desc)}
-                          onToggleReviews={(show) => handleUpdateSimpleConfig("mostrarAvaliacao", show)}
-                          onToggleCountdown={(show) => handleUpdateSimpleConfig("mostrarContador", show)}
-                          onUpdateCountdownTime={(time) => handleUpdateSimpleConfig("tempoContador", time)}
-                          onToggleGuarantee={(show) => handleUpdateSimpleConfig("mostrarGarantia", show)}
-                          onUpdateGuaranteeDays={(days) => handleUpdateSimpleConfig("diasGarantia", days)}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="pagamento" className="space-y-4 mt-2">
-                        <PaymentSettings 
-                          config={checkoutConfig}
-                          onUpdatePaymentMethods={(methods) => handleUpdateConfig("meiosPagamento", methods)}
-                          onUpdateInstallments={(installments) => handleUpdateConfig("parcelamento", installments)}
-                          onUpdateFields={(fields) => handleUpdateConfig("camposAdicionais", fields)}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="upsell" className="space-y-4 mt-2">
-                        <UpsellSettings 
-                          config={checkoutConfig}
-                          onUpdateUpsell={(upsell) => handleUpdateConfig("upsell", upsell)}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="avancado" className="space-y-4 mt-2">
-                        <AdvancedSettings 
-                          config={checkoutConfig}
-                          onUpdateFacebookPixel={(pixel) => handleUpdateSimpleConfig("pixelFacebook", pixel)}
-                          onUpdateGooglePixel={(pixel) => handleUpdateSimpleConfig("pixelGoogle", pixel)}
-                          onUpdateTikTokPixel={(pixel) => handleUpdateSimpleConfig("pixelTikTok", pixel)}
-                          onUpdateCustomScripts={(scripts) => handleUpdateSimpleConfig("scriptsPersonalizados", scripts)}
-                          onUpdateDomain={(domain) => handleUpdateSimpleConfig("dominio", domain)}
-                        />
-                      </TabsContent>
-                    </Tabs>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-4">
-                    <h3 className="font-medium mb-3">Resumo do checkout</h3>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Tipo de produto</span>
-                        <span className="font-medium">{getProdutoTypeName(checkoutConfig.tipoProduto)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Preço base</span>
-                        <span className="font-medium">R$ {produto.preco.toFixed(2)}</span>
-                      </div>
-                      {checkoutConfig.upsell.ativo && (
-                        <div className="flex justify-between">
-                          <span className="text-gray-500">Upsell</span>
-                          <span className="font-medium">R$ {checkoutConfig.upsell.preco.toFixed(2)}</span>
-                        </div>
-                      )}
-                      <div className="flex justify-between pt-2 border-t">
-                        <span className="font-medium">Valor total</span>
-                        <span className="font-bold" style={{ color: checkoutConfig.cor }}>
-                          R$ {calculateTotalValue()}
-                        </span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    <TabsContent value="conteudo" className="mt-0">
+                      <ContentSettings 
+                        config={config}
+                        onUpdateTitle={(titulo) => handleUpdateConfig({ titulo })}
+                        onUpdateDescription={(descricao) => handleUpdateConfig({ descricao })}
+                        onToggleReviews={(mostrarAvaliacao) => handleUpdateConfig({ mostrarAvaliacao })}
+                        onToggleCountdown={(mostrarContador) => handleUpdateConfig({ mostrarContador })}
+                        onUpdateCountdownTime={(tempoContador) => handleUpdateConfig({ tempoContador })}
+                        onToggleGuarantee={(mostrarGarantia) => handleUpdateConfig({ mostrarGarantia })}
+                        onUpdateGuaranteeDays={(diasGarantia) => handleUpdateConfig({ diasGarantia })}
+                      />
+                    </TabsContent>
+                    
+                    <TabsContent value="pagamento" className="mt-0">
+                      <PaymentSettings 
+                        config={config}
+                        onUpdatePaymentMethods={handleUpdatePaymentMethods}
+                        onUpdateInstallments={handleUpdateInstallments}
+                        onUpdateFields={handleUpdateFields}
+                      />
+                    </TabsContent>
+                    
+                    <TabsContent value="upsell" className="mt-0">
+                      <UpsellSettings 
+                        config={config}
+                        onUpdateUpsell={handleUpdateUpsell}
+                      />
+                    </TabsContent>
+                    
+                    <TabsContent value="avançado" className="mt-0">
+                      <AdvancedSettings 
+                        config={config}
+                        onUpdateProductType={(tipoProduto) => handleUpdateConfig({ tipoProduto })}
+                        onUpdateTrackingCodes={handleUpdateTrackingCodes}
+                      />
+                    </TabsContent>
+                  </div>
+                </Tabs>
               </div>
               
-              <div className="md:col-span-7 xl:col-span-8">
-                <div className="sticky top-20">
-                  <Card className="border shadow-sm">
-                    <CardContent className="p-6">
-                      <h2 className="text-lg font-semibold mb-4">Pré-visualização de Checkout</h2>
-                      <div className="border rounded-lg overflow-hidden bg-white">
-                        <CheckoutPreview 
-                          config={checkoutConfig}
-                          produto={produto}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
+              {/* Save button for mobile */}
+              <div className="mt-4 text-center lg:hidden">
+                <Button className="w-full" onClick={handleSave} disabled={isSaving}>
+                  {isSaving ? (
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                      Salvando...
+                    </div>
+                  ) : (
+                    <>
+                      <Save size={16} className="mr-2" />
+                      Salvar configurações
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+            
+            {/* Preview panel */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow-sm border p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="font-medium">Visualização do checkout</h2>
+                  <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                    <Check size={12} />
+                    <span>Preview em tempo real</span>
+                  </div>
+                </div>
+                <div className="overflow-auto border rounded-lg bg-gray-50" style={{ maxHeight: "800px" }}>
+                  <CheckoutPreviewEnhanced config={config} produto={produto} />
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
+      </div>
+      
+      {/* Footer */}
+      <footer className="mt-auto py-4 border-t bg-white">
+        <div className="container flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="text-sm text-muted-foreground">
+            Personalize seu checkout para <span className="font-medium">{produto?.titulo || 'seu produto'}</span>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <Button variant="link" size="sm" className="text-muted-foreground" asChild>
+              <Link to="/ajuda">Precisa de ajuda?</Link>
+            </Button>
+            
+            <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving}>
+              <Save size={14} className="mr-2" />
+              {isSaving ? "Salvando..." : "Salvar"}
+            </Button>
+          </div>
         </div>
-      </main>
+      </footer>
     </div>
   );
-}
-
-// Helper function to get product type name for display
-function getProdutoTypeName(tipo: "digital" | "fisico" | "grupo" | "curso" | "ebook") {
-  switch (tipo) {
-    case "digital":
-      return "Produto Digital";
-    case "fisico":
-      return "Produto Físico";
-    case "grupo":
-      return "Grupo Exclusivo";
-    case "curso":
-      return "Curso Online";
-    case "ebook":
-      return "E-book";
-    default:
-      return "Produto Digital";
-  }
 }

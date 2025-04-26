@@ -42,6 +42,7 @@ const App = () => (
               <Route path="/marketplace" element={<MarketplacePage />} />
               <Route path="/marketplace/produto/:id" element={<ProdutoDetalhe />} />
               <Route path="/produtos" element={<ProdutosPage />} />
+              <Route path="/produtos/checkout-builder/:id" element={<CheckoutBuilderPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
               <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
@@ -56,7 +57,6 @@ const App = () => (
               <Route path="/ajuda" element={<AjudaPage />} />
               <Route path="/notificacoes" element={<NotificacoesPage />} />
             </Route>
-            <Route path="/checkout-builder/:id" element={<CheckoutBuilderPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

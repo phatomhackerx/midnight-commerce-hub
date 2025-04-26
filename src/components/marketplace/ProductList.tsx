@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ArrowRight, Bookmark, ShoppingCart, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -91,19 +91,11 @@ const ProductList: React.FC<ProductListProps> = ({
                 <span className="text-green-600 font-medium">{produto.comissao}%</span>
               </TableCell>
               <TableCell>
-                <div className="flex items-center gap-2">
-                  <Button size="sm" variant="ghost" onClick={() => onAddToCart(produto)}>
-                    <ShoppingCart size={14} />
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => onAffiliate(produto.id)}>
-                    <Bookmark size={14} />
-                  </Button>
-                  <Button size="sm" variant="ghost" asChild>
-                    <Link to={`/marketplace/produto/${produto.id}`}>
-                      <ArrowRight size={14} />
-                    </Link>
-                  </Button>
-                </div>
+                <Button size="sm" variant="ghost" asChild>
+                  <Link to={`/marketplace/produto/${produto.id}`}>
+                    <ArrowRight size={14} />
+                  </Link>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
