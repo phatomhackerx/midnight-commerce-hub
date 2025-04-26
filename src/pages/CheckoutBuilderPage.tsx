@@ -160,11 +160,25 @@ export default function CheckoutBuilderPage() {
     console.log("Checkout Configuration:", checkoutConfig);
   };
 
+  // FIX: This is the problematic function causing the spread type error
   const handleUpdateConfig = (section: string, data: any) => {
-    setCheckoutConfig(prev => ({
-      ...prev,
-      [section]: { ...prev[section as keyof CheckoutConfig], ...data },
-    }));
+    setCheckoutConfig(prev => {
+      const sectionData = prev[section as keyof CheckoutConfig];
+      
+      // Check if the section exists and is an object before spreading
+      if (sectionData && typeof sectionData === 'object') {
+        return {
+          ...prev,
+          [section]: { ...sectionData, ...data }
+        };
+      }
+      
+      // If it's not an object, just replace the value
+      return {
+        ...prev,
+        [section]: data
+      };
+    });
   };
 
   const handleUpdateSimpleConfig = (key: keyof CheckoutConfig, value: any) => {
