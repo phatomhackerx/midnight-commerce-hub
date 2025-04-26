@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -157,6 +158,36 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
     };
     
     onSalvar(produtoFinal);
+  };
+
+  // Função segura para formatar valores numéricos
+  const formatarNumero = (valor: unknown): string => {
+    if (typeof valor === 'number') {
+      return valor.toFixed(2);
+    }
+    return '0.00';
+  };
+
+  // Função para calcular o ganho do vendedor
+  const calcularGanhoVendedor = (): string => {
+    const preco = form.watch("preco");
+    const comissao = form.watch("comissao");
+    
+    if (typeof preco === 'number' && typeof comissao === 'number') {
+      return (preco * (1 - comissao / 100)).toFixed(2);
+    }
+    return '0.00';
+  };
+
+  // Função para calcular a comissão do afiliado
+  const calcularComissaoAfiliado = (): string => {
+    const preco = form.watch("preco");
+    const comissao = form.watch("comissao");
+    
+    if (typeof preco === 'number' && typeof comissao === 'number') {
+      return ((preco * comissao) / 100).toFixed(2);
+    }
+    return '0.00';
   };
 
   return (
@@ -494,20 +525,20 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Preço do produto:</span>
-                  <span className="font-medium">R$ {form.watch("preco").toFixed(2)}</span>
+                  <span className="font-medium">R$ {formatarNumero(form.watch("preco"))}</span>
                 </div>
                 
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Comissão de afiliados ({form.watch("comissao")}%):</span>
                   <span className="font-medium text-amber-600">
-                    - R$ {((form.watch("preco") * form.watch("comissao")) / 100).toFixed(2)}
+                    - R$ {calcularComissaoAfiliado()}
                   </span>
                 </div>
                 
                 <div className="border-t pt-2 flex justify-between">
                   <span className="font-medium">Seu ganho por venda:</span>
                   <span className="font-bold text-green-600">
-                    R$ {(form.watch("preco") * (1 - form.watch("comissao") / 100)).toFixed(2)}
+                    R$ {calcularGanhoVendedor()}
                   </span>
                 </div>
               </div>
