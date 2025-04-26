@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Star, Heart, Share2, Bookmark, ShoppingCart, CheckCircle, Percent, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";

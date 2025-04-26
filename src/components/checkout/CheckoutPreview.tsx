@@ -2,7 +2,8 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckoutConfig } from "@/pages/CheckoutBuilderPage";
-import { Star, Clock, Shield, Check, MessageSquare, BookOpen, Package, FileText } from "lucide-react";
+import { Star, Clock, Shield, Check, MessageSquare, BookOpen, Package, FileText, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CheckoutPreviewProps {
   config: CheckoutConfig;
@@ -23,6 +24,14 @@ const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) =>
       </div>
     );
   }
+
+  // Calculate installment value
+  const installmentValue = config.parcelamento.ativo ? 
+    (produto.preco / config.parcelamento.parcelas).toFixed(2) : "0.00";
+
+  // Calculate total value including upsell if active
+  const totalValue = config.upsell.ativo ? 
+    (produto.preco + config.upsell.preco).toFixed(2) : produto.preco.toFixed(2);
 
   return (
     <div className={`w-full ${getLayoutStyles(config.layout)}`}>
@@ -87,7 +96,7 @@ const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) =>
             </div>
             {config.parcelamento.ativo && (
               <div className="text-sm text-gray-600 mt-1">
-                ou até {config.parcelamento.parcelas}x de R$ {(produto.preco / config.parcelamento.parcelas).toFixed(2)} 
+                ou até {config.parcelamento.parcelas}x de R$ {installmentValue}
                 {config.parcelamento.semJuros > 0 && (
                   <> (até {config.parcelamento.semJuros}x sem juros)</>
                 )}
@@ -186,15 +195,37 @@ const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) =>
                       <div className="font-bold" style={{ color: config.cor }}>
                         + R$ {config.upsell.preco.toFixed(2)}
                       </div>
-                      <button className="text-sm py-1 px-3 rounded" style={{ backgroundColor: config.cor + '20', color: config.cor }}>
+                      <Button 
+                        className="text-sm py-1 px-3 rounded" 
+                        style={{ backgroundColor: config.cor + '20', color: config.cor }}
+                      >
                         Adicionar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           )}
+          
+          {/* Resumo do pedido - novo componente */}
+          <div className="border rounded-lg p-4 space-y-3 bg-gray-50">
+            <h4 className="font-medium">Resumo do pedido</h4>
+            <div className="flex justify-between text-sm">
+              <span>Produto</span>
+              <span>R$ {produto.preco.toFixed(2)}</span>
+            </div>
+            {config.upsell.ativo && (
+              <div className="flex justify-between text-sm">
+                <span>Adicional: {config.upsell.titulo || "Oferta especial"}</span>
+                <span>R$ {config.upsell.preco.toFixed(2)}</span>
+              </div>
+            )}
+            <div className="border-t pt-2 flex justify-between font-bold">
+              <span>Total</span>
+              <span style={{ color: config.cor }}>R$ {totalValue}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
