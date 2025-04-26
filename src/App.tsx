@@ -24,6 +24,7 @@ import ChatPlatformPage from "@/pages/ChatPlatformPage";
 import AjudaPage from "@/pages/AjudaPage";
 import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
+import CheckoutBuilderPage from "@/pages/CheckoutBuilderPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/chat-platform" element={<ChatPlatformPage />} />
               <Route path="/ajuda" element={<AjudaPage />} />
               <Route path="/notificacoes" element={<NotificacoesPage />} />
+              <Route path="/checkout-builder/:id" element={<CheckoutBuilderPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

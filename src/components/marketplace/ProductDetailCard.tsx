@@ -1,9 +1,10 @@
 
 import React from "react";
-import { Star, Heart, Share2, Bookmark, ShoppingCart, CheckCircle, Percent } from "lucide-react";
+import { Star, Heart, Share2, Bookmark, ShoppingCart, CheckCircle, Percent, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface ProductDetailCardProps {
   produto: {
@@ -29,6 +30,12 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({
   onAddToCart,
   onAffiliate
 }) => {
+  const navigate = useNavigate();
+
+  const handlePersonalizar = () => {
+    navigate(`/checkout-builder/${produto.id}`);
+  };
+
   return (
     <Card className="overflow-hidden border-none shadow-lg">
       <div className="relative">
@@ -117,6 +124,15 @@ const ProductDetailCard: React.FC<ProductDetailCardProps> = ({
           >
             <Bookmark size={18} className="mr-2" />
             Afiliar-se
+          </Button>
+          <Button
+            size="lg"
+            variant="secondary"
+            className="flex-1"
+            onClick={handlePersonalizar}
+          >
+            <Edit size={18} className="mr-2" />
+            Personalizar
           </Button>
         </div>
         

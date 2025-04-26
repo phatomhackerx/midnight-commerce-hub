@@ -1,0 +1,191 @@
+
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { CheckoutConfig } from "@/pages/CheckoutBuilderPage";
+import { Star, Clock, Shield, Check } from "lucide-react";
+
+interface CheckoutPreviewProps {
+  config: CheckoutConfig;
+  produto: any;
+}
+
+const CheckoutPreview: React.FC<CheckoutPreviewProps> = ({ config, produto }) => {
+  return (
+    <div className={`w-full ${getLayoutStyles(config.layout)}`}>
+      <div className="p-6">
+        {config.logo && (
+          <div className="mb-6 flex justify-center">
+            <img 
+              src={config.logo} 
+              alt="Logo" 
+              className="h-10 object-contain"
+            />
+          </div>
+        )}
+        
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-xl md:text-2xl font-bold" style={{ color: config.cor }}>
+              {config.titulo || produto.titulo}
+            </h2>
+            <p className="text-gray-600 mt-2">
+              {config.descricao || `Adquira agora o produto ${produto.titulo} e comece a transformar sua vida!`}
+            </p>
+          </div>
+          
+          {config.mostrarAvaliacao && (
+            <div className="flex items-center space-x-1">
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <Star size={16} className="fill-yellow-400 text-yellow-400" />
+              <span className="text-sm ml-1 text-gray-600">(124 avaliações)</span>
+            </div>
+          )}
+          
+          {config.mostrarContador && (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3">
+              <Clock size={20} className="text-amber-500" />
+              <div>
+                <div className="text-sm font-medium text-amber-800">Esta oferta expira em breve</div>
+                <div className="font-bold text-amber-900">{config.tempoContador}:00 minutos</div>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        <div className="border-t my-6"></div>
+        
+        <div className="space-y-6">
+          <div>
+            <div className="text-sm text-gray-500">Preço</div>
+            <div className="text-3xl font-bold" style={{ color: config.cor }}>
+              R$ {produto.preco.toFixed(2)}
+            </div>
+            {config.parcelamento.ativo && (
+              <div className="text-sm text-gray-600 mt-1">
+                ou até {config.parcelamento.parcelas}x de R$ {(produto.preco / config.parcelamento.parcelas).toFixed(2)} 
+                {config.parcelamento.semJuros > 0 && (
+                  <> (até {config.parcelamento.semJuros}x sem juros)</>
+                )}
+              </div>
+            )}
+          </div>
+          
+          <div className="space-y-3">
+            <div className="font-medium">Informações do comprador</div>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Nome</div>
+              <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">E-mail</div>
+              {config.camposAdicionais.telefone && (
+                <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Telefone</div>
+              )}
+              {config.camposAdicionais.cpf && (
+                <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">CPF</div>
+              )}
+              {config.camposAdicionais.dataNascimento && (
+                <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Data de nascimento</div>
+              )}
+              {config.camposAdicionais.endereco && (
+                <>
+                  <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Endereço</div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Cidade</div>
+                    <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">Estado</div>
+                  </div>
+                  <div className="border rounded p-3 bg-gray-50 text-sm text-gray-500">CEP</div>
+                </>
+              )}
+              {config.camposAdicionais.personalizado.map((campo, index) => (
+                <div key={index} className="border rounded p-3 bg-gray-50 text-sm text-gray-500">
+                  {campo.nome} {campo.obrigatorio && <span className="text-red-500">*</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="font-medium">Formas de pagamento</div>
+            <div className="flex gap-2">
+              {config.meiosPagamento.cartao && (
+                <div 
+                  className="flex-1 border rounded-lg p-3 text-center font-medium cursor-pointer hover:bg-gray-50"
+                  style={{ 
+                    borderColor: config.cor,
+                    color: config.cor,
+                    backgroundColor: `${config.cor}10`
+                  }}
+                >
+                  Cartão
+                </div>
+              )}
+              {config.meiosPagamento.pix && (
+                <div className="flex-1 border rounded-lg p-3 text-center font-medium cursor-pointer hover:bg-gray-50">
+                  PIX
+                </div>
+              )}
+              {config.meiosPagamento.boleto && (
+                <div className="flex-1 border rounded-lg p-3 text-center font-medium cursor-pointer hover:bg-gray-50">
+                  Boleto
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <button 
+            className="w-full py-3 px-4 rounded-lg font-medium text-white"
+            style={{ backgroundColor: config.cor }}
+          >
+            Finalizar compra
+          </button>
+          
+          {config.mostrarGarantia && (
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Shield size={16} className="text-gray-500" />
+              <span>Garantia de {config.diasGarantia} dias ou seu dinheiro de volta</span>
+            </div>
+          )}
+          
+          {config.upsell.ativo && (
+            <Card className="mt-6 border-2" style={{ borderColor: config.cor + '50' }}>
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  {config.upsell.imagem && (
+                    <img src={config.upsell.imagem} alt="Upsell" className="w-16 h-16 object-cover rounded" />
+                  )}
+                  <div className="flex-1">
+                    <h4 className="font-medium">{config.upsell.titulo || "Oferta especial!"}</h4>
+                    <p className="text-sm text-gray-600 mt-1">{config.upsell.descricao || "Adicione este produto com um preço especial!"}</p>
+                    <div className="flex justify-between items-center mt-2">
+                      <div className="font-bold" style={{ color: config.cor }}>
+                        + R$ {config.upsell.preco.toFixed(2)}
+                      </div>
+                      <button className="text-sm py-1 px-3 rounded" style={{ backgroundColor: config.cor + '20', color: config.cor }}>
+                        Adicionar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const getLayoutStyles = (layout: "padrao" | "minimalista" | "destaque") => {
+  switch (layout) {
+    case "minimalista":
+      return "max-w-md mx-auto bg-white";
+    case "destaque":
+      return "max-w-2xl mx-auto bg-white rounded-xl shadow-lg";
+    case "padrao":
+    default:
+      return "max-w-xl mx-auto bg-white";
+  }
+};
+
+export default CheckoutPreview;
