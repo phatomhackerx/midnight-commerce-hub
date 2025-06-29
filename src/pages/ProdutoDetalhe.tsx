@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark, Share2, ExternalLink } from "lucide-react";
+import { ArrowLeft, Users, BarChart2, FileText, MessageSquare, Calendar, Download, Star, Bookmark, Share2, ExternalLink, Edit } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

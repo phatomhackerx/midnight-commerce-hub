@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, ExternalLink, Eye, EyeOff, Check } from "lucide-react";
@@ -54,6 +53,9 @@ export interface CheckoutConfig {
   };
   pixelFacebook: string;
   pixelGoogle: string;
+  pixelTikTok: string;
+  scriptsPersonalizados: string;
+  dominio: string;
   codigoAnalytics: string;
 }
 
@@ -95,6 +97,9 @@ const defaultConfig: CheckoutConfig = {
   },
   pixelFacebook: "",
   pixelGoogle: "",
+  pixelTikTok: "",
+  scriptsPersonalizados: "",
+  dominio: "",
   codigoAnalytics: "",
 };
 
@@ -207,6 +212,9 @@ export default function CheckoutBuilderPage() {
   const handleUpdateTrackingCodes = (data: {
     pixelFacebook?: string;
     pixelGoogle?: string;
+    pixelTikTok?: string;
+    scriptsPersonalizados?: string;
+    dominio?: string;
     codigoAnalytics?: string;
   }) => {
     setConfig(prevConfig => ({
@@ -358,8 +366,11 @@ export default function CheckoutBuilderPage() {
                     <TabsContent value="avançado" className="mt-0">
                       <AdvancedSettings 
                         config={config}
-                        onUpdateProductType={(tipoProduto) => handleUpdateConfig({ tipoProduto })}
-                        onUpdateTrackingCodes={handleUpdateTrackingCodes}
+                        onUpdateFacebookPixel={(pixelFacebook) => handleUpdateConfig({ pixelFacebook })}
+                        onUpdateGooglePixel={(pixelGoogle) => handleUpdateConfig({ pixelGoogle })}
+                        onUpdateTikTokPixel={(pixelTikTok) => handleUpdateConfig({ pixelTikTok })}
+                        onUpdateCustomScripts={(scriptsPersonalizados) => handleUpdateConfig({ scriptsPersonalizados })}
+                        onUpdateDomain={(dominio) => handleUpdateConfig({ dominio })}
                       />
                     </TabsContent>
                   </div>
