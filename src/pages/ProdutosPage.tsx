@@ -233,7 +233,7 @@ export default function ProdutosPage() {
   };
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen cosmic-bg neural-pattern">
       <Header />
       
       <main className="flex-1 px-6 py-6">

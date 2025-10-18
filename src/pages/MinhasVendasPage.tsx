@@ -1,340 +1,305 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
-import { 
-  Table, 
-  TableBody, 
-  TableCaption, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { 
-  Download, 
-  Filter, 
   Search, 
-  MoreVertical, 
+  Filter, 
+  Download, 
   Eye, 
-  FileText,
-  ArrowUpDown
+  TrendingUp,
+  ShoppingBag,
+  DollarSign,
+  Calendar,
+  Package,
+  CheckCircle2,
+  Clock,
+  XCircle,
+  AlertCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Sample data for orders
-const orders = [
+interface Venda {
+  id: string;
+  produto: string;
+  cliente: string;
+  email: string;
+  valor: number;
+  status: "aprovado" | "pendente" | "cancelado" | "reembolsado";
+  data: string;
+  metodo: string;
+}
+
+const vendasMock: Venda[] = [
   {
-    id: "#9834",
-    customer: "João Silva",
-    product: "Curso de Marketing Digital",
-    date: "09/04/2025",
-    amount: "R$ 297,00",
-    status: "completed",
-    paymentMethod: "credit_card"
+    id: "VND-2024-001",
+    produto: "Curso de Marketing Digital",
+    cliente: "João Silva",
+    email: "joao@email.com",
+    valor: 297,
+    status: "aprovado",
+    data: "2024-01-15 14:30",
+    metodo: "Cartão de Crédito"
   },
   {
-    id: "#9833",
-    customer: "Maria Oliveira",
-    product: "E-book: Vendas Online",
-    date: "09/04/2025",
-    amount: "R$ 47,90",
-    status: "processing",
-    paymentMethod: "pix"
+    id: "VND-2024-002",
+    produto: "Ebook Finanças",
+    cliente: "Maria Santos",
+    email: "maria@email.com",
+    valor: 47,
+    status: "aprovado",
+    data: "2024-01-15 10:20",
+    metodo: "PIX"
   },
   {
-    id: "#9832",
-    customer: "Carlos Eduardo",
-    product: "Mentoria Premium",
-    date: "08/04/2025",
-    amount: "R$ 1.997,00",
-    status: "completed",
-    paymentMethod: "credit_card"
+    id: "VND-2024-003",
+    produto: "Mentoria Premium",
+    cliente: "Carlos Oliveira",
+    email: "carlos@email.com",
+    valor: 997,
+    status: "pendente",
+    data: "2024-01-14 18:45",
+    metodo: "Boleto"
   },
   {
-    id: "#9831",
-    customer: "Ana Beatriz",
-    product: "Planilha de Gestão Financeira",
-    date: "08/04/2025",
-    amount: "R$ 37,00",
-    status: "refunded",
-    paymentMethod: "boleto"
+    id: "VND-2024-004",
+    produto: "Template Design",
+    cliente: "Ana Costa",
+    email: "ana@email.com",
+    valor: 67,
+    status: "cancelado",
+    data: "2024-01-14 09:15",
+    metodo: "Cartão de Crédito"
   },
   {
-    id: "#9830",
-    customer: "Pedro Henrique",
-    product: "Curso de Copywriting",
-    date: "07/04/2025",
-    amount: "R$ 197,00",
-    status: "failed",
-    paymentMethod: "credit_card"
-  },
-  {
-    id: "#9829",
-    customer: "Juliana Santos",
-    product: "Template de Email Marketing",
-    date: "07/04/2025",
-    amount: "R$ 67,00",
-    status: "completed",
-    paymentMethod: "pix"
-  },
-  {
-    id: "#9828",
-    customer: "Roberto Almeida",
-    product: "Acesso ao Grupo VIP",
-    date: "06/04/2025",
-    amount: "R$ 97,00",
-    status: "processing",
-    paymentMethod: "picpay"
+    id: "VND-2024-005",
+    produto: "Curso Copywriting",
+    cliente: "Rafael Lima",
+    email: "rafael@email.com",
+    valor: 197,
+    status: "reembolsado",
+    data: "2024-01-13 16:00",
+    metodo: "PIX"
   }
 ];
 
+const statusConfig = {
+  aprovado: { label: "Aprovado", icon: CheckCircle2, color: "text-success bg-success/10 border-success/30" },
+  pendente: { label: "Pendente", icon: Clock, color: "text-warning bg-warning/10 border-warning/30" },
+  cancelado: { label: "Cancelado", icon: XCircle, color: "text-danger bg-danger/10 border-danger/30" },
+  reembolsado: { label: "Reembolsado", icon: AlertCircle, color: "text-muted-foreground bg-muted/10 border-muted/30" }
+};
+
 export default function MinhasVendasPage() {
-  const [loaded, setLoaded] = useState(false);
-  
-  // Simula carregamento para animação
-  setTimeout(() => {
-    if (!loaded) setLoaded(true);
-  }, 100);
-  
+  const [pesquisa, setPesquisa] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState<string>("todas");
+
+  const vendasFiltradas = vendasMock.filter(venda => {
+    const matchPesquisa = pesquisa === "" || 
+      venda.produto.toLowerCase().includes(pesquisa.toLowerCase()) ||
+      venda.cliente.toLowerCase().includes(pesquisa.toLowerCase()) ||
+      venda.id.toLowerCase().includes(pesquisa.toLowerCase());
+    
+    const matchStatus = filtroStatus === "todas" || venda.status === filtroStatus;
+    
+    return matchPesquisa && matchStatus;
+  });
+
+  const totalVendas = vendasFiltradas.length;
+  const totalAprovado = vendasFiltradas.filter(v => v.status === "aprovado").reduce((acc, v) => acc + v.valor, 0);
+  const totalPendente = vendasFiltradas.filter(v => v.status === "pendente").length;
+
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen cosmic-bg neural-pattern">
       <Header />
       
       <main className="flex-1 px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
-          <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <h1 className="text-2xl font-bold">Minhas Vendas</h1>
-            <p className="text-muted-foreground">Gerencie todas as suas vendas e acompanhe o status dos pedidos.</p>
-          </div>
-          
-          <div className={cn("flex flex-col gap-6", loaded && "animate-fade-in")}>
-            {/* Resumo das vendas em cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="bg-card border-border shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardDescription>Total de Vendas (Hoje)</CardDescription>
-                  <CardTitle className="text-2xl">R$ 2.367,90</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-success flex items-center">
-                    <span className="inline-block mr-1">+12%</span> comparado a ontem
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-card border-border shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardDescription>Pedidos (Hoje)</CardDescription>
-                  <CardTitle className="text-2xl">17</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-success flex items-center">
-                    <span className="inline-block mr-1">+5</span> comparado a ontem
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-card border-border shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardDescription>Taxa de Aprovação</CardDescription>
-                  <CardTitle className="text-2xl">96.7%</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Últimos 30 dias
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-card border-border shadow-sm">
-                <CardHeader className="pb-2">
-                  <CardDescription>Ticket Médio</CardDescription>
-                  <CardTitle className="text-2xl">R$ 139,29</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-warning flex items-center">
-                    <span className="inline-block mr-1">-3.5%</span> últimos 7 dias
-                  </p>
-                </CardContent>
-              </Card>
+          {/* Hero Section */}
+          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 glass-card border-primary/30 animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-transparent" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <ShoppingBag className="text-primary animate-glow-pulse" size={24} />
+                <span className="text-sm font-medium text-primary">Gestão de Vendas</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient-cosmic">
+                Minhas Vendas
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Acompanhe todas as suas transações e gerencie pedidos em tempo real
+              </p>
             </div>
-            
-            {/* Filtros e tabela de vendas */}
-            <Card className="bg-card border-border shadow-sm">
-              <CardHeader className="pb-2">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div>
-                    <CardTitle>Pedidos Recentes</CardTitle>
-                    <CardDescription>Gerencie seus pedidos e acompanhe o status.</CardDescription>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
+            <Card className="glass-card border-border/50 hover-lift glow-card">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 rounded-xl bg-primary/10 ring-1 ring-primary/30">
+                    <DollarSign className="text-primary" size={24} />
                   </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filtrar
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Download className="h-4 w-4 mr-2" />
-                      Exportar
-                    </Button>
+                  <TrendingUp className="text-success" size={20} />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Total Aprovado</p>
+                  <p className="text-3xl font-bold text-gradient-cosmic">
+                    R$ {totalAprovado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card border-border/50 hover-lift glow-card">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 rounded-xl bg-secondary/10 ring-1 ring-secondary/30">
+                    <Package className="text-secondary" size={24} />
                   </div>
                 </div>
-              </CardHeader>
-              
-              <CardContent>
-                <Tabs defaultValue="todos" className="w-full">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="todos">Todos</TabsTrigger>
-                    <TabsTrigger value="processando">Processando</TabsTrigger>
-                    <TabsTrigger value="completos">Completos</TabsTrigger>
-                    <TabsTrigger value="falhas">Falhas</TabsTrigger>
-                    <TabsTrigger value="reembolsos">Reembolsos</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="todos">
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                      <div className="relative flex-1">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="search"
-                          placeholder="Pesquisar pedido, cliente ou produto..."
-                          className="pl-9 bg-background"
-                        />
-                      </div>
-                    </div>
-                    
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-[100px]">Pedido</TableHead>
-                          <TableHead>Cliente</TableHead>
-                          <TableHead>Produto</TableHead>
-                          <TableHead>Data</TableHead>
-                          <TableHead>Valor</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="w-[100px]">Pagamento</TableHead>
-                          <TableHead className="w-[70px]">Ações</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {orders.map((order) => (
-                          <TableRow key={order.id}>
-                            <TableCell className="font-medium">{order.id}</TableCell>
-                            <TableCell>{order.customer}</TableCell>
-                            <TableCell>{order.product}</TableCell>
-                            <TableCell>{order.date}</TableCell>
-                            <TableCell>{order.amount}</TableCell>
-                            <TableCell>
-                              <Badge
-                                variant="outline"
-                                className={cn(
-                                  "bg-muted border-0 text-foreground",
-                                  order.status === "completed" && "bg-success/10 border-success text-success",
-                                  order.status === "processing" && "bg-info/10 text-info",
-                                  order.status === "failed" && "bg-danger/10 text-danger",
-                                  order.status === "refunded" && "bg-warning/10 text-warning",
-                                )}
-                              >
-                                {order.status === "completed" && "Completo"}
-                                {order.status === "processing" && "Processando"}
-                                {order.status === "failed" && "Falha"}
-                                {order.status === "refunded" && "Reembolsado"}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                variant="outline"
-                                className="border-0 bg-secondary"
-                              >
-                                {order.paymentMethod === "credit_card" && "Cartão"}
-                                {order.paymentMethod === "pix" && "PIX"}
-                                {order.paymentMethod === "boleto" && "Boleto"}
-                                {order.paymentMethod === "picpay" && "PicPay"}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                                    <MoreVertical className="h-4 w-4" />
-                                    <span className="sr-only">Ações</span>
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-background border-border">
-                                  <DropdownMenuItem className="flex items-center gap-2">
-                                    <Eye className="h-4 w-4" />
-                                    <span>Ver detalhes</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem className="flex items-center gap-2">
-                                    <FileText className="h-4 w-4" />
-                                    <span>Gerar nota</span>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                    
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="text-sm text-muted-foreground">
-                        Mostrando 7 de 243 pedidos
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Button variant="outline" size="sm" disabled>Anterior</Button>
-                        <Button variant="outline" size="sm" className="bg-primary/10">1</Button>
-                        <Button variant="outline" size="sm">2</Button>
-                        <Button variant="outline" size="sm">3</Button>
-                        <Button variant="outline" size="sm">Próximo</Button>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="processando">
-                    <div className="h-64 flex items-center justify-center">
-                      <p className="text-muted-foreground">Visualizando pedidos em processamento...</p>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="completos">
-                    <div className="h-64 flex items-center justify-center">
-                      <p className="text-muted-foreground">Visualizando pedidos completos...</p>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="falhas">
-                    <div className="h-64 flex items-center justify-center">
-                      <p className="text-muted-foreground">Visualizando pedidos com falhas...</p>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="reembolsos">
-                    <div className="h-64 flex items-center justify-center">
-                      <p className="text-muted-foreground">Visualizando pedidos reembolsados...</p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Total de Vendas</p>
+                  <p className="text-3xl font-bold text-gradient-cosmic">{totalVendas}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card border-border/50 hover-lift glow-card">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 rounded-xl bg-warning/10 ring-1 ring-warning/30">
+                    <Clock className="text-warning" size={24} />
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm text-muted-foreground uppercase tracking-wide">Pendentes</p>
+                  <p className="text-3xl font-bold text-gradient-cosmic">{totalPendente}</p>
+                </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Filters and Search */}
+          <Card className="glass-card border-border/50 animate-fade-in">
+            <CardHeader>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <CardTitle className="text-gradient-cosmic">Lista de Vendas</CardTitle>
+                  <CardDescription>Gerencie e acompanhe todas as transações</CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="gap-2 glass-card border-primary/30">
+                    <Filter size={16} />
+                    Filtrar
+                  </Button>
+                  <Button variant="outline" className="gap-2 glass-card border-primary/30">
+                    <Download size={16} />
+                    Exportar
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+                  <Input
+                    placeholder="Buscar por produto, cliente ou ID..."
+                    className="pl-10 glass-card border-border/50"
+                    value={pesquisa}
+                    onChange={(e) => setPesquisa(e.target.value)}
+                  />
+                </div>
+                <Tabs value={filtroStatus} onValueChange={setFiltroStatus} className="w-full md:w-auto">
+                  <TabsList className="glass-card">
+                    <TabsTrigger value="todas">Todas</TabsTrigger>
+                    <TabsTrigger value="aprovado">Aprovadas</TabsTrigger>
+                    <TabsTrigger value="pendente">Pendentes</TabsTrigger>
+                    <TabsTrigger value="cancelado">Canceladas</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {/* Sales Table */}
+              <div className="rounded-xl border border-border/50 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted/20 border-b border-border/50">
+                      <tr>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">ID</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Produto</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Cliente</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Valor</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Status</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Data</th>
+                        <th className="text-left p-4 text-sm font-semibold text-muted-foreground">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {vendasFiltradas.map((venda, index) => {
+                        const StatusIcon = statusConfig[venda.status].icon;
+                        return (
+                          <tr 
+                            key={venda.id} 
+                            className={cn(
+                              "border-b border-border/30 hover:bg-primary/5 transition-colors",
+                              index % 2 === 0 && "bg-muted/5"
+                            )}
+                          >
+                            <td className="p-4">
+                              <span className="font-mono text-sm text-primary">{venda.id}</span>
+                            </td>
+                            <td className="p-4">
+                              <div>
+                                <p className="font-semibold">{venda.produto}</p>
+                                <p className="text-sm text-muted-foreground">{venda.metodo}</p>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div>
+                                <p className="font-medium">{venda.cliente}</p>
+                                <p className="text-sm text-muted-foreground">{venda.email}</p>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <span className="font-bold text-gradient-cosmic">
+                                R$ {venda.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                              </span>
+                            </td>
+                            <td className="p-4">
+                              <Badge className={cn("gap-1 border", statusConfig[venda.status].color)}>
+                                <StatusIcon size={14} />
+                                {statusConfig[venda.status].label}
+                              </Badge>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Calendar size={14} />
+                                {venda.data}
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="hover:bg-primary/10 hover:text-primary"
+                              >
+                                <Eye size={16} />
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>
