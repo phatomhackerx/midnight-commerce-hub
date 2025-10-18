@@ -73,46 +73,49 @@ const statusLabels = {
 
 export default function TabelaUltimasVendas() {
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-border">
+    <Card className="glass-card border-border/50 hover-lift">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle>Últimas Vendas</CardTitle>
+          <CardTitle className="text-gradient-cosmic">Últimas Vendas</CardTitle>
           <CardDescription>Transações mais recentes da plataforma</CardDescription>
         </div>
-        <Button size="sm" variant="outline" className="gap-1">
+        <Button size="sm" variant="outline" className="gap-1 glass-card border-primary/30 hover:shadow-[var(--shadow-neon)]">
           <span>Ver todas</span>
           <ArrowUpRight size={16} />
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="relative overflow-x-auto rounded-md">
+        <div className="relative overflow-x-auto rounded-xl">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase text-muted-foreground border-b border-border">
+            <thead className="text-xs uppercase text-muted-foreground border-b border-border/50 bg-muted/20">
               <tr>
-                <th scope="col" className="px-4 py-3">ID</th>
-                <th scope="col" className="px-4 py-3">Produto</th>
-                <th scope="col" className="px-4 py-3">Cliente</th>
-                <th scope="col" className="px-4 py-3">Data</th>
-                <th scope="col" className="px-4 py-3">Valor</th>
-                <th scope="col" className="px-4 py-3">Status</th>
-                <th scope="col" className="px-4 py-3" aria-label="Ações"></th>
+                <th scope="col" className="px-4 py-4">ID</th>
+                <th scope="col" className="px-4 py-4">Produto</th>
+                <th scope="col" className="px-4 py-4">Cliente</th>
+                <th scope="col" className="px-4 py-4">Data</th>
+                <th scope="col" className="px-4 py-4">Valor</th>
+                <th scope="col" className="px-4 py-4">Status</th>
+                <th scope="col" className="px-4 py-4" aria-label="Ações"></th>
               </tr>
             </thead>
             <tbody>
-              {vendas.map((venda) => (
-                <tr key={venda.id} className="border-b border-border/50 hover:bg-muted/20">
-                  <td className="px-4 py-3 font-medium text-muted-foreground">#{venda.id}</td>
-                  <td className="px-4 py-3 font-medium">{venda.produto}</td>
-                  <td className="px-4 py-3">{venda.cliente}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{venda.data}</td>
-                  <td className="px-4 py-3 font-medium">R$ {venda.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-                  <td className="px-4 py-3">
-                    <Badge className={cn("font-normal", statusStyles[venda.status])}>
+              {vendas.map((venda, index) => (
+                <tr key={venda.id} className={cn(
+                  "border-b border-border/30 hover:bg-primary/5 transition-colors",
+                  index % 2 === 0 && "bg-muted/5"
+                )}>
+                  <td className="px-4 py-4 font-medium text-primary">#{venda.id}</td>
+                  <td className="px-4 py-4 font-medium">{venda.produto}</td>
+                  <td className="px-4 py-4">{venda.cliente}</td>
+                  <td className="px-4 py-4 text-muted-foreground">{venda.data}</td>
+                  <td className="px-4 py-4 font-semibold text-gradient-cosmic">R$ {venda.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                  <td className="px-4 py-4">
+                    <Badge className={cn("font-medium border", statusStyles[venda.status])}>
                       {statusLabels[venda.status]}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 text-right">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <td className="px-4 py-4 text-right">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary">
                       <ExternalLink size={16} />
                     </Button>
                   </td>

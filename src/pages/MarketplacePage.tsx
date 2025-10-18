@@ -103,24 +103,35 @@ export default function MarketplacePage() {
   });
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen cosmic-bg neural-pattern">
       <Header />
       
       <main className="flex-1 px-4 py-6 md:px-6">
-        <div className="max-w-[1600px] mx-auto space-y-6">
-          <div className="space-y-2">
-            <h1 className="text-2xl md:text-3xl font-bold animate-fade-in">Marketplace</h1>
-            <p className="text-muted-foreground animate-fade-in delay-100">
-              Encontre produtos digitais para comprar ou promover como afiliado.
-            </p>
+        <div className="max-w-[1600px] mx-auto space-y-8">
+          {/* Hero Section */}
+          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 glass-card border-primary/30 animate-fade-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/10 to-transparent" />
+            <div className="relative z-10 max-w-3xl">
+              <div className="flex items-center gap-2 mb-4">
+                <Package className="text-primary animate-glow-pulse" size={24} />
+                <span className="text-sm font-medium text-primary">Marketplace Digital</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient-cosmic animate-slide-up">
+                Descubra Produtos Incríveis
+              </h1>
+              <p className="text-lg text-muted-foreground mb-6 animate-slide-up">
+                Encontre produtos digitais para comprar ou promova como afiliado e ganhe comissões.
+              </p>
+            </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 animate-fade-in delay-150">
+          {/* Search and Filters */}
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 animate-fade-in">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground h-5 w-5" />
               <Input
-                placeholder="Pesquisar produtos, vendedores ou categorias..."
-                className="pl-10 pr-4 py-2 h-11"
+                placeholder="Pesquisar com AI..."
+                className="pl-12 pr-4 py-3 h-12 glass-card border-border/50 focus-visible:ring-primary focus-visible:border-primary text-base"
                 value={pesquisa}
                 onChange={(e) => setPesquisa(e.target.value)}
               />
@@ -128,31 +139,33 @@ export default function MarketplacePage() {
             
             <Button 
               variant="outline" 
-              className="h-11 gap-2"
+              className="h-12 gap-2 glass-card border-primary/30 hover:shadow-[var(--shadow-neon)]"
               onClick={() => setExibindoFiltros(!exibindoFiltros)}
             >
-              <Filter size={16} />
+              <Filter size={18} />
               Filtros
-              <span className="inline-flex items-center justify-center bg-primary/10 text-primary text-xs font-medium rounded-full h-5 px-2 ml-1">
-                {filtroCategorias.length + filtroPreco.length + filtroAvaliacao.length}
-              </span>
+              {(filtroCategorias.length + filtroPreco.length + filtroAvaliacao.length) > 0 && (
+                <span className="inline-flex items-center justify-center bg-primary/20 text-primary text-xs font-semibold rounded-full h-6 px-2.5 ml-1 ring-1 ring-primary/30">
+                  {filtroCategorias.length + filtroPreco.length + filtroAvaliacao.length}
+                </span>
+              )}
             </Button>
             
             <Sheet open={carrinhoAberto} onOpenChange={setCarrinhoAberto}>
               <SheetTrigger asChild>
-                <Button variant="outline" className="h-11 gap-2 relative">
-                  <ShoppingCart size={16} />
+                <Button variant="outline" className="h-12 gap-2 relative glass-card border-primary/30 hover:shadow-[var(--shadow-neon)]">
+                  <ShoppingCart size={18} />
                   Carrinho
                   {carrinho.length > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-2 -right-2 bg-primary text-background text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-[var(--shadow-neon)]">
                       {carrinho.reduce((total, item) => total + item.quantidade, 0)}
                     </span>
                   )}
                 </Button>
               </SheetTrigger>
-              <SheetContent className="w-full sm:max-w-md">
+              <SheetContent className="w-full sm:max-w-md cosmic-bg">
                 <SheetHeader>
-                  <SheetTitle>Seu Carrinho</SheetTitle>
+                  <SheetTitle className="text-gradient-cosmic">Seu Carrinho</SheetTitle>
                   <SheetDescription>
                     {carrinho.length === 0 ? 
                       "Seu carrinho está vazio." : 
@@ -164,19 +177,19 @@ export default function MarketplacePage() {
                   <div className="mt-6 space-y-6">
                     <div className="space-y-4">
                       {carrinho.map((item) => (
-                        <div key={item.id} className="flex gap-4 pb-4 border-b">
-                          <div className="h-16 w-16 overflow-hidden rounded-md flex-shrink-0">
+                        <div key={item.id} className="flex gap-4 pb-4 border-b border-border/50 glass-card p-3 rounded-lg">
+                          <div className="h-20 w-20 overflow-hidden rounded-lg flex-shrink-0 ring-1 ring-primary/30">
                             <img src={item.imagem} alt={item.titulo} className="h-full w-full object-cover" />
                           </div>
                           <div className="flex-1 space-y-1">
-                            <h4 className="font-medium text-sm line-clamp-2">{item.titulo}</h4>
+                            <h4 className="font-semibold text-sm line-clamp-2">{item.titulo}</h4>
                             <p className="text-sm text-muted-foreground">Qtd: {item.quantidade}</p>
                             <div className="flex justify-between items-center">
-                              <p className="font-bold">R$ {(item.preco * item.quantidade).toFixed(2)}</p>
+                              <p className="font-bold text-gradient-cosmic">R$ {(item.preco * item.quantidade).toFixed(2)}</p>
                               <Button 
                                 variant="ghost" 
                                 size="sm" 
-                                className="h-8 text-destructive hover:text-destructive"
+                                className="h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                                 onClick={() => removerDoCarrinho(item.id)}
                               >
                                 Remover
@@ -187,7 +200,7 @@ export default function MarketplacePage() {
                       ))}
                     </div>
                     
-                    <div className="bg-muted p-4 rounded-lg space-y-3">
+                    <div className="glass-card p-4 rounded-xl space-y-3 border border-primary/20">
                       <div className="flex justify-between text-sm">
                         <span>Subtotal</span>
                         <span>R$ {calcularTotalCarrinho().toFixed(2)}</span>
@@ -196,15 +209,15 @@ export default function MarketplacePage() {
                         <span>Descontos</span>
                         <span>R$ 0,00</span>
                       </div>
-                      <div className="border-t pt-2 flex justify-between font-bold">
+                      <div className="border-t border-border/50 pt-2 flex justify-between font-bold">
                         <span>Total</span>
-                        <span>R$ {calcularTotalCarrinho().toFixed(2)}</span>
+                        <span className="text-gradient-cosmic">R$ {calcularTotalCarrinho().toFixed(2)}</span>
                       </div>
                     </div>
                     
-                    <Button className="w-full h-11">
+                    <Button className="w-full h-12 shadow-[var(--shadow-neon)]">
                       Finalizar Compra
-                      <ArrowRight size={16} className="ml-2" />
+                      <ArrowRight size={18} className="ml-2" />
                     </Button>
                   </div>
                 )}

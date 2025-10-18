@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { menuItems } from "@/data/menuItems";
 import { SidebarMenuItem } from "./sidebar/SidebarMenuItem";
@@ -12,33 +11,41 @@ export default function AppSidebar() {
   return (
     <aside 
       className={cn(
-        "h-screen sticky top-0 bg-sidebar border-r border-border flex flex-col transition-all duration-300 overflow-hidden", 
+        "h-screen sticky top-0 bg-sidebar/95 backdrop-blur-xl border-r border-border/50 flex flex-col transition-all duration-300 overflow-hidden shadow-[var(--shadow-card)]", 
         collapsed ? "w-20" : "w-64"
       )}
     >
       {/* Sidebar Header with Logo and Collapse Toggle */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
-        <div className={cn("flex items-center", collapsed && "justify-center w-full")}>
-          {!collapsed && (
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-              MidnightSales
-            </span>
-          )}
-          {collapsed && (
-            <span className="text-xl font-bold text-primary">MS</span>
+      <div className="p-4 border-b border-border/50 flex items-center justify-between">
+        <div className={cn("flex items-center gap-2", collapsed && "justify-center w-full")}>
+          {!collapsed ? (
+            <>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-neon)]">
+                <Sparkles size={18} className="text-background" />
+              </div>
+              <span className="text-lg font-bold text-gradient-cosmic">
+                Midnight
+              </span>
+            </>
+          ) : (
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-neon)]">
+              <Sparkles size={18} className="text-background" />
+            </div>
           )}
         </div>
-        <button 
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground"
-        >
-          {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-        </button>
+        {!collapsed && (
+          <button 
+            onClick={() => setCollapsed(!collapsed)}
+            className="p-1.5 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+          >
+            <ChevronLeft size={18} />
+          </button>
+        )}
       </div>
       
       {/* Sidebar Menu Items */}
       <div className="py-4 flex-1 overflow-y-auto scrollbar-none">
-        <ul className="space-y-1 px-2">
+        <ul className="space-y-1 px-3">
           {menuItems.map((item) => (
             <SidebarMenuItem 
               key={item.path}

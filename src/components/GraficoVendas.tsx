@@ -36,8 +36,8 @@ const periodos: PeriodoProps[] = [
 const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     return (
-      <div className="glass-card p-3 border border-border shadow-md text-sm">
-        <p className="font-medium text-foreground">{`R$ ${payload[0].value?.toLocaleString('pt-BR')}`}</p>
+      <div className="glass-card p-3 border border-primary/30 shadow-[var(--shadow-neon)] rounded-lg">
+        <p className="font-semibold text-foreground">{`R$ ${payload[0].value?.toLocaleString('pt-BR')}`}</p>
       </div>
     );
   }
@@ -48,14 +48,14 @@ export default function GraficoVendas() {
   const [periodo, setPeriodo] = useState<PeriodoProps["value"]>("30d");
   
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-border">
+    <Card className="glass-card border-border/50 hover-lift">
       <CardHeader className="pb-0">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Vendas</CardTitle>
+            <CardTitle className="text-gradient-cosmic">Vendas</CardTitle>
             <CardDescription>Relatório de vendas por período</CardDescription>
           </div>
-          <div className="flex space-x-1">
+          <div className="flex space-x-1 glass-card p-1 rounded-lg">
             {periodos.map((p) => (
               <Button 
                 key={p.value} 
@@ -63,8 +63,8 @@ export default function GraficoVendas() {
                 size="sm"
                 onClick={() => setPeriodo(p.value)}
                 className={cn(
-                  "text-xs h-8",
-                  periodo === p.value ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                  "text-xs h-8 rounded-md transition-all",
+                  periodo === p.value ? "bg-gradient-to-r from-primary to-secondary text-background shadow-[var(--shadow-neon)]" : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {p.label}
@@ -82,11 +82,11 @@ export default function GraficoVendas() {
             >
               <defs>
                 <linearGradient id="colorVendas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4} />
                   <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.3} />
               <XAxis 
                 dataKey="name"
                 axisLine={false}
@@ -106,7 +106,7 @@ export default function GraficoVendas() {
                 type="monotone" 
                 dataKey="vendas" 
                 stroke="hsl(var(--primary))" 
-                strokeWidth={2}
+                strokeWidth={3}
                 fillOpacity={1}
                 fill="url(#colorVendas)" 
               />
