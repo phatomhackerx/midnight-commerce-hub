@@ -19,7 +19,7 @@ export default function IntegracoesPage() {
   }, 100);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
@@ -27,8 +27,8 @@ export default function IntegracoesPage() {
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold">Integrações</h1>
-                <p className="text-muted-foreground">Gerencie as integrações da sua loja com outros sistemas e plataformas.</p>
+                <h1 className="text-3xl font-bold">Integrações</h1>
+                <p className="text-muted-foreground">Conecte com outros sistemas</p>
               </div>
               
               <div className="flex items-center gap-2">
@@ -79,7 +79,7 @@ export default function IntegracoesPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {integracoesAtivas.map((integracao, index) => (
-                  <Card key={index} className="transition-all hover:shadow-md border-primary/20">
+                  <Card key={index} className="transition-all hover:shadow-md minimal-card">
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{integracao.nome}</CardTitle>
@@ -135,16 +135,16 @@ export default function IntegracoesPage() {
                   </Card>
                 ))}
                 
-                <Card className="transition-all hover:shadow-md bg-gradient-to-br from-primary/20 to-purple-500/10 border-primary/20">
+                <Card className="transition-all hover:shadow-md minimal-card border border-border/50">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
                       <CardTitle className="text-lg">Plataforma de Chat</CardTitle>
-                      <Badge className="bg-purple-500 hover:bg-purple-600">Novo</Badge>
+                      <Badge>Novo</Badge>
                     </div>
-                    <CardDescription>Chat avançado com IA e automações</CardDescription>
+                    <CardDescription>Chat com IA e automações</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">Plataforma completa de atendimento automatizado, bots inteligentes e marketing conversacional.</p>
+                    <p className="text-sm text-muted-foreground">Atendimento automatizado e bots inteligentes.</p>
                   </CardContent>
                   <CardFooter>
                     <Button 

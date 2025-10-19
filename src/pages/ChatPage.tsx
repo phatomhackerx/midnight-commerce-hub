@@ -31,18 +31,18 @@ export default function ChatPage() {
   }, 100);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
-        <div className="max-w-[1400px] mx-auto h-[calc(100vh-12rem)] flex overflow-hidden rounded-lg border">
+        <div className="max-w-[1400px] mx-auto h-[calc(100vh-12rem)] flex overflow-hidden rounded-xl border border-border/50 minimal-card">
           <div className={cn(
             "w-80 border-r flex flex-col transition-all", 
             loaded && "animate-fade-in"
           )}>
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="font-semibold">Conversas</h2>
-              <Button variant="ghost" size="icon">
+            <div className="p-4 border-b border-border/50 flex justify-between items-center">
+              <h2 className="font-semibold text-foreground">Conversas</h2>
+              <Button variant="ghost" size="icon" className="hover:bg-secondary rounded-lg">
                 <Settings size={18} />
               </Button>
             </div>
@@ -50,7 +50,7 @@ export default function ChatPage() {
             <div className="p-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input className="pl-9" placeholder="Buscar conversa..." />
+                <Input className="pl-9 grok-input" placeholder="Buscar conversa..." />
               </div>
             </div>
             

@@ -17,50 +17,22 @@ export default function Index() {
   }, 100);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen cosmic-bg neural-pattern">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
-        <div className="max-w-[1600px] mx-auto space-y-12">
-          {/* Hero Section */}
-          <div className={cn("relative overflow-hidden rounded-3xl p-12 mt-8", loaded && "animate-slide-up")}>
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-transparent blur-3xl" />
-            <div className="relative z-10 max-w-3xl">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="text-primary animate-glow-pulse" size={24} />
-                <span className="text-sm font-medium text-primary">Powered by Future Technology</span>
-              </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gradient-cosmic">
-                Midnight Commerce Hub
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl">
-                Next-generation commerce platform powered by AI. Track sales, manage products, and scale your business with cutting-edge technology.
-              </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <Button size="lg" className="gap-2 shadow-[var(--shadow-neon)]">
-                  <Zap size={20} />
-                  Start Building
-                  <ArrowUpRight size={16} />
-                </Button>
-                <Button size="lg" variant="outline" className="gap-2 glass-card">
-                  View Analytics
-                  <TrendingUp size={16} />
-                </Button>
-              </div>
-            </div>
-          </div>
-
+        <div className="max-w-[1600px] mx-auto space-y-8">
           {/* Stats Section */}
-          <div className={cn("space-y-2", loaded && "animate-fade-in")}>
+          <div className={cn("space-y-4", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-3xl font-bold text-gradient-cosmic">Dashboard Overview</h2>
-                <p className="text-muted-foreground mt-1">Real-time insights powered by AI</p>
+                <h1 className="text-3xl font-bold">Dashboard</h1>
+                <p className="text-muted-foreground mt-1">Visão geral das suas métricas</p>
               </div>
               
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="glass-card">Exportar Relatório</Button>
-                <Button size="sm" className="gap-1 shadow-[var(--shadow-neon)]">
+                <Button variant="outline" size="sm">Exportar</Button>
+                <Button size="sm" className="gap-1">
                   <span>Nova Venda</span>
                   <ArrowUpRight size={16} />
                 </Button>

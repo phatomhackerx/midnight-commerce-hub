@@ -46,7 +46,7 @@ export default function ChatPlatformPage() {
   }, []);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
@@ -54,8 +54,8 @@ export default function ChatPlatformPage() {
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold">Plataforma de Comunicação</h1>
-                <p className="text-muted-foreground mt-1">Gerencie seus canais, crie bots, e monitore suas conversas</p>
+                <h1 className="text-3xl font-bold">Plataforma de Comunicação</h1>
+                <p className="text-muted-foreground mt-1">Gerencie canais e bots de atendimento</p>
               </div>
               
               <div className="flex items-center gap-2">
@@ -72,46 +72,34 @@ export default function ChatPlatformPage() {
           </div>
           
           <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-6", loaded && "animate-fade-in")}>
-            <Card className="md:col-span-3 bg-gradient-to-r from-primary/10 to-purple-500/10 shadow-md border-primary/20">
+            <Card className="md:col-span-3 minimal-card">
               <CardContent className="pt-6">
                 <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <div className="text-center md:text-left">
-                    <h2 className="text-xl font-bold">Plataforma Completa de Marketing Conversacional</h2>
-                    <p className="text-muted-foreground mt-2">Atendimento automatizado, bots inteligentes e análises avançadas</p>
+                  <div className="text-center md:text-left flex-1">
+                    <h2 className="text-xl font-bold">Marketing Conversacional Completo</h2>
+                    <p className="text-muted-foreground mt-2">Atendimento automatizado e bots inteligentes</p>
                     <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
-                      <Button size="sm" className="gap-1 bg-primary/90 hover:bg-primary shadow-lg">
+                      <Button size="sm" className="gap-1">
                         <Plus size={16} />
                         <span>Criar Bot</span>
                       </Button>
                       <Button size="sm" variant="outline" className="gap-1">
                         <Globe size={16} />
-                        <span>Configurar Canais</span>
+                        <span>Configurar</span>
                       </Button>
-                      <Button size="sm" variant="outline" className="gap-1">
-                        <Info size={16} />
-                        <span>Tutoriais</span>
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0 bg-secondary/50 p-5 rounded-xl">
-                    <div className="w-64 h-32 bg-background rounded-lg flex items-center justify-center shadow-md border border-border">
-                      <div className="flex flex-col items-center gap-2">
-                        <BotIcon size={32} className="text-primary"/>
-                        <p className="text-sm font-medium">AI Conversational Manager</p>
-                      </div>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="cursor-pointer hover:shadow-md transition-all border-primary/20" onClick={() => setCurrentPage("chats")}>
+            <Card className="cursor-pointer hover:shadow-md transition-all minimal-card" onClick={() => setCurrentPage("chats")}>
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-lg">Conversas</CardTitle>
-                  <Badge variant="success">Ativo</Badge>
+                  <Badge className="bg-success/80">Ativo</Badge>
                 </div>
-                <CardDescription>Gerencie mensagens e atendimentos</CardDescription>
+                <CardDescription>Gerencie mensagens</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3 mb-4">

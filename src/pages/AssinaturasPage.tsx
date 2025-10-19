@@ -90,14 +90,14 @@ export default function AssinaturasPage() {
   };
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Assinaturas</h1>
+              <h1 className="text-3xl font-bold">Assinaturas</h1>
               
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">

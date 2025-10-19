@@ -28,14 +28,14 @@ export default function PerfilPage() {
   }, 100);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
         <div className="max-w-[1000px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Meu Perfil</h1>
+              <h1 className="text-3xl font-bold">Perfil</h1>
               
               <div className="flex items-center gap-2">
                 <Button size="sm" className="gap-1">
@@ -44,14 +44,14 @@ export default function PerfilPage() {
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Gerencie suas informações de perfil e preferências.</p>
+            <p className="text-muted-foreground">Gerencie suas informações</p>
           </div>
           
           <div className={cn("flex flex-col md:flex-row gap-8", loaded && "animate-fade-in")}>
             <div className="w-full md:w-64 space-y-4">
-              <Card className="transition-all hover:shadow-md border-primary/10">
+              <Card className="transition-all hover:shadow-md minimal-card">
                 <CardContent className="p-4 flex flex-col items-center">
-                  <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-4">
+                  <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center text-foreground mb-4">
                     <UserCircle size={64} />
                   </div>
                   <h3 className="font-bold text-lg">João Silva</h3>

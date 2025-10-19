@@ -233,7 +233,7 @@ export default function ProdutosPage() {
   };
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen cosmic-bg neural-pattern">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
@@ -241,8 +241,8 @@ export default function ProdutosPage() {
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold">Produtos</h1>
-                <p className="text-muted-foreground">Gerencie seus produtos digitais e físicos.</p>
+                <h1 className="text-3xl font-bold">Produtos</h1>
+                <p className="text-muted-foreground">Gerencie seus produtos</p>
               </div>
               
               <div className="flex items-center gap-2">
@@ -268,7 +268,7 @@ export default function ProdutosPage() {
           <div className={cn("flex flex-col gap-6", loaded && "animate-fade-in")}>
             {/* Resumo dos produtos em cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="bg-card border-border shadow-sm">
+              <Card className="minimal-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Total de Produtos</CardDescription>
                   <CardTitle className="text-2xl">{totalProdutos}</CardTitle>
@@ -280,7 +280,7 @@ export default function ProdutosPage() {
                 </CardContent>
               </Card>
               
-              <Card className="bg-card border-border shadow-sm">
+              <Card className="minimal-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Status Atual</CardDescription>
                   <CardTitle className="text-2xl">{totalPublicados} publicados</CardTitle>
@@ -298,7 +298,7 @@ export default function ProdutosPage() {
                 </CardContent>
               </Card>
               
-              <Card className="bg-card border-border shadow-sm">
+              <Card className="minimal-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Produto Mais Vendido</CardDescription>
                   <CardTitle className="text-2xl truncate">
@@ -314,10 +314,10 @@ export default function ProdutosPage() {
             </div>
             
             {/* Lista de produtos */}
-            <Card className="bg-card border-border shadow-sm">
+            <Card className="minimal-card">
               <CardHeader className="pb-2">
                 <CardTitle>Meus Produtos</CardTitle>
-                <CardDescription>Visualize e gerencie seus produtos cadastrados.</CardDescription>
+                <CardDescription>Gerencie seus produtos</CardDescription>
               </CardHeader>
               
               <CardContent>

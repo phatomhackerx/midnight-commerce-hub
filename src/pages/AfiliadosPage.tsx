@@ -26,14 +26,14 @@ export default function AfiliadosPage() {
   }, 100);
   
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-background">
+    <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
       <main className="flex-1 px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Programa de Afiliados</h1>
+              <h1 className="text-3xl font-bold">Afiliados</h1>
               
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">
@@ -46,11 +46,11 @@ export default function AfiliadosPage() {
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Gerencie seu programa de afiliados e acompanhe os resultados.</p>
+            <p className="text-muted-foreground">Gerencie afiliados e comissões</p>
           </div>
           
           <div className={cn("grid grid-cols-1 md:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
-            <Card className="bg-primary/5 border-primary/20 transition-all hover:shadow-md">
+            <Card className="minimal-card">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Users size={20} className="text-primary" />
@@ -63,10 +63,10 @@ export default function AfiliadosPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="minimal-card">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Wallet size={20} className="text-primary" />
+                  <Wallet size={20} />
                   <span>Comissões (Mês)</span>
                 </CardTitle>
                 <CardDescription>Total a pagar no mês</CardDescription>
@@ -76,10 +76,10 @@ export default function AfiliadosPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="minimal-card">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Share2 size={20} className="text-primary" />
+                  <Share2 size={20} />
                   <span>Conversões (Mês)</span>
                 </CardTitle>
                 <CardDescription>Vendas convertidas</CardDescription>
@@ -89,10 +89,10 @@ export default function AfiliadosPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="minimal-card">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Link size={20} className="text-primary" />
+                  <Link size={20} />
                   <span>Cliques (Mês)</span>
                 </CardTitle>
                 <CardDescription>Total de cliques</CardDescription>
@@ -126,7 +126,7 @@ export default function AfiliadosPage() {
                 </Button>
               </div>
               
-              <Card>
+              <Card className="minimal-card">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -189,7 +189,7 @@ export default function AfiliadosPage() {
                 </Button>
               </div>
               
-              <Card>
+              <Card className="minimal-card">
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
@@ -232,11 +232,11 @@ export default function AfiliadosPage() {
             <TabsContent value="materiais" className="pt-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {materiais.map((material, index) => (
-                  <Card key={index} className="transition-all hover:shadow-md">
+                  <Card key={index} className="minimal-card hover:shadow-md transition-all">
                     <CardHeader>
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{material.titulo}</CardTitle>
-                        <Badge className="bg-primary/80">{material.tipo}</Badge>
+                        <Badge>{material.tipo}</Badge>
                       </div>
                       <CardDescription>{material.descricao}</CardDescription>
                     </CardHeader>
