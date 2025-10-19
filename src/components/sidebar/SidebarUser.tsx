@@ -12,13 +12,13 @@ export function SidebarUser({ collapsed }: SidebarUserProps) {
         "flex items-center gap-3", 
         collapsed && "justify-center"
       )}>
-        <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center text-primary font-semibold shadow-[0_0_10px_hsl(var(--primary)/0.2)]">
+        <div className="h-8 w-8 rounded-lg bg-secondary flex items-center justify-center text-foreground font-medium text-sm">
           U
         </div>
         {!collapsed && (
           <div className="flex flex-col">
-            <span className="text-sm font-semibold">Usuário</span>
-            <span className="text-xs text-muted-foreground">Plano Profissional</span>
+            <span className="text-sm font-medium text-foreground">Usuário</span>
+            <span className="text-xs text-muted-foreground">Profissional</span>
           </div>
         )}
       </div>
