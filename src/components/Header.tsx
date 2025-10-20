@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/30 bg-background/60 backdrop-blur-xl">
       <div className="flex h-14 items-center px-6 gap-4">
         {/* Logo */}
         <div className="flex items-center gap-2 mr-6">

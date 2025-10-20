@@ -4,14 +4,14 @@ import { cva } from "class-variance-authority";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { ReactNode } from "react";
 
-const cardVariants = cva("minimal-card rounded-xl p-6 h-full transition-all", {
+const cardVariants = cva("premium-card rounded-xl p-6 h-full transition-all", {
   variants: {
     variant: {
       default: "",
-      success: "",
-      warning: "",
-      danger: "",
-      info: "",
+      success: "border-success/20",
+      warning: "border-warning/20",
+      danger: "border-danger/20",
+      info: "border-info/20",
     }
   },
   defaultVariants: {
@@ -45,7 +45,7 @@ export default function CardMetrica({
     <div className={cn(cardVariants({ variant }))}>
       <div className="flex justify-between items-start mb-4">
         <span className="text-sm font-medium text-muted-foreground">{title}</span>
-        <div className="p-2 rounded-lg bg-secondary">{icon}</div>
+        <div className="p-2 rounded-lg bg-secondary/60 backdrop-blur-sm">{icon}</div>
       </div>
       
       <div className="space-y-3">

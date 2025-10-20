@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Sparkles, TrendingUp, Shield, Zap, Users, BarChart3, CreditCard } from "lucide-react";
+import StarsBackground from "@/components/StarsBackground";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <StarsBackground />
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/60 backdrop-blur-xl">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold">Midnight</span>
@@ -34,9 +36,9 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="relative pt-32 pb-20 px-6 z-10">
         <div className="container mx-auto max-w-5xl text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border/50 mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/30 backdrop-blur-sm border border-border/30 mb-8">
             <Sparkles size={16} className="text-foreground" />
             <span className="text-sm">Plataforma de Vendas Digitais</span>
           </div>
@@ -82,7 +84,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 px-6">
+      <section id="features" className="relative py-20 px-6 z-10">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Tudo que você precisa</h2>
@@ -90,48 +92,48 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <Zap size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Checkout Otimizado</h3>
               <p className="text-muted-foreground">Checkout personalizável com alta taxa de conversão e múltiplos meios de pagamento.</p>
             </div>
 
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <BarChart3 size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Analytics Avançado</h3>
               <p className="text-muted-foreground">Acompanhe suas vendas em tempo real com relatórios detalhados e insights.</p>
             </div>
 
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <Users size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Sistema de Afiliados</h3>
               <p className="text-muted-foreground">Gerencie afiliados e comissões automaticamente para escalar suas vendas.</p>
             </div>
 
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <Shield size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Segurança Total</h3>
               <p className="text-muted-foreground">Proteção anti-fraude e certificação PCI compliance para seus pagamentos.</p>
             </div>
 
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <CreditCard size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Múltiplos Pagamentos</h3>
               <p className="text-muted-foreground">Aceite cartões, PIX, boleto e mais com integração automática.</p>
             </div>
 
-            <div className="minimal-card p-8 hover-lift">
-              <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center mb-4">
+            <div className="premium-card p-8 hover-lift">
+              <div className="w-12 h-12 rounded-lg bg-secondary/60 backdrop-blur-sm flex items-center justify-center mb-4">
                 <TrendingUp size={24} />
               </div>
               <h3 className="text-xl font-semibold mb-2">Upsells & Bumps</h3>
@@ -142,9 +144,9 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
+      <section className="relative py-20 px-6 z-10">
         <div className="container mx-auto max-w-4xl">
-          <div className="minimal-card p-12 text-center">
+          <div className="premium-card p-12 text-center">
             <h2 className="text-4xl font-bold mb-4">Pronto para começar?</h2>
             <p className="text-muted-foreground text-lg mb-8">
               Junte-se a milhares de vendedores que já confiam na nossa plataforma.
@@ -160,7 +162,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-12 px-6">
+      <footer className="relative border-t border-border/30 py-12 px-6 z-10 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>

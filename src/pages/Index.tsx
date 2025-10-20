@@ -75,15 +75,15 @@ export default function Index() {
           </div>
           
           <div className={cn("grid grid-cols-1 lg:grid-cols-3 gap-6", loaded && "animate-fade-in")}>
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 premium-card p-6">
               <GraficoVendas />
             </div>
-            <div>
+            <div className="premium-card p-6">
               <GraficoMeiosPagamento />
             </div>
           </div>
           
-          <div className={cn(loaded && "animate-fade-in")}>
+          <div className={cn("premium-card p-6", loaded && "animate-fade-in")}>
             <TabelaUltimasVendas />
           </div>
         </div>

@@ -5,48 +5,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
+    --background: 0 0% 4%;
     --foreground: 0 0% 98%;
     
-    --card: 0 0% 10%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 9%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 98%;
     
     --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary-foreground: 0 0% 4%;
     
-    --secondary: 0 0% 15%;
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
     
-    --muted: 0 0% 15%;
+    --muted: 0 0% 12%;
     --muted-foreground: 0 0% 60%;
     
-    --accent: 0 0% 20%;
+    --accent: 0 0% 16%;
     --accent-foreground: 0 0% 98%;
     
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
     --ring: 0 0% 98%;
     
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 9%;
+    --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 15%;
+    --sidebar-primary-foreground: 0 0% 6%;
+    --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 18%;
+    --sidebar-border: 0 0% 15%;
     --sidebar-ring: 0 0% 98%;
 
-    --shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.3);
-    --shadow-card: 0 4px 12px 0 rgb(0 0 0 / 0.5);
-    --shadow-elevated: 0 8px 24px 0 rgb(0 0 0 / 0.6);
+    --shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.4);
+    --shadow-card: 0 4px 12px 0 rgb(0 0 0 / 0.6);
+    --shadow-elevated: 0 8px 24px 0 rgb(0 0 0 / 0.7);
   }
 }
 
@@ -67,17 +67,24 @@
 
 @layer utilities {
   .grok-bg {
-    @apply bg-background;
+    @apply bg-background relative;
   }
   
   .glass-card {
-    @apply bg-card border border-border shadow-[var(--shadow-card)] 
-           hover:shadow-[var(--shadow-elevated)] transition-all duration-200;
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-[var(--shadow-card)] 
+           hover:shadow-[var(--shadow-elevated)] hover:bg-card/90 transition-all duration-300;
   }
 
   .minimal-card {
-    @apply bg-card/50 border border-border/50 rounded-xl 
-           hover:bg-card/80 hover:border-border transition-all duration-200;
+    @apply bg-card/40 backdrop-blur-sm border border-border/30 rounded-xl 
+           hover:bg-card/60 hover:border-border/50 transition-all duration-300;
+  }
+  
+  .premium-card {
+    @apply bg-gradient-to-br from-card/60 to-card/40 backdrop-blur-md 
+           border border-border/40 rounded-xl shadow-[var(--shadow-card)]
+           hover:shadow-[var(--shadow-elevated)] hover:border-border/60 
+           transition-all duration-300;
   }
   
   .scrollbar-none {
@@ -90,23 +97,27 @@
   }
   
   .hover-lift {
-    @apply transition-all duration-200 hover:-translate-y-0.5;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
 
   .grok-input {
-    @apply bg-secondary/50 border-border/50 rounded-xl px-4 py-3
-           focus:bg-secondary focus:border-border transition-all duration-200
-           placeholder:text-muted-foreground text-foreground;
+    @apply bg-secondary/40 backdrop-blur-sm border-border/40 rounded-xl px-4 py-3
+           focus:bg-secondary/60 focus:border-border/60 transition-all duration-300
+           placeholder:text-muted-foreground/60 text-foreground;
   }
 
   .grok-button {
     @apply bg-primary text-primary-foreground rounded-xl px-6 py-2.5 font-medium
-           hover:bg-primary/90 transition-all duration-200 shadow-sm
-           hover:shadow-md;
+           hover:bg-primary/95 transition-all duration-300 shadow-md
+           hover:shadow-lg hover:scale-[1.02];
   }
 
   .grok-button-secondary {
-    @apply bg-secondary text-foreground rounded-xl px-6 py-2.5 font-medium
-           hover:bg-accent transition-all duration-200;
+    @apply bg-secondary/60 backdrop-blur-sm text-foreground rounded-xl px-6 py-2.5 font-medium
+           hover:bg-accent/60 transition-all duration-300 border border-border/30;
+  }
+  
+  .stars-container {
+    @apply fixed inset-0 pointer-events-none z-0 overflow-hidden;
   }
 }

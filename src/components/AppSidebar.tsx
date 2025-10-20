@@ -12,13 +12,13 @@ export default function AppSidebar() {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-sidebar-background border-r border-sidebar-border transition-all duration-200 z-40 flex flex-col",
+        "fixed left-0 top-0 h-screen bg-sidebar-background/80 backdrop-blur-xl border-r border-sidebar-border/50 transition-all duration-200 z-40 flex flex-col",
         collapsed ? "w-16" : "w-60"
       )}
     >
       {/* Header */}
       <div className={cn(
-        "flex items-center h-14 px-4 border-b border-sidebar-border",
+        "flex items-center h-14 px-4 border-b border-sidebar-border/50",
         collapsed ? "justify-center" : "justify-between"
       )}>
         {!collapsed && (
