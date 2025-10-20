@@ -23,7 +23,7 @@ export default function MainLayout() {
     )}>
       <AppSidebar />
       <div className={cn(
-        "flex-1 flex flex-col transition-all duration-500 w-full",
+        "flex-1 flex flex-col transition-all duration-500 w-full ml-60",
         loaded && "animate-fade-in"
       )}>
         <Outlet />

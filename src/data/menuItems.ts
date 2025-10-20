@@ -15,11 +15,12 @@ import {
   UserCircle,
   MessageSquare,
   Bell,
-  Bot
+  Bot,
+  ClipboardList
 } from "lucide-react";
 
 export const menuItems = [
-  { path: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { path: "/marketplace", icon: Globe, label: "Marketplace" },
   { path: "/produtos", icon: Package, label: "Produtos" },
   { path: "/minhas-vendas", icon: ShoppingCart, label: "Minhas Vendas" },
@@ -29,7 +30,7 @@ export const menuItems = [
   { path: "/financeiro", icon: Wallet, label: "Financeiro" },
   { path: "/integracoes", icon: Plug, label: "Integrações" },
   { path: "/cupons-desconto", icon: Tag, label: "Cupons de Desconto" },
-  { path: "/quiz", icon: HelpCircle, label: "Quiz" },
+  { path: "/quiz", icon: ClipboardList, label: "Quiz" },
   { path: "/perfil", icon: UserCircle, label: "Meu Perfil" },
   { path: "/chat", icon: MessageSquare, label: "Chat Suporte" },
   { path: "/ajuda", icon: HelpCircle, label: "Ajuda" },
