@@ -168,10 +168,10 @@ export default function CuponsDescontoPage() {
       <main className="flex-1 px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold">Cupons de Desconto</h1>
-                <p className="text-muted-foreground">Gerencie cupons para aumentar suas vendas e conversões</p>
+                <h1 className="text-xl sm:text-2xl font-bold">Cupons de Desconto</h1>
+                <p className="text-sm sm:text-base text-muted-foreground">Gerencie cupons para aumentar suas vendas e conversões</p>
               </div>
               
               <div className="flex items-center gap-2">
@@ -191,7 +191,7 @@ export default function CuponsDescontoPage() {
           <StatsCards estatisticas={estatisticas} loaded={loaded} />
           
           {/* Lista de cupons */}
-          <Card className={cn("bg-card border-border shadow-sm", loaded && "animate-fade-in")}>
+          <Card className={cn("premium-card", loaded && "animate-fade-in")}>
             <CardHeader className="pb-2">
               <CardTitle>Meus Cupons</CardTitle>
               <CardDescription>Visualize e gerencie todos os seus cupons de desconto</CardDescription>

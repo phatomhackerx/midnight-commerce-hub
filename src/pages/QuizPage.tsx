@@ -13,29 +13,29 @@ export default function QuizPage() {
     <div className="flex-1 flex flex-col min-h-screen bg-background">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-5xl mx-auto space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold">Quiz Builder</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold">Quiz Builder</h1>
               <p className="text-muted-foreground mt-1">Crie questionários interativos</p>
             </div>
-            <Button size="sm" className="gap-2">
+            <Button size="sm" className="gap-2 w-full sm:w-auto">
               <Plus size={16} />
               Novo Quiz
             </Button>
           </div>
 
           <Tabs defaultValue="ativos">
-            <TabsList>
+            <TabsList className="grid grid-cols-2 w-full sm:w-auto">
               <TabsTrigger value="ativos">Quizzes Ativos</TabsTrigger>
               <TabsTrigger value="resultados">Resultados</TabsTrigger>
             </TabsList>
             
             <TabsContent value="ativos" className="space-y-4 pt-6">
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {[1, 2, 3].map((i) => (
-                  <Card key={i} className="minimal-card hover-lift">
+                  <Card key={i} className="premium-card hover-lift">
                     <CardHeader>
                       <CardTitle className="text-lg">Quiz de Satisfação</CardTitle>
                       <CardDescription>248 respostas</CardDescription>
@@ -52,12 +52,12 @@ export default function QuizPage() {
                         </div>
                       </div>
                     </CardContent>
-                    <CardFooter className="flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1 gap-1">
+                    <CardFooter className="flex flex-col sm:flex-row gap-2">
+                      <Button variant="outline" size="sm" className="flex-1 gap-1 w-full">
                         <Edit size={14} />
                         Editar
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1 gap-1">
+                      <Button variant="outline" size="sm" className="flex-1 gap-1 w-full">
                         <Copy size={14} />
                         Link
                       </Button>
@@ -68,10 +68,10 @@ export default function QuizPage() {
             </TabsContent>
             
             <TabsContent value="resultados" className="pt-6">
-              <div className="minimal-card p-8 text-center">
+              <div className="premium-card p-6 sm:p-8 text-center">
                 <CheckCircle className="mx-auto mb-4 text-muted-foreground" size={48} />
-                <h3 className="text-lg font-semibold mb-2">Resultados dos Quizzes</h3>
-                <p className="text-muted-foreground">Visualize análises detalhadas das respostas</p>
+                <h3 className="text-base sm:text-lg font-semibold mb-2">Resultados dos Quizzes</h3>
+                <p className="text-sm sm:text-base text-muted-foreground">Visualize análises detalhadas das respostas</p>
               </div>
             </TabsContent>
           </Tabs>

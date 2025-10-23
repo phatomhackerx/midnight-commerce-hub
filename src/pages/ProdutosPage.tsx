@@ -267,8 +267,8 @@ export default function ProdutosPage() {
           
           <div className={cn("flex flex-col gap-6", loaded && "animate-fade-in")}>
             {/* Resumo dos produtos em cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card className="minimal-card">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <Card className="premium-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Total de Produtos</CardDescription>
                   <CardTitle className="text-2xl">{totalProdutos}</CardTitle>
@@ -280,10 +280,10 @@ export default function ProdutosPage() {
                 </CardContent>
               </Card>
               
-              <Card className="minimal-card">
+              <Card className="premium-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Status Atual</CardDescription>
-                  <CardTitle className="text-2xl">{totalPublicados} publicados</CardTitle>
+                  <CardTitle className="text-xl sm:text-2xl">{totalPublicados} publicados</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
@@ -298,10 +298,10 @@ export default function ProdutosPage() {
                 </CardContent>
               </Card>
               
-              <Card className="minimal-card">
+              <Card className="premium-card">
                 <CardHeader className="pb-2">
                   <CardDescription>Produto Mais Vendido</CardDescription>
-                  <CardTitle className="text-2xl truncate">
+                  <CardTitle className="text-xl sm:text-2xl truncate">
                     {produtos.sort((a, b) => b.vendas - a.vendas)[0]?.titulo || "Nenhum"}
                   </CardTitle>
                 </CardHeader>
@@ -314,7 +314,7 @@ export default function ProdutosPage() {
             </div>
             
             {/* Lista de produtos */}
-            <Card className="minimal-card">
+            <Card className="premium-card">
               <CardHeader className="pb-2">
                 <CardTitle>Meus Produtos</CardTitle>
                 <CardDescription>Gerencie seus produtos</CardDescription>

@@ -22,13 +22,13 @@ export default function IntegracoesPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold">Integrações</h1>
-                <p className="text-muted-foreground">Conecte com outros sistemas</p>
+                <h1 className="text-2xl sm:text-3xl font-bold">Integrações</h1>
+                <p className="text-sm sm:text-base text-muted-foreground">Conecte com outros sistemas</p>
               </div>
               
               <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function IntegracoesPage() {
           </div>
           
           <Tabs defaultValue="ativas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <TabsList>
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full md:w-auto">
               <TabsTrigger value="ativas">Ativas</TabsTrigger>
               <TabsTrigger value="disponiveis">Disponíveis</TabsTrigger>
               <TabsTrigger value="api">API</TabsTrigger>
@@ -77,9 +77,9 @@ export default function IntegracoesPage() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {integracoesAtivas.map((integracao, index) => (
-                  <Card key={index} className="transition-all hover:shadow-md minimal-card">
+                  <Card key={index} className="premium-card hover-lift transition-all">
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{integracao.nome}</CardTitle>
@@ -109,9 +109,9 @@ export default function IntegracoesPage() {
             </TabsContent>
             
             <TabsContent value="disponiveis" className="pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {integracoesDisponiveis.map((integracao, index) => (
-                  <Card key={index} className="transition-all hover:shadow-md">
+                  <Card key={index} className="premium-card hover-lift transition-all">
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{integracao.nome}</CardTitle>
@@ -135,10 +135,10 @@ export default function IntegracoesPage() {
                   </Card>
                 ))}
                 
-                <Card className="transition-all hover:shadow-md minimal-card border border-border/50">
+                <Card className="premium-card hover-lift transition-all border border-border/50">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-lg">Plataforma de Chat</CardTitle>
+                      <CardTitle className="text-base sm:text-lg">Plataforma de Chat</CardTitle>
                       <Badge>Novo</Badge>
                     </div>
                     <CardDescription>Chat com IA e automações</CardDescription>
@@ -161,7 +161,7 @@ export default function IntegracoesPage() {
             </TabsContent>
             
             <TabsContent value="api" className="space-y-4 pt-4">
-              <Card>
+              <Card className="premium-card">
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <div>
@@ -207,7 +207,7 @@ export default function IntegracoesPage() {
             </TabsContent>
             
             <TabsContent value="webhooks" className="space-y-4 pt-4">
-              <Card>
+              <Card className="premium-card">
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <div>

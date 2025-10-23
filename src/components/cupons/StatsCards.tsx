@@ -18,9 +18,9 @@ interface StatsCardsProps {
 
 export default function StatsCards({ estatisticas, loaded }: StatsCardsProps) {
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
+    <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
       {estatisticas.map((item, index) => (
-        <Card key={index} className="bg-card border-border shadow-sm">
+        <Card key={index} className="premium-card">
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardDescription>{item.label}</CardDescription>

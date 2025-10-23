@@ -49,51 +49,51 @@ export default function RelatoriosPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Relatórios</h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold">Relatórios</h1>
               
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">
                   <RefreshCw size={16} />
-                  <span>Atualizar</span>
+                  <span className="hidden sm:inline">Atualizar</span>
                 </Button>
                 <Button variant="outline" size="sm" className="gap-1">
                   <Download size={16} />
-                  <span>Exportar</span>
+                  <span className="hidden sm:inline">Exportar</span>
                 </Button>
                 <Button size="sm" className="gap-1">
                   <FileText size={16} />
-                  <span>Novo Relatório</span>
+                  <span className="hidden sm:inline">Novo Relatório</span>
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Analise e gerencie todos os relatórios da sua loja.</p>
+            <p className="text-sm sm:text-base text-muted-foreground">Analise e gerencie todos os relatórios da sua loja.</p>
           </div>
           
           <Tabs defaultValue="vendas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <div className="border-b">
-              <TabsList className="bg-transparent w-full justify-start">
-                <TabsTrigger value="vendas" className="data-[state=active]:bg-background">
+            <div className="border-b overflow-x-auto">
+              <TabsList className="bg-transparent w-full justify-start min-w-max">
+                <TabsTrigger value="vendas" className="data-[state=active]:bg-background text-sm sm:text-base">
                   Vendas
                 </TabsTrigger>
-                <TabsTrigger value="clientes" className="data-[state=active]:bg-background">
+                <TabsTrigger value="clientes" className="data-[state=active]:bg-background text-sm sm:text-base">
                   Clientes
                 </TabsTrigger>
-                <TabsTrigger value="produtos" className="data-[state=active]:bg-background">
+                <TabsTrigger value="produtos" className="data-[state=active]:bg-background text-sm sm:text-base">
                   Produtos
                 </TabsTrigger>
-                <TabsTrigger value="financeiro" className="data-[state=active]:bg-background">
+                <TabsTrigger value="financeiro" className="data-[state=active]:bg-background text-sm sm:text-base">
                   Financeiro
                 </TabsTrigger>
               </TabsList>
             </div>
             
             <TabsContent value="vendas" className="space-y-6 pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="transition-all hover:shadow-md">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <Card className="premium-card hover-lift transition-all">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg flex items-center justify-between">
                       <span>Vendas Totais</span>
@@ -110,9 +110,9 @@ export default function RelatoriosPage() {
                   </CardContent>
                 </Card>
                 
-                <Card className="transition-all hover:shadow-md">
+                <Card className="premium-card hover-lift transition-all">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center justify-between">
+                    <CardTitle className="text-base sm:text-lg flex items-center justify-between">
                       <span>Ticket Médio</span>
                       <PieChart size={20} className="text-primary" />
                     </CardTitle>
@@ -127,9 +127,9 @@ export default function RelatoriosPage() {
                   </CardContent>
                 </Card>
                 
-                <Card className="transition-all hover:shadow-md">
+                <Card className="premium-card hover-lift transition-all">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center justify-between">
+                    <CardTitle className="text-base sm:text-lg flex items-center justify-between">
                       <span>Conversão</span>
                       <TrendingUp size={20} className="text-primary" />
                     </CardTitle>
@@ -145,7 +145,7 @@ export default function RelatoriosPage() {
                 </Card>
               </div>
               
-              <Card className="transition-all hover:shadow-md">
+              <Card className="premium-card hover-lift transition-all">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle>Relatórios de Vendas</CardTitle>
@@ -200,7 +200,7 @@ export default function RelatoriosPage() {
             </TabsContent>
             
             <TabsContent value="clientes" className="pt-4">
-              <Card className="transition-all hover:shadow-md">
+              <Card className="premium-card hover-lift transition-all">
                 <CardHeader>
                   <CardTitle>Relatórios de Clientes</CardTitle>
                   <CardDescription>Analise o comportamento dos seus clientes</CardDescription>
@@ -271,7 +271,7 @@ export default function RelatoriosPage() {
             </TabsContent>
             
             <TabsContent value="produtos" className="pt-4">
-              <Card className="transition-all hover:shadow-md">
+              <Card className="premium-card hover-lift transition-all">
                 <CardHeader>
                   <CardTitle>Relatórios de Produtos</CardTitle>
                   <CardDescription>Analise o desempenho dos seus produtos</CardDescription>
@@ -342,7 +342,7 @@ export default function RelatoriosPage() {
             </TabsContent>
             
             <TabsContent value="financeiro" className="pt-4">
-              <Card className="transition-all hover:shadow-md">
+              <Card className="premium-card hover-lift transition-all">
                 <CardHeader>
                   <CardTitle>Relatórios Financeiros</CardTitle>
                   <CardDescription>Análise financeira e contábil do seu negócio</CardDescription>

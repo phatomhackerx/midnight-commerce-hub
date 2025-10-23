@@ -93,28 +93,28 @@ export default function AssinaturasPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Assinaturas</h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <h1 className="text-2xl sm:text-3xl font-bold">Assinaturas</h1>
               
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">
                   <Settings size={16} />
-                  <span>Configurações</span>
+                  <span className="hidden sm:inline">Configurações</span>
                 </Button>
                 <Button size="sm" className="gap-1">
                   <Plus size={16} />
-                  <span>Nova Assinatura</span>
+                  <span className="hidden sm:inline">Nova Assinatura</span>
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Gerencie todas as assinaturas ativas e recorrentes.</p>
+            <p className="text-sm sm:text-base text-muted-foreground">Gerencie todas as assinaturas ativas e recorrentes.</p>
           </div>
           
-          <div className={cn("grid grid-cols-1 md:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
-            <Card className="bg-primary/5 border-primary/20 transition-all hover:shadow-md">
+          <div className={cn("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
+            <Card className="premium-card hover-lift transition-all">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">Total de Assinaturas</CardTitle>
                 <CardDescription>Assinaturas ativas no momento</CardDescription>
@@ -124,9 +124,9 @@ export default function AssinaturasPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="premium-card hover-lift transition-all">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Receita Mensal</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Receita Mensal</CardTitle>
                 <CardDescription>Faturamento recorrente</CardDescription>
               </CardHeader>
               <CardContent>
@@ -134,9 +134,9 @@ export default function AssinaturasPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="premium-card hover-lift transition-all">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Assinaturas Novas</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Assinaturas Novas</CardTitle>
                 <CardDescription>Últimos 30 dias</CardDescription>
               </CardHeader>
               <CardContent>
@@ -144,9 +144,9 @@ export default function AssinaturasPage() {
               </CardContent>
             </Card>
             
-            <Card className="transition-all hover:shadow-md">
+            <Card className="premium-card hover-lift transition-all">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Cancelamentos</CardTitle>
+                <CardTitle className="text-base sm:text-lg">Cancelamentos</CardTitle>
                 <CardDescription>Últimos 30 dias</CardDescription>
               </CardHeader>
               <CardContent>
@@ -156,7 +156,7 @@ export default function AssinaturasPage() {
           </div>
           
           <Tabs defaultValue="assinaturas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <TabsList>
+            <TabsList className="grid grid-cols-1 sm:grid-cols-3 w-full sm:w-auto">
               <TabsTrigger value="assinaturas">Assinaturas</TabsTrigger>
               <TabsTrigger value="planos">Planos</TabsTrigger>
               <TabsTrigger value="configuracoes">Configurações</TabsTrigger>
@@ -239,17 +239,18 @@ export default function AssinaturasPage() {
                 </div>
               </div>
               
-              <Card>
+              <Card className="premium-card overflow-hidden">
                 <CardContent className="p-0">
-                  <Table>
+                  <div className="overflow-x-auto">
+                    <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Cliente</TableHead>
-                        <TableHead>Plano</TableHead>
-                        <TableHead>Valor</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Próx. Cobrança</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
+                        <TableHead className="min-w-[150px]">Cliente</TableHead>
+                        <TableHead className="min-w-[120px]">Plano</TableHead>
+                        <TableHead className="min-w-[100px]">Valor</TableHead>
+                        <TableHead className="min-w-[100px]">Status</TableHead>
+                        <TableHead className="min-w-[130px]">Próx. Cobrança</TableHead>
+                        <TableHead className="text-right min-w-[100px]">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -300,8 +301,9 @@ export default function AssinaturasPage() {
                       )}
                     </TableBody>
                   </Table>
+                  </div>
                 </CardContent>
-                <CardFooter className="flex justify-between p-4 border-t">
+                <CardFooter className="flex flex-col sm:flex-row justify-between p-4 border-t gap-4">
                   <div className="text-sm text-muted-foreground">
                     Mostrando <span className="font-medium">{filteredAssinaturas.length}</span> de <span className="font-medium">{assinaturas.length}</span> assinaturas
                   </div>
@@ -325,9 +327,9 @@ export default function AssinaturasPage() {
                 </Button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {planos.map((plano, index) => (
-                  <Card key={index} className="transition-all hover:shadow-md">
+                  <Card key={index} className="premium-card hover-lift transition-all">
                     <CardHeader>
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{plano.nome}</CardTitle>

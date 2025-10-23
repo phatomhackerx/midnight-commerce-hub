@@ -116,25 +116,25 @@ export default function MinhasVendasPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-8">
+      <main className="flex-1 px-4 sm:px-6 py-6 sm:py-8">
         <div className="max-w-[1600px] mx-auto space-y-6">
           {/* Hero Section */}
           <div className="animate-fade-in">
             <div className="flex items-center gap-3 mb-3">
               <ShoppingBag className="text-foreground" size={20} />
-              <span className="text-sm text-muted-foreground">Gestão de Vendas</span>
+              <span className="text-xs sm:text-sm text-muted-foreground">Gestão de Vendas</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-foreground">
               Minhas Vendas
             </h1>
-            <p className="text-base text-muted-foreground max-w-2xl">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
               Acompanhe todas as suas transações e gerencie pedidos em tempo real
             </p>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-slide-up">
-            <Card className="minimal-card hover-lift">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 animate-slide-up">
+            <Card className="premium-card hover-lift">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2.5 rounded-lg bg-secondary">
@@ -151,7 +151,7 @@ export default function MinhasVendasPage() {
               </CardContent>
             </Card>
 
-            <Card className="minimal-card hover-lift">
+            <Card className="premium-card hover-lift">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2.5 rounded-lg bg-secondary">
@@ -165,7 +165,7 @@ export default function MinhasVendasPage() {
               </CardContent>
             </Card>
 
-            <Card className="minimal-card hover-lift">
+            <Card className="premium-card hover-lift">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="p-2.5 rounded-lg bg-secondary">
@@ -181,7 +181,7 @@ export default function MinhasVendasPage() {
           </div>
 
           {/* Filters and Search */}
-          <Card className="minimal-card animate-fade-in">
+          <Card className="premium-card animate-fade-in">
             <CardHeader>
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -212,11 +212,11 @@ export default function MinhasVendasPage() {
                   />
                 </div>
                 <Tabs value={filtroStatus} onValueChange={setFiltroStatus} className="w-full md:w-auto">
-                  <TabsList className="bg-secondary/50 rounded-lg">
-                    <TabsTrigger value="todas" className="rounded-md">Todas</TabsTrigger>
-                    <TabsTrigger value="aprovado" className="rounded-md">Aprovadas</TabsTrigger>
-                    <TabsTrigger value="pendente" className="rounded-md">Pendentes</TabsTrigger>
-                    <TabsTrigger value="cancelado" className="rounded-md">Canceladas</TabsTrigger>
+                  <TabsList className="bg-secondary/50 rounded-lg grid grid-cols-2 md:grid-cols-4 w-full md:w-auto">
+                    <TabsTrigger value="todas" className="rounded-md text-xs sm:text-sm">Todas</TabsTrigger>
+                    <TabsTrigger value="aprovado" className="rounded-md text-xs sm:text-sm">Aprovadas</TabsTrigger>
+                    <TabsTrigger value="pendente" className="rounded-md text-xs sm:text-sm">Pendentes</TabsTrigger>
+                    <TabsTrigger value="cancelado" className="rounded-md text-xs sm:text-sm">Canceladas</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
