@@ -168,27 +168,27 @@ export default function FinanceiroPage() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
+    <div className="container mx-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
       <div className="flex flex-col space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Financeiro</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Financeiro</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
           Gerencie seu saldo, saques e formas de pagamento.
         </p>
       </div>
 
       {/* Cards de Saldo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+        <Card className="premium-card">
           <CardHeader className="pb-2">
             <CardDescription>Saldo Disponível</CardDescription>
-            <CardTitle className="text-3xl font-bold text-green-600">
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-green-500">
               R$ {saldoInfo.saldoDisponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-0">
             <Button 
               onClick={handleSolicitarSaque}
-              className="w-full"
+              className="w-full grok-button"
             >
               Solicitar Saque
             </Button>
@@ -200,10 +200,10 @@ export default function FinanceiroPage() {
           </CardFooter>
         </Card>
 
-        <Card>
+        <Card className="premium-card">
           <CardHeader className="pb-2">
             <CardDescription>Saldo Bloqueado</CardDescription>
-            <CardTitle className="text-3xl font-bold text-amber-600">
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-amber-500">
               R$ {saldoInfo.saldoBloqueado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             </CardTitle>
           </CardHeader>
@@ -217,52 +217,57 @@ export default function FinanceiroPage() {
           </CardFooter>
         </Card>
 
-        <Card className="md:col-span-2">
+        <Card className="premium-card sm:col-span-2">
           <CardHeader className="pb-2">
             <CardDescription>Evolução do Saldo</CardDescription>
           </CardHeader>
-          <CardContent className="h-[120px]">
+          <CardContent className="h-[160px] sm:h-[200px] lg:h-[240px]">
             <ChartContainer
               config={{
                 saldo: {
                   label: "Saldo",
-                  color: "#9b87f5",
+                  color: "hsl(var(--primary))",
                 },
               }}
+              className="h-full w-full"
             >
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={dadosFinanceiros}>
+                <AreaChart data={dadosFinanceiros} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
                   <defs>
                     <linearGradient id="colorSaldo" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#9b87f5" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#9b87f5" stopOpacity={0.1}/>
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.05}/>
                     </linearGradient>
                   </defs>
                   <XAxis
                     dataKey="name"
                     axisLine={false}
                     tickLine={false}
-                    tickMargin={10}
-                    fontSize={12}
+                    tickMargin={8}
+                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    className="text-xs"
                   />
                   <YAxis
                     axisLine={false}
                     tickLine={false}
-                    tickMargin={10}
-                    fontSize={12}
-                    tickFormatter={(value) => `R$${value}`}
+                    tickMargin={8}
+                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
+                    tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                    width={45}
                   />
                   <ChartTooltip
                     content={
                       <ChartTooltipContent
-                        formatter={(value) => `R$${value}`}
+                        formatter={(value) => `R$ ${Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                        className="bg-card/95 backdrop-blur-sm"
                       />
                     }
                   />
                   <Area
                     type="monotone"
                     dataKey="saldo"
-                    stroke="#9b87f5"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#colorSaldo)"
                   />
@@ -275,10 +280,10 @@ export default function FinanceiroPage() {
 
       {/* Tabs para Extrato, Contas e Formas de Pagamento */}
       <Tabs defaultValue="extrato" className="w-full" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 mb-8">
-          <TabsTrigger value="extrato">Extrato</TabsTrigger>
-          <TabsTrigger value="contas">Contas Bancárias</TabsTrigger>
-          <TabsTrigger value="pagamentos">Formas de Pagamento</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-6 sm:mb-8 h-auto sm:h-10">
+          <TabsTrigger value="extrato" className="text-sm">Extrato</TabsTrigger>
+          <TabsTrigger value="contas" className="text-sm">Contas Bancárias</TabsTrigger>
+          <TabsTrigger value="pagamentos" className="text-sm">Formas de Pagamento</TabsTrigger>
         </TabsList>
 
         {/* Tab Extrato */}
@@ -317,16 +322,17 @@ export default function FinanceiroPage() {
             </div>
           </div>
 
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead>Valor</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
+          <Card className="premium-card overflow-hidden">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="min-w-[90px]">Data</TableHead>
+                    <TableHead className="min-w-[200px]">Descrição</TableHead>
+                    <TableHead className="min-w-[100px]">Valor</TableHead>
+                    <TableHead className="min-w-[100px]">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
               <TableBody>
                 {transacoesFiltradas.length > 0 ? (
                   transacoesFiltradas.map((transacao) => (
@@ -383,7 +389,8 @@ export default function FinanceiroPage() {
                   </TableRow>
                 )}
               </TableBody>
-            </Table>
+              </Table>
+            </div>
           </Card>
         </TabsContent>
 
@@ -394,12 +401,12 @@ export default function FinanceiroPage() {
             <Button onClick={handleAdicionarConta}>Adicionar Conta</Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {contasBancarias.map((conta) => (
-              <Card key={conta.id}>
+              <Card key={conta.id} className="premium-card">
                 <CardHeader className="pb-2">
-                  <div className="flex justify-between">
-                    <CardTitle>{conta.banco}</CardTitle>
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-lg">{conta.banco}</CardTitle>
                     <Badge variant="outline">{conta.tipo}</Badge>
                   </div>
                 </CardHeader>
@@ -453,8 +460,8 @@ export default function FinanceiroPage() {
 
           <div className="space-y-4">
             {formasPagamento.map((forma) => (
-              <Card key={forma.id}>
-                <div className="flex items-center p-4">
+              <Card key={forma.id} className="premium-card">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4">
                   <div className="flex-1 flex items-center gap-3">
                     {forma.nome === "Cartão de Crédito" ? (
                       <CreditCard className="text-primary" size={24} />
@@ -472,7 +479,7 @@ export default function FinanceiroPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                     <Badge variant={forma.ativa ? "default" : "outline"}>
                       {forma.ativa ? "Ativo" : "Desativado"}
                     </Badge>
