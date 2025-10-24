@@ -12,6 +12,8 @@ import MarketplacePage from "@/pages/MarketplacePage";
 import ProdutoDetalhe from "@/pages/ProdutoDetalhe";
 import ProdutosPage from "@/pages/ProdutosPage";
 import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
+import LinksPagamentoPage from "@/pages/LinksPagamentoPage";
+import ConfiguracoesProdutoPage from "@/pages/ConfiguracoesProdutoPage";
 import CuponsDescontoPage from "@/pages/CuponsDescontoPage";
 import FinanceiroPage from "@/pages/FinanceiroPage";
 import RelatoriosPage from "@/pages/RelatoriosPage";
@@ -44,8 +46,10 @@ const App = () => (
               <Route path="/marketplace" element={<MarketplacePage />} />
               <Route path="/marketplace/produto/:id" element={<ProdutoDetalhe />} />
               <Route path="/produtos" element={<ProdutosPage />} />
+              <Route path="/produtos/config/:id" element={<ConfiguracoesProdutoPage />} />
               <Route path="/produtos/checkout-builder/:id" element={<CheckoutBuilderPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
+              <Route path="/links-pagamento" element={<LinksPagamentoPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
               <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
               <Route path="/relatorios" element={<RelatoriosPage />} />

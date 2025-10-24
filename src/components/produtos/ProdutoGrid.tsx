@@ -149,6 +149,10 @@ const ProdutoGrid: React.FC<ProdutoGridProps> = ({
                   <Pencil className="mr-2 h-4 w-4" />
                   <span>Editar produto</span>
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.open(`/produtos/config/${produto.id}`, '_self')}>
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>Configurar Links</span>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onTogglePublicado(produto.id)}>
                   {produto.publicado ? (
                     <>

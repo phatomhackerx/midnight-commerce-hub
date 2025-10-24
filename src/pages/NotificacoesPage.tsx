@@ -34,48 +34,52 @@ export default function NotificacoesPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-[800px] mx-auto space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Notificações</h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl font-bold">Notificações</h1>
+                <p className="text-muted-foreground">Gerencie suas notificações</p>
+              </div>
               
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm" className="gap-1">
                   <Settings size={16} />
-                  <span>Configurações</span>
+                  <span className="hidden sm:inline">Configurações</span>
                 </Button>
                 <Button variant="outline" size="sm" className="gap-1">
                   <Check size={16} />
-                  <span>Marcar Todas como Lidas</span>
+                  <span className="hidden sm:inline">Marcar como Lidas</span>
                 </Button>
               </div>
             </div>
-            <p className="text-muted-foreground">Gerencie suas notificações</p>
           </div>
           
           <Tabs defaultValue="todas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <div className="flex justify-between items-center mb-4">
-              <TabsList>
-                <TabsTrigger value="todas">Todas</TabsTrigger>
-                <TabsTrigger value="nao-lidas">
-                  Não Lidas
-                  <Badge className="ml-1.5 bg-primary">{notificacoes.filter(n => !n.lida).length}</Badge>
-                </TabsTrigger>
-                <TabsTrigger value="arquivadas">Arquivadas</TabsTrigger>
-              </TabsList>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+              <div className="overflow-x-auto w-full sm:w-auto">
+                <TabsList>
+                  <TabsTrigger value="todas">Todas</TabsTrigger>
+                  <TabsTrigger value="nao-lidas">
+                    Não Lidas
+                    <Badge className="ml-1.5 bg-primary">{notificacoes.filter(n => !n.lida).length}</Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="arquivadas">Arquivadas</TabsTrigger>
+                </TabsList>
+              </div>
               
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" className="gap-1">
                   <Filter size={16} />
-                  <span>Filtrar</span>
+                  <span className="hidden sm:inline">Filtrar</span>
                   <ChevronDown size={14} />
                 </Button>
               </div>
             </div>
             
             <TabsContent value="todas" className="space-y-4">
-              <Card className="minimal-card">
+              <Card className="premium-card">
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-sm">Hoje</CardTitle>
                 </CardHeader>
@@ -88,7 +92,7 @@ export default function NotificacoesPage() {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="premium-card">
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-sm">Esta Semana</CardTitle>
                 </CardHeader>
@@ -101,7 +105,7 @@ export default function NotificacoesPage() {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="premium-card">
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-sm">Anteriores</CardTitle>
                 </CardHeader>
@@ -116,7 +120,7 @@ export default function NotificacoesPage() {
             </TabsContent>
             
             <TabsContent value="nao-lidas" className="space-y-4">
-              <Card>
+              <Card className="premium-card">
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-sm">Não Lidas</CardTitle>
                 </CardHeader>
@@ -143,7 +147,7 @@ export default function NotificacoesPage() {
             </TabsContent>
             
             <TabsContent value="arquivadas" className="space-y-4">
-              <Card>
+              <Card className="premium-card">
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-sm">Arquivadas</CardTitle>
                 </CardHeader>
@@ -168,7 +172,7 @@ export default function NotificacoesPage() {
             </TabsContent>
           </Tabs>
           
-              <Card className={cn("minimal-card", loaded && "animate-fade-in")}>
+          <Card className={cn("premium-card", loaded && "animate-fade-in")}>
             <CardHeader className="flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle>Preferências</CardTitle>

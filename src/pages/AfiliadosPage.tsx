@@ -49,66 +49,68 @@ export default function AfiliadosPage() {
             <p className="text-muted-foreground">Gerencie afiliados e comissões</p>
           </div>
           
-          <div className={cn("grid grid-cols-1 md:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
-            <Card className="minimal-card">
+          <div className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4", loaded && "animate-fade-in")}>
+            <Card className="premium-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <Users size={20} className="text-primary" />
                   <span>Total de Afiliados</span>
                 </CardTitle>
                 <CardDescription>Afiliados cadastrados</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">48</div>
+                <div className="text-2xl sm:text-3xl font-bold">48</div>
               </CardContent>
             </Card>
             
-            <Card className="minimal-card">
+            <Card className="premium-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <Wallet size={20} />
                   <span>Comissões (Mês)</span>
                 </CardTitle>
                 <CardDescription>Total a pagar no mês</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">R$ 4.785,30</div>
+                <div className="text-2xl sm:text-3xl font-bold">R$ 4.785,30</div>
               </CardContent>
             </Card>
             
-            <Card className="minimal-card">
+            <Card className="premium-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <Share2 size={20} />
                   <span>Conversões (Mês)</span>
                 </CardTitle>
                 <CardDescription>Vendas convertidas</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">97</div>
+                <div className="text-2xl sm:text-3xl font-bold">97</div>
               </CardContent>
             </Card>
             
-            <Card className="minimal-card">
+            <Card className="premium-card">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <Link size={20} />
                   <span>Cliques (Mês)</span>
                 </CardTitle>
                 <CardDescription>Total de cliques</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">2.456</div>
+                <div className="text-2xl sm:text-3xl font-bold">2.456</div>
               </CardContent>
             </Card>
           </div>
           
           <Tabs defaultValue="afiliados" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <TabsList>
-              <TabsTrigger value="afiliados">Afiliados</TabsTrigger>
-              <TabsTrigger value="comissoes">Comissões</TabsTrigger>
-              <TabsTrigger value="materiais">Materiais</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="w-full sm:w-auto">
+                <TabsTrigger value="afiliados" className="flex-1 sm:flex-none">Afiliados</TabsTrigger>
+                <TabsTrigger value="comissoes" className="flex-1 sm:flex-none">Comissões</TabsTrigger>
+                <TabsTrigger value="materiais" className="flex-1 sm:flex-none">Materiais</TabsTrigger>
+              </TabsList>
+            </div>
             
             <TabsContent value="afiliados" className="space-y-4 pt-4">
               <div className="flex justify-between items-center">
@@ -126,9 +128,10 @@ export default function AfiliadosPage() {
                 </Button>
               </div>
               
-              <Card className="minimal-card">
+              <Card className="premium-card overflow-hidden">
                 <CardContent className="p-0">
-                  <Table>
+                  <div className="overflow-x-auto">
+                    <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Afiliado</TableHead>
@@ -168,6 +171,7 @@ export default function AfiliadosPage() {
                       ))}
                     </TableBody>
                   </Table>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -189,9 +193,10 @@ export default function AfiliadosPage() {
                 </Button>
               </div>
               
-              <Card className="minimal-card">
+              <Card className="premium-card overflow-hidden">
                 <CardContent className="p-0">
-                  <Table>
+                  <div className="overflow-x-auto">
+                    <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>ID</TableHead>
@@ -225,14 +230,15 @@ export default function AfiliadosPage() {
                       ))}
                     </TableBody>
                   </Table>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
             
             <TabsContent value="materiais" className="pt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {materiais.map((material, index) => (
-                  <Card key={index} className="minimal-card hover:shadow-md transition-all">
+                  <Card key={index} className="premium-card hover:shadow-md transition-all">
                     <CardHeader>
                       <div className="flex justify-between items-center">
                         <CardTitle className="text-lg">{material.titulo}</CardTitle>

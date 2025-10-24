@@ -16,7 +16,8 @@ import {
   MessageSquare,
   Bell,
   Bot,
-  ClipboardList
+  ClipboardList,
+  Link
 } from "lucide-react";
 
 export const menuItems = [
@@ -24,6 +25,7 @@ export const menuItems = [
   { path: "/marketplace", icon: Globe, label: "Marketplace" },
   { path: "/produtos", icon: Package, label: "Produtos" },
   { path: "/minhas-vendas", icon: ShoppingCart, label: "Minhas Vendas" },
+  { path: "/links-pagamento", icon: Link, label: "Links de Pagamento" },
   { path: "/assinaturas", icon: CalendarClock, label: "Assinaturas" },
   { path: "/relatorios", icon: FileBarChart2, label: "Relatórios" },
   { path: "/afiliados", icon: Users, label: "Afiliados" },

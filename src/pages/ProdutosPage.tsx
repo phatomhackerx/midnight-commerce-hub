@@ -241,11 +241,11 @@ export default function ProdutosPage() {
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold">Produtos</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold">Produtos</h1>
                 <p className="text-muted-foreground">Gerencie seus produtos</p>
               </div>
               
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button variant="outline" size="sm">
                   <Upload className="h-4 w-4 mr-2" />
                   Importar

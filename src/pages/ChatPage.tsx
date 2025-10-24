@@ -34,10 +34,10 @@ export default function ChatPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
-        <div className="max-w-[1400px] mx-auto h-[calc(100vh-12rem)] flex overflow-hidden rounded-xl border border-border/50 minimal-card">
+      <main className="flex-1 px-4 sm:px-6 py-6">
+        <div className="max-w-[1400px] mx-auto h-[calc(100vh-12rem)] flex flex-col lg:flex-row overflow-hidden rounded-xl border border-border/50 premium-card">
           <div className={cn(
-            "w-80 border-r flex flex-col transition-all", 
+            "w-full lg:w-80 border-b lg:border-b-0 lg:border-r flex flex-col transition-all max-h-[300px] lg:max-h-none", 
             loaded && "animate-fade-in"
           )}>
             <div className="p-4 border-b border-border/50 flex justify-between items-center">
@@ -217,7 +217,7 @@ export default function ChatPage() {
           </div>
           
           <div className={cn(
-            "w-80 border-l hidden lg:flex flex-col transition-all",
+            "w-full lg:w-80 border-t lg:border-t-0 lg:border-l hidden lg:flex flex-col transition-all",
             loaded && "animate-fade-in transition-delay-200"
           )}>
             <div className="p-4 border-b">
