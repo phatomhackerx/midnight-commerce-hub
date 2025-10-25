@@ -11,6 +11,7 @@ import PaymentSettings from "@/components/checkout/PaymentSettings";
 import UpsellSettings from "@/components/checkout/UpsellSettings";
 import AdvancedSettings from "@/components/checkout/AdvancedSettings";
 import CheckoutPreviewEnhanced from "@/components/checkout/CheckoutPreviewEnhanced";
+import BumpOffersConfig from "@/components/produtos/BumpOffersConfig";
 
 export interface CheckoutConfig {
   titulo: string;
@@ -57,6 +58,14 @@ export interface CheckoutConfig {
   scriptsPersonalizados: string;
   dominio: string;
   codigoAnalytics: string;
+  bumpOffers: Array<{
+    id: string;
+    titulo: string;
+    descricao: string;
+    preco: number;
+    imagem: string | null;
+    ativo: boolean;
+  }>;
 }
 
 const defaultConfig: CheckoutConfig = {
@@ -101,6 +110,7 @@ const defaultConfig: CheckoutConfig = {
   scriptsPersonalizados: "",
   dominio: "",
   codigoAnalytics: "",
+  bumpOffers: [],
 };
 
 export default function CheckoutBuilderPage() {
@@ -315,12 +325,13 @@ export default function CheckoutBuilderPage() {
               <div className="bg-white rounded-lg shadow-sm border">
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
                   <div className="px-1 pt-2">
-                    <TabsList className="grid grid-cols-5 bg-muted/50">
-                      <TabsTrigger value="design">Design</TabsTrigger>
-                      <TabsTrigger value="conteudo">Conteúdo</TabsTrigger>
-                      <TabsTrigger value="pagamento">Pagamento</TabsTrigger>
-                      <TabsTrigger value="upsell">Upsell</TabsTrigger>
-                      <TabsTrigger value="avançado">Avançado</TabsTrigger>
+                    <TabsList className="grid grid-cols-3 lg:grid-cols-2 bg-muted/50 h-auto">
+                      <TabsTrigger value="design" className="text-xs sm:text-sm">Design</TabsTrigger>
+                      <TabsTrigger value="conteudo" className="text-xs sm:text-sm">Conteúdo</TabsTrigger>
+                      <TabsTrigger value="pagamento" className="text-xs sm:text-sm">Pagamento</TabsTrigger>
+                      <TabsTrigger value="upsell" className="text-xs sm:text-sm">Upsell</TabsTrigger>
+                      <TabsTrigger value="bump" className="text-xs sm:text-sm">Bump</TabsTrigger>
+                      <TabsTrigger value="avançado" className="text-xs sm:text-sm">Avançado</TabsTrigger>
                     </TabsList>
                   </div>
                   
@@ -363,8 +374,15 @@ export default function CheckoutBuilderPage() {
                       />
                     </TabsContent>
                     
+                    <TabsContent value="bump" className="mt-0">
+                      <BumpOffersConfig 
+                        offers={config.bumpOffers}
+                        onChange={(bumpOffers) => handleUpdateConfig({ bumpOffers })}
+                      />
+                    </TabsContent>
+                    
                     <TabsContent value="avançado" className="mt-0">
-                      <AdvancedSettings 
+                      <AdvancedSettings
                         config={config}
                         onUpdateFacebookPixel={(pixelFacebook) => handleUpdateConfig({ pixelFacebook })}
                         onUpdateGooglePixel={(pixelGoogle) => handleUpdateConfig({ pixelGoogle })}

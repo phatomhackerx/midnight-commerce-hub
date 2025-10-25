@@ -23,12 +23,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { X, ImageIcon, Upload, Plus, Package, Calendar, Tag } from "lucide-react";
+import { X, ImageIcon, Upload, Plus, Package, Calendar, Tag, Settings } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Produto, TipoProduto } from "@/pages/ProdutosPage";
+import EntregaveisForm from "./EntregaveisForm";
+import AreaMembrosConfigComponent from "./AreaMembrosConfig";
+import CheckoutsList from "./CheckoutsList";
 
 // Definição do esquema de validação para o produto
 const produtoSchema = z.object({
@@ -89,6 +92,27 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
   const [tagsSelecionadas, setTagsSelecionadas] = useState<string[]>(
     produtoAtual?.tags || []
   );
+  const [entregaveis, setEntregaveis] = useState<any[]>([]);
+  const [areaMembrosConfig, setAreaMembrosConfig] = useState({
+    ativa: false,
+    titulo: "Área de Membros",
+    logo: null,
+    corPrimaria: "#7E69AB",
+    layout: "moderno" as "moderno" | "classico" | "minimalista",
+    liberacaoConteudo: "imediata" as "imediata" | "gotejamento",
+    mensagemBoasVindas: "Bem-vindo! Aqui você terá acesso a todo o conteúdo do seu curso.",
+  });
+  
+  const checkoutsMock = [
+    {
+      id: "1",
+      nome: "Checkout Principal",
+      status: "ativo" as const,
+      conversao: 12.5,
+      vendas: 45,
+      url: "https://seu-dominio.com/checkout/principal"
+    }
+  ];
   
   // Inicializar formulário com valores padrão ou do produto existente
   const form = useForm<ProdutoFormValues>({
@@ -194,18 +218,26 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Tabs defaultValue="geral" className="w-full">
-          <TabsList className="mb-4">
-            <TabsTrigger value="geral" className="flex items-center gap-2">
+          <TabsList className="mb-4 grid grid-cols-2 sm:grid-cols-5">
+            <TabsTrigger value="geral" className="flex items-center gap-1 sm:gap-2">
               <Package size={16} />
-              <span>Informações Gerais</span>
+              <span className="hidden sm:inline">Geral</span>
             </TabsTrigger>
-            <TabsTrigger value="detalhes" className="flex items-center gap-2">
+            <TabsTrigger value="detalhes" className="flex items-center gap-1 sm:gap-2">
               <Tag size={16} />
-              <span>Detalhes</span>
+              <span className="hidden sm:inline">Detalhes</span>
             </TabsTrigger>
-            <TabsTrigger value="monetizacao" className="flex items-center gap-2">
+            <TabsTrigger value="monetizacao" className="flex items-center gap-1 sm:gap-2">
               <Calendar size={16} />
-              <span>Monetização</span>
+              <span className="hidden sm:inline">Monetização</span>
+            </TabsTrigger>
+            <TabsTrigger value="entregaveis" className="flex items-center gap-1 sm:gap-2">
+              <Upload size={16} />
+              <span className="hidden sm:inline">Entregáveis</span>
+            </TabsTrigger>
+            <TabsTrigger value="avancado" className="flex items-center gap-1 sm:gap-2">
+              <Settings size={16} />
+              <span className="hidden sm:inline">Avançado</span>
             </TabsTrigger>
           </TabsList>
           
@@ -544,6 +576,27 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
               </div>
             </div>
           </TabsContent>
+
+          <TabsContent value="entregaveis" className="space-y-6">
+            <EntregaveisForm 
+              entregaveis={entregaveis}
+              onChange={setEntregaveis}
+            />
+          </TabsContent>
+
+          <TabsContent value="avancado" className="space-y-6">
+            <AreaMembrosConfigComponent 
+              config={areaMembrosConfig}
+              onChange={setAreaMembrosConfig}
+            />
+            
+            {produtoAtual && (
+              <CheckoutsList 
+                produtoId={produtoAtual.id}
+                checkouts={checkoutsMock}
+              />
+            )}
+          </TabsContent>
         </Tabs>
 
         <DialogFooter className="flex justify-between sm:justify-between pt-4 border-t">
@@ -551,10 +604,11 @@ const NovoProdutoForm: React.FC<NovoProdutoFormProps> = ({
             type="button" 
             variant="outline" 
             onClick={onCancelar}
+            className="w-full sm:w-auto"
           >
             Cancelar
           </Button>
-          <Button type="submit">
+          <Button type="submit" className="w-full sm:w-auto">
             {produtoAtual ? 'Salvar Alterações' : 'Criar Produto'}
           </Button>
         </DialogFooter>

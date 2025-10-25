@@ -236,23 +236,23 @@ export default function ProdutosPage() {
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
       
-      <main className="flex-1 px-6 py-6">
-        <div className="max-w-[1600px] mx-auto space-y-8">
+      <main className="flex-1 px-4 sm:px-6 py-4 sm:py-6">
+        <div className="max-w-[1600px] mx-auto space-y-6 sm:space-y-8">
           <div className={cn("space-y-2", loaded && "animate-fade-in")}>
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold">Produtos</h1>
-                <p className="text-muted-foreground">Gerencie seus produtos</p>
+                <p className="text-sm sm:text-base text-muted-foreground">Gerencie todos os seus produtos digitais e físicos</p>
               </div>
               
-              <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" size="sm">
+              <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
                   <Upload className="h-4 w-4 mr-2" />
-                  Importar
+                  <span className="hidden sm:inline">Importar</span>
                 </Button>
                 <Button 
                   size="sm" 
-                  className="gap-1"
+                  className="gap-1 flex-1 sm:flex-none"
                   onClick={() => {
                     setProdutoEditando(null);
                     setNovoProdutoModalAberto(true);
