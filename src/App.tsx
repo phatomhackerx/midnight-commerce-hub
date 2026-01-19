@@ -28,6 +28,7 @@ import AjudaPage from "@/pages/AjudaPage";
 import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
 import CheckoutBuilderPage from "@/pages/CheckoutBuilderPage";
+import ProductCheckoutBuilderPage from "@/pages/ProductCheckoutBuilderPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -47,7 +48,7 @@ const App = () => (
               <Route path="/marketplace/produto/:id" element={<ProdutoDetalhe />} />
               <Route path="/produtos" element={<ProdutosPage />} />
               <Route path="/produtos/config/:id" element={<ConfiguracoesProdutoPage />} />
-              <Route path="/produtos/checkout-builder/:id" element={<CheckoutBuilderPage />} />
+              <Route path="/produtos/checkout-builder/:id" element={<ProductCheckoutBuilderPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
               <Route path="/links-pagamento" element={<LinksPagamentoPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
