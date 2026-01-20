@@ -12,8 +12,16 @@ import HeaderSection from '@/components/checkout-builder/sections/HeaderSection'
 import PaymentSection from '@/components/checkout-builder/sections/PaymentSection';
 import TimerSection from '@/components/checkout-builder/sections/TimerSection';
 import GuaranteeSection from '@/components/checkout-builder/sections/GuaranteeSection';
+import ProductSection from '@/components/checkout-builder/sections/ProductSection';
+import BenefitsSection from '@/components/checkout-builder/sections/BenefitsSection';
+import TestimonialsSection from '@/components/checkout-builder/sections/TestimonialsSection';
+import OrderBumpsSection from '@/components/checkout-builder/sections/OrderBumpsSection';
+import UpsellSection from '@/components/checkout-builder/sections/UpsellSection';
+import PixelsSection from '@/components/checkout-builder/sections/PixelsSection';
+import FooterSection from '@/components/checkout-builder/sections/FooterSection';
+import AdvancedSection from '@/components/checkout-builder/sections/AdvancedSection';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Shield, Clock, CheckCircle, CreditCard, QrCode, Star, Lock, Gift } from 'lucide-react';
+import { Shield, Clock, CheckCircle, CreditCard, QrCode, Star, Lock, Gift, Zap } from 'lucide-react';
 
 export default function ProductCheckoutBuilderPage() {
   const { id } = useParams<{ id: string }>();
@@ -104,9 +112,17 @@ export default function ProductCheckoutBuilderPage() {
       case 'layout': return <LayoutSection checkout={checkout} onUpdate={handleUpdate} />;
       case 'theme': return <ThemeSection checkout={checkout} onUpdate={handleUpdate} />;
       case 'header': return <HeaderSection checkout={checkout} onUpdate={handleUpdate} />;
-      case 'payment': return <PaymentSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'product': return <ProductSection checkout={checkout} onUpdate={handleUpdate} />;
       case 'timer': return <TimerSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'benefits': return <BenefitsSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'testimonials': return <TestimonialsSection checkout={checkout} onUpdate={handleUpdate} />;
       case 'guarantee': return <GuaranteeSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'payment': return <PaymentSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'orderbumps': return <OrderBumpsSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'upsell': return <UpsellSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'pixels': return <PixelsSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'footer': return <FooterSection checkout={checkout} onUpdate={handleUpdate} />;
+      case 'advanced': return <AdvancedSection checkout={checkout} onUpdate={handleUpdate} />;
       default: return <LayoutSection checkout={checkout} onUpdate={handleUpdate} />;
     }
   };
@@ -165,10 +181,12 @@ export default function ProductCheckoutBuilderPage() {
                     <img src={produto.imagem} alt={produto.titulo} className="w-20 h-20 rounded-lg object-cover" />
                     <div>
                       <h3 className="font-semibold">{produto.titulo}</h3>
-                      <div className="flex items-center gap-1 text-yellow-500 mt-1">
-                        {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-current" />)}
-                        <span className="text-xs text-muted-foreground ml-1">({produto.vendas})</span>
-                      </div>
+                      {checkout.product.showRating && (
+                        <div className="flex items-center gap-1 text-yellow-500 mt-1">
+                          {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-current" />)}
+                          <span className="text-xs text-muted-foreground ml-1">({produto.vendas})</span>
+                        </div>
+                      )}
                       <div className="text-xl font-bold mt-2" style={{ color: checkout.theme.primaryColor }}>
                         R$ {produto.preco.toFixed(2)}
                       </div>
@@ -188,6 +206,21 @@ export default function ProductCheckoutBuilderPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Benefits */}
+                  {checkout.benefits.filter(b => b.enabled).length > 0 && (
+                    <div className="space-y-2">
+                      {checkout.benefits.filter(b => b.enabled).map((benefit) => (
+                        <div key={benefit.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                          <Zap className="h-5 w-5" style={{ color: checkout.theme.primaryColor }} />
+                          <div>
+                            <div className="font-medium text-sm">{benefit.title}</div>
+                            <div className="text-xs text-muted-foreground">{benefit.description}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   
                   {checkout.guarantee.enabled && (
                     <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex gap-3">
@@ -198,6 +231,20 @@ export default function ProductCheckoutBuilderPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Order Bumps */}
+                  {checkout.orderBumps.filter(b => b.enabled).map((bump) => (
+                    <div key={bump.id} className={`p-4 rounded-xl border-2 ${bump.highlight ? 'border-amber-400 bg-amber-50' : 'border-border'}`}>
+                      <div className="flex items-start gap-3">
+                        <Gift className="h-5 w-5 text-amber-600 shrink-0 mt-1" />
+                        <div className="flex-1">
+                          <div className="font-bold text-sm">{bump.title}</div>
+                          <div className="text-xs text-muted-foreground mt-1">{bump.description}</div>
+                          <div className="font-bold mt-2" style={{ color: checkout.theme.primaryColor }}>+ R$ {bump.price.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="space-y-4 mt-6 lg:mt-0">
@@ -236,9 +283,18 @@ export default function ProductCheckoutBuilderPage() {
                   
                   <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                     <Lock className="h-4 w-4" />
-                    <span>Pagamento 100% seguro</span>
+                    <span>{checkout.security.customSecurityText}</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Footer */}
+              <div className="p-4 border-t text-center text-xs text-muted-foreground space-y-2">
+                <div className="flex items-center justify-center gap-4">
+                  {checkout.footer.showTerms && <span className="hover:underline cursor-pointer">Termos de Uso</span>}
+                  {checkout.footer.showPrivacy && <span className="hover:underline cursor-pointer">Privacidade</span>}
+                </div>
+                {checkout.footer.showSupport && <p>Dúvidas? {checkout.footer.supportEmail}</p>}
               </div>
             </div>
           </div>
