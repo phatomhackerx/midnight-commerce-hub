@@ -11,6 +11,7 @@ import Index from "@/pages/Index";
 import MarketplacePage from "@/pages/MarketplacePage";
 import ProdutoDetalhe from "@/pages/ProdutoDetalhe";
 import ProdutosPage from "@/pages/ProdutosPage";
+import MeusProdutosPage from "@/pages/MeusProdutosPage";
 import MinhasVendasPage from "@/pages/MinhasVendasPage"; 
 import LinksPagamentoPage from "@/pages/LinksPagamentoPage";
 import ConfiguracoesProdutoPage from "@/pages/ConfiguracoesProdutoPage";
@@ -29,6 +30,7 @@ import NotificacoesPage from "@/pages/NotificacoesPage";
 import NotFound from "@/pages/NotFound";
 import CheckoutBuilderPage from "@/pages/CheckoutBuilderPage";
 import ProductCheckoutBuilderPage from "@/pages/ProductCheckoutBuilderPage";
+import PublicCheckoutPage from "@/pages/PublicCheckoutPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -46,9 +48,10 @@ const App = () => (
               <Route path="/dashboard" element={<Index />} />
               <Route path="/marketplace" element={<MarketplacePage />} />
               <Route path="/marketplace/produto/:id" element={<ProdutoDetalhe />} />
-              <Route path="/produtos" element={<ProdutosPage />} />
-              <Route path="/produtos/config/:id" element={<ConfiguracoesProdutoPage />} />
-              <Route path="/produtos/checkout-builder/:id" element={<ProductCheckoutBuilderPage />} />
+            <Route path="/produtos" element={<MeusProdutosPage />} />
+            <Route path="/produtos/config/:id" element={<ConfiguracoesProdutoPage />} />
+            <Route path="/produtos/checkout-builder/:id" element={<ProductCheckoutBuilderPage />} />
+            <Route path="/c/:slug" element={<PublicCheckoutPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
               <Route path="/links-pagamento" element={<LinksPagamentoPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
