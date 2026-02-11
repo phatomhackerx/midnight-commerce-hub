@@ -17,13 +17,15 @@ import {
   Bell,
   Bot,
   ClipboardList,
-  Link
+  Link,
+  GraduationCap
 } from "lucide-react";
 
 export const menuItems = [
   { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { path: "/marketplace", icon: Globe, label: "Marketplace" },
   { path: "/produtos", icon: Package, label: "Produtos" },
+  { path: "/area-membros", icon: GraduationCap, label: "Área de Membros" },
   { path: "/minhas-vendas", icon: ShoppingCart, label: "Minhas Vendas" },
   { path: "/links-pagamento", icon: Link, label: "Links de Pagamento" },
   { path: "/assinaturas", icon: CalendarClock, label: "Assinaturas" },

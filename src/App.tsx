@@ -31,6 +31,9 @@ import NotFound from "@/pages/NotFound";
 import CheckoutBuilderPage from "@/pages/CheckoutBuilderPage";
 import ProductCheckoutBuilderPage from "@/pages/ProductCheckoutBuilderPage";
 import PublicCheckoutPage from "@/pages/PublicCheckoutPage";
+import MembersAreaPage from "@/pages/MembersAreaPage";
+import CourseDetailPage from "@/pages/CourseDetailPage";
+import LessonPlayerPage from "@/pages/LessonPlayerPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -53,6 +56,8 @@ const App = () => (
             <Route path="/produtos/checkout-builder/:id" element={<ProductCheckoutBuilderPage />} />
             <Route path="/c/:slug" element={<PublicCheckoutPage />} />
               <Route path="/minhas-vendas" element={<MinhasVendasPage />} />
+              <Route path="/area-membros" element={<MembersAreaPage />} />
+              <Route path="/area-membros/:courseId" element={<CourseDetailPage />} />
               <Route path="/links-pagamento" element={<LinksPagamentoPage />} />
               <Route path="/financeiro" element={<FinanceiroPage />} />
               <Route path="/cupons-desconto" element={<CuponsDescontoPage />} />
@@ -67,6 +72,7 @@ const App = () => (
               <Route path="/ajuda" element={<AjudaPage />} />
               <Route path="/notificacoes" element={<NotificacoesPage />} />
             </Route>
+            <Route path="/area-membros/:courseId/aula/:lessonId" element={<LessonPlayerPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
