@@ -18,7 +18,8 @@ import {
   Bot,
   ClipboardList,
   Link,
-  GraduationCap
+  GraduationCap,
+  Settings
 } from "lucide-react";
 
 export const menuItems = [
@@ -36,6 +37,7 @@ export const menuItems = [
   { path: "/cupons-desconto", icon: Tag, label: "Cupons de Desconto" },
   { path: "/quiz", icon: ClipboardList, label: "Quiz" },
   { path: "/perfil", icon: UserCircle, label: "Meu Perfil" },
+  { path: "/configuracoes", icon: Settings, label: "Configurações" },
   { path: "/chat", icon: MessageSquare, label: "Chat Suporte" },
   { path: "/ajuda", icon: HelpCircle, label: "Ajuda" },
   { path: "/notificacoes", icon: Bell, label: "Notificações" },
