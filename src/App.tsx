@@ -8,6 +8,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { Loader2 } from "lucide-react";
 
+// Auth pages
+const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
+const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"));
+const ForgotPasswordPage = lazy(() => import("@/pages/auth/ForgotPasswordPage"));
+
 // Lazy-loaded pages for code splitting
 const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const Index = lazy(() => import("@/pages/Index"));
@@ -62,6 +67,11 @@ const App = () => (
             <Routes>
               {/* Public / Standalone pages */}
               <Route path="/" element={<LandingPage />} />
+              
+              {/* Auth */}
+              <Route path="/auth/login" element={<LoginPage />} />
+              <Route path="/auth/register" element={<RegisterPage />} />
+              <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
               
               {/* Standalone Checkout (isolated from dashboard) */}
               <Route path="/checkout/:productId" element={<CheckoutPage />} />

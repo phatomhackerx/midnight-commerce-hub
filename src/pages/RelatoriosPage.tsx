@@ -1,458 +1,225 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  BarChart, 
-  Download, 
-  FileText, 
-  Filter, 
-  PieChart, 
-  RefreshCw, 
-  Share2, 
-  TrendingUp 
-} from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Cell, PieChart, Pie } from "recharts";
+import { 
+  TrendingUp, TrendingDown, DollarSign, ShoppingCart, Users, Eye, 
+  Download, Calendar, ArrowUpRight, BarChart3, Target
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const revenueData = [
+  { name: "01", value: 2400 }, { name: "02", value: 1398 }, { name: "03", value: 4800 },
+  { name: "04", value: 3908 }, { name: "05", value: 4800 }, { name: "06", value: 3800 },
+  { name: "07", value: 5200 }, { name: "08", value: 4300 }, { name: "09", value: 6100 },
+  { name: "10", value: 5900 }, { name: "11", value: 7200 }, { name: "12", value: 6800 },
+  { name: "13", value: 7859 }, { name: "14", value: 5400 }, { name: "15", value: 8200 },
+];
+
+const conversionData = [
+  { name: "Seg", visitors: 1200, sales: 42 }, { name: "Ter", visitors: 1400, sales: 51 },
+  { name: "Qua", visitors: 1100, sales: 38 }, { name: "Qui", visitors: 1600, sales: 62 },
+  { name: "Sex", visitors: 1800, sales: 71 }, { name: "Sáb", visitors: 900, sales: 28 },
+  { name: "Dom", visitors: 700, sales: 19 },
+];
+
+const topProducts = [
+  { name: "Curso de Marketing Digital", revenue: 28450, sales: 96, conversion: 4.2 },
+  { name: "Ebook Finanças Pessoais", revenue: 12350, sales: 247, conversion: 6.1 },
+  { name: "Mentoria Premium", revenue: 9970, sales: 10, conversion: 2.8 },
+  { name: "Template Design Pack", revenue: 6700, sales: 100, conversion: 5.5 },
+  { name: "Curso Copywriting", revenue: 5910, sales: 30, conversion: 3.9 },
+];
+
+const sourceData = [
+  { name: "Orgânico", value: 35, fill: "hsl(var(--foreground))" },
+  { name: "Afiliados", value: 28, fill: "hsl(var(--muted-foreground))" },
+  { name: "Ads", value: 22, fill: "hsl(var(--border))" },
+  { name: "Social", value: 15, fill: "hsl(var(--accent))" },
+];
+
+const metrics = [
+  { label: "Receita Total", value: "R$ 67.890", change: 12.5, icon: DollarSign, prefix: "" },
+  { label: "Total de Vendas", value: "483", change: 8.2, icon: ShoppingCart, prefix: "" },
+  { label: "Visitantes", value: "12.456", change: -2.1, icon: Eye, prefix: "" },
+  { label: "Taxa de Conversão", value: "3.87%", change: 0.5, icon: Target, prefix: "" },
+];
+
 export default function RelatoriosPage() {
-  const [loaded, setLoaded] = useState(false);
-  
-  // Simula carregamento para animação
-  setTimeout(() => {
-    if (!loaded) setLoaded(true);
-  }, 100);
-  
+  const [period, setPeriod] = useState("30d");
+
   return (
     <div className="flex-1 flex flex-col min-h-screen grok-bg">
       <Header />
-      
       <main className="flex-1 px-4 sm:px-6 py-6">
         <div className="max-w-[1600px] mx-auto space-y-8">
-          <div className={cn("space-y-2", loaded && "animate-fade-in")}>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h1 className="text-2xl sm:text-3xl font-bold">Relatórios</h1>
-              
-              <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-1">
-                  <RefreshCw size={16} />
-                  <span className="hidden sm:inline">Atualizar</span>
-                </Button>
-                <Button variant="outline" size="sm" className="gap-1">
-                  <Download size={16} />
-                  <span className="hidden sm:inline">Exportar</span>
-                </Button>
-                <Button size="sm" className="gap-1">
-                  <FileText size={16} />
-                  <span className="hidden sm:inline">Novo Relatório</span>
-                </Button>
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-fade-in">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <BarChart3 size={18} className="text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Analytics</span>
               </div>
+              <h1 className="text-3xl font-bold">Relatórios</h1>
             </div>
-            <p className="text-sm sm:text-base text-muted-foreground">Analise e gerencie todos os relatórios da sua loja.</p>
+            <div className="flex items-center gap-2">
+              <Select value={period} onValueChange={setPeriod}>
+                <SelectTrigger className="w-[140px] rounded-xl">
+                  <Calendar size={14} className="mr-2" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7d">7 dias</SelectItem>
+                  <SelectItem value="30d">30 dias</SelectItem>
+                  <SelectItem value="90d">90 dias</SelectItem>
+                  <SelectItem value="12m">12 meses</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" size="sm" className="gap-1 rounded-xl">
+                <Download size={14} /> Exportar
+              </Button>
+            </div>
           </div>
-          
-          <Tabs defaultValue="vendas" className={cn(loaded && "animate-fade-in transition-all duration-500")}>
-            <div className="border-b overflow-x-auto">
-              <TabsList className="bg-transparent w-full justify-start min-w-max">
-                <TabsTrigger value="vendas" className="data-[state=active]:bg-background text-sm sm:text-base">
-                  Vendas
-                </TabsTrigger>
-                <TabsTrigger value="clientes" className="data-[state=active]:bg-background text-sm sm:text-base">
-                  Clientes
-                </TabsTrigger>
-                <TabsTrigger value="produtos" className="data-[state=active]:bg-background text-sm sm:text-base">
-                  Produtos
-                </TabsTrigger>
-                <TabsTrigger value="financeiro" className="data-[state=active]:bg-background text-sm sm:text-base">
-                  Financeiro
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            
-            <TabsContent value="vendas" className="space-y-6 pt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <Card className="premium-card hover-lift transition-all">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center justify-between">
-                      <span>Vendas Totais</span>
-                      <BarChart size={20} className="text-primary" />
-                    </CardTitle>
-                    <CardDescription>Total acumulado no período</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">R$ 67.890,00</div>
-                    <div className="flex items-center gap-1 text-sm text-success mt-1">
-                      <TrendingUp size={16} />
-                      <span>+12,5% vs. mês anterior</span>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="premium-card hover-lift transition-all">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base sm:text-lg flex items-center justify-between">
-                      <span>Ticket Médio</span>
-                      <PieChart size={20} className="text-primary" />
-                    </CardTitle>
-                    <CardDescription>Valor médio por pedido</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">R$ 157,32</div>
-                    <div className="flex items-center gap-1 text-sm text-success mt-1">
-                      <TrendingUp size={16} />
-                      <span>+3,8% vs. mês anterior</span>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="premium-card hover-lift transition-all">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base sm:text-lg flex items-center justify-between">
-                      <span>Conversão</span>
-                      <TrendingUp size={20} className="text-primary" />
-                    </CardTitle>
-                    <CardDescription>Taxa de conversão do período</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">3.7%</div>
-                    <div className="flex items-center gap-1 text-sm text-success mt-1">
-                      <TrendingUp size={16} />
-                      <span>+0,5% vs. mês anterior</span>
-                    </div>
-                  </CardContent>
-                </Card>
+
+          {/* Metrics Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in">
+            {metrics.map((m, i) => (
+              <Card key={i} className="premium-card hover-lift">
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-2 rounded-lg bg-secondary"><m.icon size={18} className="text-foreground" /></div>
+                    <Badge variant="outline" className={cn("text-xs rounded-full", m.change >= 0 ? "text-green-500 border-green-500/30" : "text-red-500 border-red-500/30")}>
+                      {m.change >= 0 ? <TrendingUp size={12} className="mr-1" /> : <TrendingDown size={12} className="mr-1" />}
+                      {m.change > 0 ? "+" : ""}{m.change}%
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{m.label}</p>
+                  <p className="text-2xl font-bold mt-1">{m.value}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Revenue Chart */}
+          <Card className="premium-card animate-fade-in">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Receita</CardTitle>
+                  <CardDescription>Evolução da receita no período</CardDescription>
+                </div>
+                <Badge variant="outline" className="text-green-500 border-green-500/30 gap-1">
+                  <TrendingUp size={12} /> +12.5%
+                </Badge>
               </div>
-              
-              <Card className="premium-card hover-lift transition-all">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Relatórios de Vendas</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" className="gap-1">
-                        <Filter size={16} />
-                        <span>Filtrar</span>
-                      </Button>
-                      <Button variant="outline" size="sm" className="gap-1">
-                        <Share2 size={16} />
-                        <span>Compartilhar</span>
-                      </Button>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={{ value: { label: "Receita", color: "hsl(var(--foreground))" } }} className="h-[300px] w-full">
+                <ResponsiveContainer>
+                  <AreaChart data={revenueData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                    <defs>
+                      <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--foreground))" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="hsl(var(--foreground))" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} tickFormatter={v => `${(v/1000).toFixed(0)}k`} width={40} />
+                    <ChartTooltip content={<ChartTooltipContent formatter={v => `R$ ${Number(v).toLocaleString('pt-BR')}`} />} />
+                    <Area type="monotone" dataKey="value" stroke="hsl(var(--foreground))" strokeWidth={2} fill="url(#revGrad)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          {/* Conversion + Sources */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
+            <Card className="lg:col-span-2 premium-card">
+              <CardHeader>
+                <CardTitle>Visitantes vs Vendas</CardTitle>
+                <CardDescription>Comparação semanal</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={{ visitors: { label: "Visitantes", color: "hsl(var(--muted-foreground))" }, sales: { label: "Vendas", color: "hsl(var(--foreground))" } }} className="h-[250px] w-full">
+                  <ResponsiveContainer>
+                    <BarChart data={conversionData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                      <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} width={40} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="visitors" fill="hsl(var(--muted))" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="sales" fill="hsl(var(--foreground))" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="premium-card">
+              <CardHeader>
+                <CardTitle>Fontes de Tráfego</CardTitle>
+                <CardDescription>De onde vêm seus visitantes</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={{ value: { label: "Tráfego" } }} className="h-[200px] w-full">
+                  <ResponsiveContainer>
+                    <PieChart>
+                      <Pie data={sourceData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={4} dataKey="value">
+                        {sourceData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
+                      </Pie>
+                      <ChartTooltip content={<ChartTooltipContent formatter={v => `${v}%`} />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+                <div className="space-y-2 mt-4">
+                  {sourceData.map((s, i) => (
+                    <div key={i} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: s.fill }} />
+                        <span className="text-muted-foreground">{s.name}</span>
+                      </div>
+                      <span className="font-medium">{s.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Top Products */}
+          <Card className="premium-card animate-fade-in">
+            <CardHeader>
+              <CardTitle>Produtos Mais Vendidos</CardTitle>
+              <CardDescription>Ranking por receita no período</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {topProducts.map((p, i) => (
+                  <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/30 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-sm font-bold shrink-0">
+                      {i + 1}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">{p.name}</p>
+                      <p className="text-xs text-muted-foreground">{p.sales} vendas · {p.conversion}% conversão</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-semibold text-sm">R$ {p.revenue.toLocaleString('pt-BR')}</p>
                     </div>
                   </div>
-                  <CardDescription>Relatórios gerados nos últimos 30 dias</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Nome</TableHead>
-                          <TableHead>Tipo</TableHead>
-                          <TableHead>Data</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Ações</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {relatorios.map((relatorio) => (
-                          <TableRow key={relatorio.id} className="transition-colors hover:bg-muted/30">
-                            <TableCell className="font-medium">{relatorio.nome}</TableCell>
-                            <TableCell>{relatorio.tipo}</TableCell>
-                            <TableCell>{relatorio.data}</TableCell>
-                            <TableCell>
-                              <Badge variant={relatorio.status === "Concluído" ? "default" : "outline"}>
-                                {relatorio.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <Button variant="ghost" size="sm">
-                                <Download size={16} />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="clientes" className="pt-4">
-              <Card className="premium-card hover-lift transition-all">
-                <CardHeader>
-                  <CardTitle>Relatórios de Clientes</CardTitle>
-                  <CardDescription>Analise o comportamento dos seus clientes</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Input placeholder="Buscar relatório..." className="w-[250px]" />
-                      <Button variant="outline" size="icon">
-                        <Filter size={16} />
-                      </Button>
-                    </div>
-                    <Button className="gap-1">
-                      <FileText size={16} />
-                      <span>Gerar Relatório</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Nome</TableHead>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Atualização</TableHead>
-                          <TableHead className="text-right">Ações</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Novos Clientes</TableCell>
-                          <TableCell>Relatório de novos clientes cadastrados</TableCell>
-                          <TableCell>Diária</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Segmentação</TableCell>
-                          <TableCell>Segmentação de clientes por comportamento</TableCell>
-                          <TableCell>Semanal</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Retenção</TableCell>
-                          <TableCell>Taxas de retenção e recorrência</TableCell>
-                          <TableCell>Mensal</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="produtos" className="pt-4">
-              <Card className="premium-card hover-lift transition-all">
-                <CardHeader>
-                  <CardTitle>Relatórios de Produtos</CardTitle>
-                  <CardDescription>Analise o desempenho dos seus produtos</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Input placeholder="Buscar relatório..." className="w-[250px]" />
-                      <Button variant="outline" size="icon">
-                        <Filter size={16} />
-                      </Button>
-                    </div>
-                    <Button className="gap-1">
-                      <FileText size={16} />
-                      <span>Gerar Relatório</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Nome</TableHead>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Atualização</TableHead>
-                          <TableHead className="text-right">Ações</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Mais Vendidos</TableCell>
-                          <TableCell>Lista de produtos mais vendidos</TableCell>
-                          <TableCell>Diária</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Estoque Baixo</TableCell>
-                          <TableCell>Produtos com estoque abaixo do mínimo</TableCell>
-                          <TableCell>Diária</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Desempenho</TableCell>
-                          <TableCell>Análise completa de desempenho</TableCell>
-                          <TableCell>Semanal</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="financeiro" className="pt-4">
-              <Card className="premium-card hover-lift transition-all">
-                <CardHeader>
-                  <CardTitle>Relatórios Financeiros</CardTitle>
-                  <CardDescription>Análise financeira e contábil do seu negócio</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Input placeholder="Buscar relatório..." className="w-[250px]" />
-                      <Button variant="outline" size="icon">
-                        <Filter size={16} />
-                      </Button>
-                    </div>
-                    <Button className="gap-1">
-                      <FileText size={16} />
-                      <span>Gerar Relatório</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Nome</TableHead>
-                          <TableHead>Descrição</TableHead>
-                          <TableHead>Atualização</TableHead>
-                          <TableHead className="text-right">Ações</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Faturamento</TableCell>
-                          <TableCell>Relatório completo de faturamento</TableCell>
-                          <TableCell>Mensal</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Lucratividade</TableCell>
-                          <TableCell>Análise de margem e lucratividade</TableCell>
-                          <TableCell>Mensal</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow className="transition-colors hover:bg-muted/30">
-                          <TableCell className="font-medium">Impostos</TableCell>
-                          <TableCell>Relatório fiscal e tributário</TableCell>
-                          <TableCell>Trimestral</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm" className="gap-1">
-                              <Download size={16} />
-                              <span>Baixar</span>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>
   );
 }
-
-// Dados fictícios para a tabela de relatórios
-const relatorios = [
-  {
-    id: 1,
-    nome: "Vendas Mensais - Maio/2024",
-    tipo: "Vendas",
-    data: "01/06/2024",
-    status: "Concluído"
-  },
-  {
-    id: 2,
-    nome: "Produtos Mais Vendidos",
-    tipo: "Produtos",
-    data: "28/05/2024",
-    status: "Concluído"
-  },
-  {
-    id: 3,
-    nome: "Análise de Conversão",
-    tipo: "Marketing",
-    data: "25/05/2024",
-    status: "Concluído"
-  },
-  {
-    id: 4,
-    nome: "Faturamento Trimestral",
-    tipo: "Financeiro",
-    data: "01/04/2024",
-    status: "Em processamento"
-  },
-  {
-    id: 5,
-    nome: "Projeção de Vendas",
-    tipo: "Análise",
-    data: "15/05/2024",
-    status: "Concluído"
-  }
-];
